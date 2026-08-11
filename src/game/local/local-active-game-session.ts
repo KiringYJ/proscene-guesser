@@ -1,19 +1,37 @@
 import type { LocalQuestionBundle } from '@/game/authority/question-bundle'
+import {
+  assertUniqueQuestionIds,
+  createSoloGameSelection,
+  getSoloGameAvailability,
+} from '@/game/local/solo-game-selection'
 import { isAnswerComplete } from '@/game/scoring'
+import {
+  isSoloGameConfig,
+  QUICK_PLAY_CONFIG,
+  type RoundCompletionReason,
+  type SoloGameConfig,
+  type SoloGamePlan,
+  type SoloRoundSummary,
+} from '@/game/solo'
 import type {
   ActiveGameSessionPort,
   ActiveGameSnapshot,
   AdvanceOutcome,
+  RoundTimer,
   SessionProgress,
+  StartOutcome,
+  StartState,
   SubmitOutcome,
 } from '@/game/session'
 import { scoreAnswer } from '@/lib/scoring'
 import type { PlayerAnswer } from '@/types/question'
 
-export type LocalSessionCommand = 'submit' | 'advance'
+export type LocalSessionCommand = 'start' | 'submit' | 'expire' | 'advance'
 
 export interface LocalActiveGameSessionOptions {
   commandBoundary?: (command: LocalSessionCommand) => Promise<void>
+  now?: () => number
+  random?: () => number
 }
 
 export class LocalSessionUnavailableError extends Error {
@@ -33,27 +51,49 @@ const submissionUnavailable = {
 const advanceUnavailable = {
   status: 'rejected',
   code: 'temporarily-unavailable',
-  message: 'The next round could not be opened. Try again.',
+  message: 'The next phase could not be opened. Try again.',
   retryable: true,
 } as const
 
+const startUnavailable = {
+  status: 'rejected',
+  code: 'temporarily-unavailable',
+  message: 'The game could not be started. Try again.',
+  retryable: true,
+} as const
+
+type StartableSnapshot = Extract<ActiveGameSnapshot, { phase: 'setup' | 'finished' }>
+type AnsweringSnapshot = Extract<ActiveGameSnapshot, { phase: 'answering' }>
+
 export class LocalActiveGameSession implements ActiveGameSessionPort {
-  readonly #bundles: readonly LocalQuestionBundle[]
+  readonly #catalog: readonly LocalQuestionBundle[]
+  readonly #availability
   readonly #commandBoundary: (command: LocalSessionCommand) => Promise<void>
+  readonly #now: () => number
+  readonly #random: () => number
   readonly #listeners = new Set<(snapshot: ActiveGameSnapshot) => void>()
+  #selectedBundles: readonly LocalQuestionBundle[] = []
   #currentIndex = 0
+  #history: SoloRoundSummary[] = []
+  #points = 0
+  #gameSerial = 0
   #roundSerial = 0
-  #roundsPlayed = 0
-  #bestPoints = 0
+  #gameId: string | null = null
+  #plan: SoloGamePlan | null = null
+  #lastConfig: SoloGameConfig = { ...QUICK_PLAY_CONFIG }
   #snapshot: ActiveGameSnapshot
 
   constructor(
     bundles: readonly LocalQuestionBundle[],
     options: LocalActiveGameSessionOptions = {},
   ) {
-    this.#bundles = [...bundles]
+    this.#catalog = [...bundles]
+    assertUniqueQuestionIds(this.#catalog)
+    this.#availability = getSoloGameAvailability(this.#catalog)
     this.#commandBoundary = options.commandBoundary ?? (() => Promise.resolve())
-    this.#snapshot = this.#createInitialSnapshot()
+    this.#now = options.now ?? Date.now
+    this.#random = options.random ?? Math.random
+    this.#snapshot = this.#createSetupSnapshot()
   }
 
   getSnapshot(): ActiveGameSnapshot {
@@ -68,20 +108,93 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
     }
   }
 
-  async submitAnswer(answer: PlayerAnswer): Promise<SubmitOutcome> {
+  async startGame(config: SoloGameConfig): Promise<StartOutcome> {
     const snapshot = this.#snapshot
 
-    if (snapshot.phase !== 'answering') {
+    if (snapshot.phase !== 'setup' && snapshot.phase !== 'finished') {
       return {
         ok: false,
-        ...(snapshot.phase === 'revealed' ? { roundId: snapshot.roundId } : {}),
-        code: 'not-answering',
-        message: 'This round is not accepting answers.',
+        code: 'not-startable',
+        message: 'Finish the current game before starting another.',
         retryable: false,
       }
     }
 
-    if (snapshot.submission.status === 'pending' || snapshot.submission.status === 'accepted') {
+    if (snapshot.start.status === 'pending') {
+      return {
+        ok: false,
+        code: 'already-starting',
+        message: 'A game is already starting.',
+        retryable: false,
+      }
+    }
+
+    if (!isSoloGameConfig(config)) {
+      const start = {
+        status: 'rejected',
+        code: 'invalid-config',
+        message: 'Choose a valid pool, round count, and timer.',
+        retryable: false,
+      } as const
+      this.#publish(this.#withStartState(snapshot, start))
+
+      return { ok: false, ...start }
+    }
+
+    const selection = createSoloGameSelection(this.#catalog, config, this.#random)
+
+    if (selection.bundles.length === 0) {
+      const start = {
+        status: 'rejected',
+        code: 'no-questions-in-pool',
+        message: 'That pool has no playable archives yet.',
+        retryable: false,
+      } as const
+      this.#publish(this.#withStartState(snapshot, start))
+
+      return { ok: false, ...start }
+    }
+
+    this.#publish(this.#withStartState(snapshot, { status: 'pending' }))
+
+    try {
+      await this.#commandBoundary('start')
+      this.#selectedBundles = selection.bundles
+      this.#currentIndex = 0
+      this.#history = []
+      this.#points = 0
+      this.#gameSerial += 1
+      this.#gameId = `local-game-${this.#gameSerial}`
+      this.#plan = selection.plan
+      this.#lastConfig = { ...selection.plan.config }
+      const nextSnapshot = this.#createAnsweringSnapshot()
+      this.#publish(nextSnapshot)
+
+      return {
+        ok: true,
+        gameId: nextSnapshot.gameId,
+        roundCount: selection.plan.roundCount,
+        constrainedByAvailability: selection.plan.constrainedByAvailability,
+      }
+    } catch (error) {
+      this.#publish(this.#withStartState(snapshot, startUnavailable))
+
+      if (error instanceof LocalSessionUnavailableError) {
+        return { ok: false, ...startUnavailable }
+      }
+
+      throw error
+    }
+  }
+
+  async submitAnswer(answer: PlayerAnswer): Promise<SubmitOutcome> {
+    const snapshot = this.#snapshot
+
+    if (snapshot.phase !== 'answering') {
+      return this.#notAnsweringOutcome(snapshot)
+    }
+
+    if (snapshot.submission.status === 'pending') {
       return {
         ok: false,
         roundId: snapshot.roundId,
@@ -91,17 +204,10 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
       }
     }
 
-    if (snapshot.submission.status === 'rejected' && !snapshot.submission.retryable) {
-      return {
-        ok: false,
-        roundId: snapshot.roundId,
-        code: snapshot.submission.code,
-        message: snapshot.submission.message,
-        retryable: false,
-      }
-    }
+    const timedOut =
+      snapshot.timer.kind === 'deadline' && this.#now() >= snapshot.timer.deadlineAt
 
-    if (!isAnswerComplete(answer, snapshot.prompt)) {
+    if (!timedOut && !isAnswerComplete(answer, snapshot.prompt)) {
       return {
         ok: false,
         roundId: snapshot.roundId,
@@ -111,52 +217,47 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
       }
     }
 
-    const submittedAnswer = { ...answer }
-    this.#publish({
-      ...snapshot,
-      submission: { status: 'pending' },
-    })
+    return this.#settleRound(snapshot, answer, timedOut ? 'timed-out' : 'submitted')
+  }
 
-    try {
-      await this.#commandBoundary('submit')
-      const bundle = this.#requireCurrentBundle()
-      const result = scoreAnswer(submittedAnswer, bundle.disclosure.solution, {
-        teamChoices: bundle.prompt.choices.teams,
-      })
-      this.#roundsPlayed += 1
-      this.#bestPoints = Math.max(this.#bestPoints, result.points)
-      const progress = this.#createProgress()
+  async expireRound(roundId: string, answer: PlayerAnswer): Promise<SubmitOutcome> {
+    const snapshot = this.#snapshot
 
-      this.#publish({
-        phase: 'revealed',
-        roundId: snapshot.roundId,
-        prompt: bundle.prompt,
-        disclosure: bundle.disclosure,
-        result,
-        progress,
-        advance: { status: 'ready' },
-        nextLabel: this.#bundles.length > 1 ? 'Next archive' : 'Replay archive',
-      })
-
-      return { ok: true, roundId: snapshot.roundId }
-    } catch (error) {
-      this.#publish({
-        ...snapshot,
-        submission: submissionUnavailable,
-      })
-
-      if (error instanceof LocalSessionUnavailableError) {
-        return {
-          ok: false,
-          roundId: snapshot.roundId,
-          code: submissionUnavailable.code,
-          message: submissionUnavailable.message,
-          retryable: submissionUnavailable.retryable,
-        }
-      }
-
-      throw error
+    if (snapshot.phase !== 'answering') {
+      return this.#notAnsweringOutcome(snapshot)
     }
+
+    if (snapshot.roundId !== roundId) {
+      return {
+        ok: false,
+        roundId: snapshot.roundId,
+        code: 'stale-round',
+        message: 'That timer belongs to an earlier round.',
+        retryable: false,
+      }
+    }
+
+    if (snapshot.submission.status === 'pending') {
+      return {
+        ok: false,
+        roundId: snapshot.roundId,
+        code: 'already-submitted',
+        message: 'An answer is already being submitted for this round.',
+        retryable: false,
+      }
+    }
+
+    if (snapshot.timer.kind === 'unlimited' || this.#now() < snapshot.timer.deadlineAt) {
+      return {
+        ok: false,
+        roundId: snapshot.roundId,
+        code: 'round-not-expired',
+        message: 'This round still has time remaining.',
+        retryable: false,
+      }
+    }
+
+    return this.#settleRound(snapshot, answer, 'timed-out')
   }
 
   async advanceRound(): Promise<AdvanceOutcome> {
@@ -177,17 +278,7 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
         ok: false,
         roundId: snapshot.roundId,
         code: 'already-advancing',
-        message: 'The next round is already opening.',
-        retryable: false,
-      }
-    }
-
-    if (snapshot.advance.status === 'rejected' && !snapshot.advance.retryable) {
-      return {
-        ok: false,
-        roundId: snapshot.roundId,
-        code: snapshot.advance.code,
-        message: snapshot.advance.message,
+        message: 'The next phase is already opening.',
         retryable: false,
       }
     }
@@ -199,12 +290,24 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
 
     try {
       await this.#commandBoundary('advance')
-      this.#currentIndex = (this.#currentIndex + 1) % this.#bundles.length
+
+      if (this.#currentIndex + 1 >= this.#selectedBundles.length) {
+        this.#publish(this.#createFinishedSnapshot())
+
+        return {
+          ok: true,
+          destination: 'finished',
+          previousRoundId: snapshot.roundId,
+        }
+      }
+
+      this.#currentIndex += 1
       const nextSnapshot = this.#createAnsweringSnapshot()
       this.#publish(nextSnapshot)
 
       return {
         ok: true,
+        destination: 'round',
         previousRoundId: snapshot.roundId,
         nextRoundId: nextSnapshot.roundId,
       }
@@ -228,53 +331,193 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
     }
   }
 
-  #createInitialSnapshot(): ActiveGameSnapshot {
-    if (this.#bundles.length === 0) {
-      return {
-        phase: 'empty',
-        reason: 'no-playable-questions',
-        progress: {
-          roundNumber: 0,
-          roundCount: 0,
-          roundsPlayed: 0,
-          bestPoints: 0,
-        },
-      }
-    }
-
-    return this.#createAnsweringSnapshot()
+  returnToSetup(): void {
+    const config = this.#plan?.config ?? this.#lastConfig
+    this.#selectedBundles = []
+    this.#currentIndex = 0
+    this.#history = []
+    this.#points = 0
+    this.#gameId = null
+    this.#plan = null
+    this.#lastConfig = { ...config }
+    this.#publish(this.#createSetupSnapshot())
   }
 
-  #createAnsweringSnapshot(): Extract<ActiveGameSnapshot, { phase: 'answering' }> {
+  async #settleRound(
+    snapshot: AnsweringSnapshot,
+    answer: PlayerAnswer,
+    completionReason: RoundCompletionReason,
+  ): Promise<SubmitOutcome> {
+    const submittedAnswer = { ...answer }
+    this.#publish({
+      ...snapshot,
+      submission: { status: 'pending' },
+    })
+
+    try {
+      await this.#commandBoundary(completionReason === 'timed-out' ? 'expire' : 'submit')
+      const bundle = this.#requireCurrentBundle()
+      const result = scoreAnswer(submittedAnswer, bundle.disclosure.solution, {
+        teamChoices: bundle.prompt.choices.teams,
+      })
+      const roundSummary: SoloRoundSummary = {
+        roundNumber: this.#currentIndex + 1,
+        roundId: snapshot.roundId,
+        questionId: bundle.prompt.id,
+        archiveLabel: bundle.prompt.archiveLabel,
+        pool: bundle.prompt.pool,
+        result,
+        completionReason,
+      }
+
+      this.#history = [...this.#history, roundSummary]
+      this.#points += result.points
+      const progress = this.#createProgress()
+
+      this.#publish({
+        phase: 'revealed',
+        gameId: snapshot.gameId,
+        roundId: snapshot.roundId,
+        prompt: bundle.prompt,
+        disclosure: bundle.disclosure,
+        result,
+        completionReason,
+        plan: this.#requirePlan(),
+        progress,
+        advance: { status: 'ready' },
+        nextLabel:
+          this.#currentIndex + 1 >= this.#selectedBundles.length
+            ? 'View results'
+            : 'Next archive',
+      })
+
+      return { ok: true, roundId: snapshot.roundId }
+    } catch (error) {
+      this.#publish({
+        ...snapshot,
+        submission: submissionUnavailable,
+      })
+
+      if (error instanceof LocalSessionUnavailableError) {
+        return {
+          ok: false,
+          roundId: snapshot.roundId,
+          code: submissionUnavailable.code,
+          message: submissionUnavailable.message,
+          retryable: submissionUnavailable.retryable,
+        }
+      }
+
+      throw error
+    }
+  }
+
+  #createSetupSnapshot(start: StartState = { status: 'ready' }): ActiveGameSnapshot {
+    return {
+      phase: 'setup',
+      availability: this.#availability,
+      initialConfig: { ...this.#lastConfig },
+      start,
+    }
+  }
+
+  #createAnsweringSnapshot(): AnsweringSnapshot {
     const bundle = this.#requireCurrentBundle()
+    const plan = this.#requirePlan()
+    const gameId = this.#requireGameId()
     this.#roundSerial += 1
 
     return {
       phase: 'answering',
+      gameId,
       roundId: `local-round-${this.#roundSerial}`,
       prompt: bundle.prompt,
+      plan,
       progress: this.#createProgress(),
+      timer: this.#createRoundTimer(plan.config),
       submission: { status: 'editable' },
     }
   }
 
+  #createFinishedSnapshot(start: StartState = { status: 'ready' }): ActiveGameSnapshot {
+    const plan = this.#requirePlan()
+
+    return {
+      phase: 'finished',
+      gameId: this.#requireGameId(),
+      plan,
+      summary: {
+        points: this.#points,
+        total: plan.roundCount * 4,
+        rounds: [...this.#history],
+      },
+      availability: this.#availability,
+      start,
+    }
+  }
+
   #createProgress(): SessionProgress {
+    const plan = this.#requirePlan()
+
     return {
       roundNumber: this.#currentIndex + 1,
-      roundCount: this.#bundles.length,
-      roundsPlayed: this.#roundsPlayed,
-      bestPoints: this.#bestPoints,
+      roundCount: plan.roundCount,
+      roundsPlayed: this.#history.length,
+      points: this.#points,
+      possiblePoints: plan.roundCount * 4,
+    }
+  }
+
+  #createRoundTimer(config: SoloGameConfig): RoundTimer {
+    if (config.timerSeconds === 'none') {
+      return { kind: 'unlimited' }
+    }
+
+    return {
+      kind: 'deadline',
+      durationSeconds: config.timerSeconds,
+      deadlineAt: this.#now() + config.timerSeconds * 1_000,
+    }
+  }
+
+  #withStartState(snapshot: StartableSnapshot, start: StartState): StartableSnapshot {
+    return { ...snapshot, start }
+  }
+
+  #notAnsweringOutcome(snapshot: ActiveGameSnapshot): SubmitOutcome {
+    return {
+      ok: false,
+      ...(snapshot.phase === 'revealed' ? { roundId: snapshot.roundId } : {}),
+      code: 'not-answering',
+      message: 'This round is not accepting answers.',
+      retryable: false,
     }
   }
 
   #requireCurrentBundle(): LocalQuestionBundle {
-    const bundle = this.#bundles[this.#currentIndex]
+    const bundle = this.#selectedBundles[this.#currentIndex]
 
     if (!bundle) {
-      throw new Error('The local question catalog is unavailable')
+      throw new Error('The selected solo game is unavailable')
     }
 
     return bundle
+  }
+
+  #requirePlan(): SoloGamePlan {
+    if (!this.#plan) {
+      throw new Error('The solo game plan is unavailable')
+    }
+
+    return this.#plan
+  }
+
+  #requireGameId(): string {
+    if (!this.#gameId) {
+      throw new Error('The solo game identity is unavailable')
+    }
+
+    return this.#gameId
   }
 
   #publish(snapshot: ActiveGameSnapshot): void {

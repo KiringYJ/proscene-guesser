@@ -1,161 +1,96 @@
-# Multiplayer-ready architecture
+# Future multiplayer design
 
-## Status and scope
+## Status
 
-ProScene Guesser is still a static, single-player application. It has no rooms, accounts, realtime transport, backend, shared timer, or leaderboard today.
+Multiplayer is not implemented. ProScene Guesser currently has no create-room or join-room screens, room codes, lobby, realtime transport, shared timer, multiplayer identity, or authoritative game server.
 
-The current architecture establishes the smallest useful migration seam for a future synchronous room mode:
+This document records a proposed product and service design for future implementation. It is not a description of current functionality, a committed backend choice, or an anti-cheat claim.
 
-- the UI renders a public question prompt and sends answer intent through an asynchronous session port;
-- a local in-memory session owns round order, submission state, scoring, reveal, and session statistics;
-- canonical solutions and source attribution are kept out of the pre-reveal prompt shape;
-- scoring correctness is a pure rule that can later run in an authoritative service; and
-- room protocol, persistence, provider selection, and multiplayer screens remain deferred until multiplayer is prioritized.
+## Proposed player flow
 
-This is migration preparation, not an anti-cheat guarantee. The static build still contains local solutions and remains suitable only for casual play.
-
-## Current dependency direction
+The Home screen would add a Multiplayer path alongside the implemented solo modes:
 
 ```text
-Vue UI
-  -> ActiveGameSessionPort
-      -> LocalActiveGameSession
-          -> local prompt/disclosure bundles
-          -> pure scoring rules
+Home
+└─ Multiplayer
+   ├─ Create room
+   └─ Join room
 ```
 
-`QuestionPrompt` contains only information that may be shown while answering: the image, clue, choices, pool, and stable question ID. `RevealDisclosure` contains the canonical solution and optional source attribution. The local catalog combines them in a `LocalQuestionBundle`, but only the session adapter may consume that bundle. Answer and screenshot components receive `QuestionPrompt`, never the bundle.
+### Create room
 
-The generated static catalog follows the same split:
+The host would:
 
-```text
-authoring manifest
-  -> GeneratedLocalQuestionBundle
-      prompt(question ID, choices, public metadata)
-      disclosure(solution, source)
-  -> runtime LocalQuestionBundle
-      prompt(Vite-bundled redacted image URL, choices, public metadata)
-      disclosure(solution, source)
-```
+1. choose the question pool, round count, and round timer;
+2. create a room and receive a short invitation code;
+3. wait in a lobby while players join;
+4. review the participant list and selected settings; and
+5. start the game when ready.
 
-The ESLint boundary prevents UI and public game modules from importing the local catalog or authority/local adapter directories. The production build check also proves that the synthetic development round is absent from `dist/`.
+Only the authenticated host could change settings or start from the lobby. Starting would freeze both the settings and active roster for that game.
 
-## Current active-game contract
+### Join room
 
-The UI-facing `ActiveGameSessionPort` is intentionally narrower than a future room API. It exposes a read-only snapshot subscription plus two asynchronous commands:
+A player would enter a room code, establish a room-scoped player identity, and enter the lobby. A room code would locate the room; it would not by itself grant host authority or act as a durable credential.
 
-- `submitAnswer(answer)`
-- `advanceRound()`
+The first version should accept new players only while the room is in the lobby. Reconnecting players could resume their existing room identity subject to server-side expiry and authorization rules.
 
-Snapshots are one of:
+### Synchronized game
 
-- `empty`: no playable question is available;
-- `answering`: public prompt, round progress, and submission state; or
-- `revealed`: public prompt, reveal disclosure, score result, progress, and advance state.
+Each round would follow the solo answer-and-reveal shape while using server-owned state:
 
-Valid commands publish a `pending` snapshot before completing. Invalid, out-of-phase, or reentrant commands return a typed rejection without overwriting the current snapshot. A one-question replay receives a new `roundId`, so the Vue adapter can reset its editable draft only when authoritative round identity changes.
+1. every player receives the same public question and deadline;
+2. each player submits at most one answer for the round;
+3. the server accepts or rejects the submission for the current room, player, round, and deadline;
+4. the server reveals after every active player has answered or the deadline expires;
+5. players see the correct answer, their score out of 4, and cumulative standings; and
+6. the host advances after the synchronized reveal.
 
-A future remote adapter may implement the same active-game port. Room creation, joining, host controls, transport messages, and reconnect behavior belong to separate room-level contracts rather than being forced into this local interface.
+The server deadline would determine whether a submission is on time. Client countdowns would be display aids, not trusted clocks. A disconnected player would remain on the frozen roster and could reconnect; otherwise the deadline would still allow the room to progress.
 
-## Future room flow
+### Final results and rematch
 
-The intended first multiplayer experience is:
+After the configured number of rounds, every player would see final standings and a per-round breakdown. The lobby host could propose a rematch that returns the group to a pre-game lobby, preserves the invited players who remain connected, and requires a new server-authorized start. Rematch settings and roster behavior should be confirmed during implementation rather than inferred from the previous game.
 
-1. one player creates a room;
-2. other players join with a room code;
-3. the host starts the game;
-4. every frozen-roster player receives the same public question and server deadline;
-5. each player submits at most one accepted answer for that round;
-6. the server reveals when everyone has answered or the deadline has passed;
-7. every player receives the round result and cumulative standings; and
-8. the host advances to the next round until the game is finished.
+## Proposed room lifecycle
 
-The server-owned room state should be a discriminated state machine:
+The authoritative room would use an explicit state machine:
 
 ```text
 lobby -> answering -> revealed -> answering -> ... -> finished
+   ^                                                   |
+   └-------------------- rematch ----------------------┘
 ```
 
-- `lobby` contains the host and participants. Joining is allowed only here in the first version.
-- `answering` contains a stable `roundId`, public prompt, frozen roster, server time, deadline, and submission statuses. It contains no solution or trusted score.
-- `revealed` contains the disclosed solution, per-player round results, cumulative standings, and whether the authenticated host may advance.
-- `finished` contains final standings and expiry metadata.
+- `lobby`: participants may join, and the host may configure and start the game.
+- `answering`: the roster, public question, round identity, and deadline are fixed.
+- `revealed`: the solution, per-player round scores, and cumulative standings are available.
+- `finished`: final standings and rematch availability are available until the room expires.
 
-## Authority and anti-cheat boundary
+Every transition must be validated by the server. Clients request actions; they do not set the room phase directly.
 
-The future server, not the browser, must own and validate:
+## Server authority and security boundaries
 
-- room membership and host role;
-- question selection and canonical solutions;
-- current phase, round identity, roster, and deadline;
+A future multiplayer service, not the browser, must own and validate:
+
+- room membership, player identity, and host role;
+- game settings, question selection, and canonical solutions;
+- room phase, round identity, frozen roster, and deadline;
 - accepted submissions and duplicate detection;
-- scoring, reveal, totals, and ranking; and
-- room expiry and reconnect state.
+- four-point scoring, reveal timing, totals, and standings;
+- rematch authorization, reconnect state, and room expiry; and
+- private custody of competitive prompts and solutions.
 
-Clients send intent, such as `start`, `submit answer`, or `advance`; they never send trusted points, correctness flags, ranks, host flags, or timestamps. Every command is authenticated, authorized for its room and phase, schema-validated, size-limited, and rate-limited.
+Clients may send intent such as create, join, configure, start, submit, advance, or rematch. They must never send trusted points, correctness flags, standings, host flags, authoritative timestamps, or solutions.
 
-The short room code is an invitation and discovery handle, not a credential. Joining must establish a separate server-side player identity with a scoped, expiring credential. Host authority is stored and checked server-side on every host command.
+Every command must be authenticated, authorized for its room and phase, schema-validated, size-limited, and rate-limited. Accepted submissions need a server-enforced uniqueness rule per room, round, and player. Retryable commands need scoped idempotency keys, and serialized host transitions need concurrency control so duplicate start, advance, or rematch requests cannot fork room state.
 
-Competitive prompts and solutions must be deployed through a private authority-side content path. Moving scoring to a server while shipping the solution in public Git or frontend JavaScript would not protect it.
+The service must persist deadlines and complete reveal transitions reliably even when clients disconnect or infrastructure retries work. Realtime messages should carry ordered snapshot revisions, while reconnects should obtain a complete authoritative snapshot instead of depending on missed messages.
 
-Server authority can prevent forged scores, invalid transitions, duplicate submissions, normal-API early reveal, and many replay/race attacks. It cannot prove that a person did not search externally, collaborate out of band, use another device, or automate recognition. Describe these controls as integrity and abuse resistance, not proof of honest play.
+Moving only scoring to a server would be insufficient if solutions remained in public frontend assets or public repository content. Competitive multiplayer content requires a private server-side publication path.
 
-## Timing, ordering, and concurrency
+These controls can resist forged scores, unauthorized host actions, duplicate submissions, early reveal through the normal API, and common retry or race failures. They cannot prove that a person did not search externally, collaborate out of band, use another device, or automate recognition. Future product language should describe integrity and abuse resistance, not guaranteed honest play.
 
-- The server clock and persisted `deadlineAt` decide whether an answer is on time. A client countdown is display-only.
-- Starting freezes the round roster. A disconnected player remains in that roster and may reconnect; otherwise the deadline still ends the round.
-- Each round has a durable, retry-safe deadline alarm. The final accepted answer and the deadline alarm converge on one atomic reveal transition.
-- Accepted answers have a uniqueness rule such as `(roomId, roundId, playerId)`. Retried commands use actor-scoped idempotency keys.
-- `snapshotSequence` orders observations and reconnect resynchronization. It does not invalidate an otherwise valid concurrent answer.
-- `roundId` and a phase epoch establish command validity. Compare-and-swap is required for serialized host transitions such as start and advance, not for ordinary player submissions.
-- The first version should not transfer host authority automatically. A disconnected host may reconnect with the same credential; otherwise a revealed room expires under its inactivity policy.
+## Decisions deferred until implementation
 
-## Backend capability checklist
-
-Do not choose a provider merely because it supports WebSockets or a serverless function. The multiplayer backend needs:
-
-- atomic or serialized mutation per room;
-- durable state with room TTL and reconnect support;
-- durable scheduled alarms with retry for round deadlines;
-- realtime fanout plus snapshot resynchronization;
-- private secret/content storage;
-- authentication and per-command authorization;
-- idempotency, uniqueness constraints, validation, and rate limiting;
-- origin/security controls appropriate to the chosen transport; and
-- structured, credential-safe observability for joins, commands, duplicates, deadlines, disconnects, and transitions.
-
-## Migration sequence
-
-### Phase 0 — implemented now
-
-- Keep the product static and single-player.
-- Separate prompt and reveal data.
-- Keep scoring correctness pure.
-- Drive the UI through `ActiveGameSessionPort` and an in-memory adapter.
-- Test lifecycle, reentry, reveal, replay identity, prompt leakage, and production fixture exclusion.
-
-### Phase 1 — authoritative room service
-
-- Decide round duration, room capacity, answer mutability, ranking/tie policy, room TTL, and competitive content custody.
-- Select infrastructure against the capability checklist above.
-- Define a versioned room wire protocol separately from the UI-facing port.
-- Implement the security baseline before exposing remote handlers.
-- Add create, join, start, submit, reveal, advance, reconnect, and expiry behavior with race tests.
-- Extract pure game code into a shared package only when both frontend and backend actually consume it.
-
-### Phase 2 — multiplayer interface
-
-- Add mode selection, create/join screens, lobby participants, and host controls.
-- Render the server deadline and lock answers after server acknowledgment.
-- Add synchronized reveal, per-round results, cumulative standings, and final results.
-- Exercise full games in multiple browser contexts, including reconnects.
-
-### Phase 3 — operational hardening
-
-- Tune abuse controls and anomaly detection.
-- Add adversarial replay, timeout-race, connection-churn, scheduler-failover, and load tests.
-- Add moderation/support tooling only when real operational needs are known.
-
-## Decisions intentionally deferred
-
-The current code does not select a backend vendor, realtime protocol, authentication provider, room-code format, capacity, timer duration, submission-edit policy, ranking method, or host-transfer policy beyond the conservative first-version default described above. Those choices should be made together when an authoritative room service is funded and scoped.
+No backend vendor, realtime protocol, authentication provider, room-code format, room capacity, ranking or tie policy, host-transfer policy, reconnect duration, room expiry, or rematch setting policy has been selected. Those decisions require an implementation plan, threat model, operational budget, and verification strategy.

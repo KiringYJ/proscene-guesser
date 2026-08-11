@@ -1,25 +1,48 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 
 import AnswerForm from '@/components/AnswerForm.vue'
 import GameScreenshot from '@/components/GameScreenshot.vue'
+import GameSetup from '@/components/GameSetup.vue'
+import GameSummary from '@/components/GameSummary.vue'
 import ResultCard from '@/components/ResultCard.vue'
 import { useActiveGameSession } from '@/composables/use-active-game-session'
+import { formatRemainingTime, getRemainingSeconds } from '@/game/round-timer'
 import { isAnswerComplete } from '@/game/scoring'
-import { buildShareText } from '@/lib/share'
+import type { SoloGameConfig } from '@/game/solo'
+import { buildGameShareText, buildShareText } from '@/lib/share'
 import { createEmptyAnswer, type PlayerAnswer } from '@/types/question'
 
 const { session, snapshot } = useActiveGameSession()
 const answer = ref<PlayerAnswer>(createEmptyAnswer())
 const toast = ref('')
 const snackbarOpen = ref(false)
+const remainingSeconds = ref<number | null>(null)
+const accessibilityAnnouncement = ref('')
+const expiringRoundIds = new Set<string>()
+const expirationRetryAt = new Map<string, number>()
+let lowTimeAnnouncementRoundId: string | undefined
+let countdownInterval: ReturnType<typeof setInterval> | undefined
+let expirationRetryTimeout: ReturnType<typeof setTimeout> | undefined
 
-const currentQuestion = computed(() =>
-  snapshot.value.phase === 'empty' ? undefined : snapshot.value.prompt,
+const currentQuestion = computed(() => {
+  const state = snapshot.value
+
+  return state.phase === 'answering' || state.phase === 'revealed'
+    ? state.prompt
+    : undefined
+})
+const revealedSnapshot = computed(() =>
+  snapshot.value.phase === 'revealed' ? snapshot.value : null,
 )
-const result = computed(() =>
-  snapshot.value.phase === 'revealed' ? snapshot.value.result : null,
-)
+const result = computed(() => revealedSnapshot.value?.result ?? null)
+const gameplayProgress = computed(() => {
+  const state = snapshot.value
+
+  return state.phase === 'answering' || state.phase === 'revealed'
+    ? state.progress
+    : null
+})
 const answerComplete = computed(() => {
   const question = currentQuestion.value
 
@@ -43,19 +66,176 @@ const advancePending = computed(() =>
 const nextLabel = computed(() =>
   snapshot.value.phase === 'revealed' ? snapshot.value.nextLabel : 'Next archive',
 )
+const timerDisplay = computed(() => {
+  const state = snapshot.value
+
+  if (state.phase === 'answering') {
+    return formatRemainingTime(remainingSeconds.value)
+  }
+
+  if (state.phase === 'revealed') {
+    return state.completionReason === 'timed-out' ? 'Expired' : 'Locked'
+  }
+
+  return ''
+})
+const timerUrgent = computed(() =>
+  snapshot.value.phase === 'answering' &&
+  remainingSeconds.value !== null &&
+  remainingSeconds.value <= 10,
+)
 
 watch(
-  () => (snapshot.value.phase === 'empty' ? null : snapshot.value.roundId),
+  () => {
+    const state = snapshot.value
+
+    return state.phase === 'answering' || state.phase === 'revealed'
+      ? state.roundId
+      : null
+  },
   (roundId, previousRoundId) => {
-    if (previousRoundId !== null && roundId !== previousRoundId) {
+    if (roundId !== null && roundId !== previousRoundId) {
       answer.value = createEmptyAnswer()
     }
   },
 )
 
+watch(
+  () => {
+    const state = snapshot.value
+
+    if (state.phase !== 'answering') {
+      return state.phase
+    }
+
+    const deadline = state.timer.kind === 'deadline' ? state.timer.deadlineAt : 'unlimited'
+
+    return `${state.roundId}:${state.submission.status}:${deadline}`
+  },
+  () => resetCountdown(),
+  { immediate: true },
+)
+
+watch(
+  () => {
+    const state = snapshot.value
+
+    return state.phase === 'answering' || state.phase === 'revealed'
+      ? `${state.phase}:${state.roundId}`
+      : state.phase
+  },
+  async () => {
+    await nextTick()
+    const state = snapshot.value
+    let headingSelector: string | undefined
+
+    if (state.phase === 'setup') {
+      headingSelector = '#game-setup-title'
+    } else if (state.phase === 'revealed') {
+      accessibilityAnnouncement.value = state.completionReason === 'timed-out'
+        ? `Time expired. You scored ${state.result.points} out of ${state.result.total}.`
+        : `Answer locked. You scored ${state.result.points} out of ${state.result.total}.`
+    } else if (state.phase === 'finished') {
+      headingSelector = '#game-summary-title'
+      accessibilityAnnouncement.value =
+        `Game complete. You scored ${state.summary.points} out of ${state.summary.total}.`
+    }
+
+    if (headingSelector) {
+      document.querySelector<HTMLElement>(headingSelector)?.focus({ preventScroll: true })
+    }
+  },
+)
+
+onBeforeUnmount(stopCountdown)
+
 function notify(message: string): void {
   toast.value = message
   snackbarOpen.value = true
+}
+
+function stopCountdown(): void {
+  if (countdownInterval !== undefined) {
+    clearInterval(countdownInterval)
+    countdownInterval = undefined
+  }
+
+  if (expirationRetryTimeout !== undefined) {
+    clearTimeout(expirationRetryTimeout)
+    expirationRetryTimeout = undefined
+  }
+}
+
+function updateCountdown(): void {
+  const state = snapshot.value
+
+  if (state.phase !== 'answering') {
+    remainingSeconds.value = null
+    stopCountdown()
+    return
+  }
+
+  if (state.submission.status === 'pending') {
+    stopCountdown()
+    return
+  }
+
+  const seconds = getRemainingSeconds(state.timer, Date.now())
+  remainingSeconds.value = seconds
+
+  if (
+    seconds !== null &&
+    seconds > 0 &&
+    seconds <= 10 &&
+    lowTimeAnnouncementRoundId !== state.roundId
+  ) {
+    lowTimeAnnouncementRoundId = state.roundId
+    accessibilityAnnouncement.value = `${seconds} seconds remaining in this round.`
+  }
+
+  if (seconds === 0) {
+    stopCountdown()
+    const retryDelay = (expirationRetryAt.get(state.roundId) ?? 0) - Date.now()
+
+    if (retryDelay > 0) {
+      expirationRetryTimeout = setTimeout(resetCountdown, retryDelay)
+      return
+    }
+
+    expirationRetryAt.delete(state.roundId)
+
+    if (!expiringRoundIds.has(state.roundId)) {
+      expiringRoundIds.add(state.roundId)
+      void expireCurrentRound(state.roundId)
+    }
+  }
+}
+
+function resetCountdown(): void {
+  stopCountdown()
+  updateCountdown()
+
+  const state = snapshot.value
+  if (
+    state.phase === 'answering' &&
+    state.timer.kind === 'deadline' &&
+    state.submission.status !== 'pending' &&
+    remainingSeconds.value !== 0
+  ) {
+    countdownInterval = setInterval(updateCountdown, 250)
+  }
+}
+
+async function startGame(config: SoloGameConfig): Promise<void> {
+  try {
+    const outcome = await session.startGame(config)
+
+    if (!outcome.ok) {
+      notify(outcome.message)
+    }
+  } catch {
+    notify('The game could not be started.')
+  }
 }
 
 async function submitAnswer(): Promise<void> {
@@ -76,6 +256,32 @@ async function submitAnswer(): Promise<void> {
   }
 }
 
+async function expireCurrentRound(roundId: string): Promise<void> {
+  let shouldRetry = false
+
+  try {
+    const outcome = await session.expireRound(roundId, answer.value)
+
+    if (!outcome.ok && outcome.code === 'temporarily-unavailable') {
+      notify(outcome.message)
+      shouldRetry = true
+    }
+  } catch {
+    notify('The timed answer could not be locked.')
+    shouldRetry = true
+  } finally {
+    expiringRoundIds.delete(roundId)
+
+    const state = snapshot.value
+    if (shouldRetry && state.phase === 'answering' && state.roundId === roundId) {
+      expirationRetryAt.set(roundId, Date.now() + 1_000)
+      resetCountdown()
+    } else {
+      expirationRetryAt.delete(roundId)
+    }
+  }
+}
+
 async function nextQuestion(): Promise<void> {
   if (snapshot.value.phase !== 'revealed' || advancePending.value) {
     return
@@ -89,6 +295,18 @@ async function nextQuestion(): Promise<void> {
     }
   } catch {
     notify('The game session is temporarily unavailable.')
+  }
+}
+
+function changeSettings(): void {
+  session.returnToSetup()
+}
+
+async function replayGame(): Promise<void> {
+  const state = snapshot.value
+
+  if (state.phase === 'finished') {
+    await startGame(state.plan.config)
   }
 }
 
@@ -113,24 +331,15 @@ async function copyText(text: string): Promise<void> {
   }
 }
 
-async function shareResult(): Promise<void> {
-  const state = snapshot.value
-
-  if (state.phase !== 'revealed') {
-    return
-  }
-
-  const siteUrl = `${window.location.origin}${import.meta.env.BASE_URL}`
-  const shareText = buildShareText(state.prompt.id, state.result, siteUrl)
-
+async function shareText(text: string): Promise<void> {
   try {
     if (navigator.share) {
-      await navigator.share({ text: shareText })
+      await navigator.share({ text })
       notify('Share sheet opened.')
       return
     }
 
-    await copyText(shareText)
+    await copyText(text)
     notify('Result copied to the clipboard.')
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
@@ -140,11 +349,36 @@ async function shareResult(): Promise<void> {
     notify('Sharing is unavailable in this browser.')
   }
 }
+
+async function shareRoundResult(): Promise<void> {
+  const state = snapshot.value
+
+  if (state.phase !== 'revealed') {
+    return
+  }
+
+  const siteUrl = `${window.location.origin}${import.meta.env.BASE_URL}`
+  await shareText(buildShareText(state.prompt.id, state.result, siteUrl))
+}
+
+async function shareGameResult(): Promise<void> {
+  const state = snapshot.value
+
+  if (state.phase !== 'finished') {
+    return
+  }
+
+  const siteUrl = `${window.location.origin}${import.meta.env.BASE_URL}`
+  await shareText(buildGameShareText(state.summary, state.plan, siteUrl))
+}
 </script>
 
 <template>
   <v-app>
     <div class="ambient-grid" aria-hidden="true"></div>
+    <p class="sr-only" aria-live="polite" aria-atomic="true">
+      {{ accessibilityAnnouncement }}
+    </p>
 
     <v-main class="app-shell">
       <v-container class="page" max-width="1440">
@@ -170,7 +404,7 @@ async function shareResult(): Promise<void> {
         </header>
 
         <div id="top">
-          <section class="hero">
+          <section v-if="snapshot.phase !== 'finished'" class="hero">
             <div class="hero__copy">
               <p class="eyebrow">Competitive League · Broadcast archaeology</p>
               <h1>One frame.<br /><em>Four answers.</em></h1>
@@ -180,33 +414,49 @@ async function shareResult(): Promise<void> {
               </p>
             </div>
 
-            <dl class="session-stats" aria-label="Session statistics">
+            <dl v-if="gameplayProgress" class="session-stats" aria-label="Game statistics">
               <div>
                 <dt>Round</dt>
-                <dd>{{ String(snapshot.progress.roundNumber).padStart(2, '0') }}/{{ String(snapshot.progress.roundCount).padStart(2, '0') }}</dd>
+                <dd>{{ String(gameplayProgress.roundNumber).padStart(2, '0') }}/{{ String(gameplayProgress.roundCount).padStart(2, '0') }}</dd>
               </div>
               <div>
-                <dt>Played</dt>
-                <dd>{{ String(snapshot.progress.roundsPlayed).padStart(2, '0') }}</dd>
+                <dt>Score</dt>
+                <dd>{{ gameplayProgress.points }}/{{ gameplayProgress.possiblePoints }}</dd>
               </div>
               <div>
-                <dt>Best</dt>
-                <dd>{{ snapshot.progress.bestPoints }}/4</dd>
+                <dt>Time</dt>
+                <dd
+                  role="timer"
+                  aria-label="Round time remaining"
+                  aria-live="off"
+                  :class="{ 'session-stats__urgent': timerUrgent }"
+                >
+                  {{ timerDisplay }}
+                </dd>
               </div>
             </dl>
           </section>
 
-          <section v-if="currentQuestion" class="game-layout" aria-label="Current question">
+          <GameSetup
+            v-if="snapshot.phase === 'setup'"
+            :availability="snapshot.availability"
+            :initial-config="snapshot.initialConfig"
+            :start-state="snapshot.start"
+            @start="startGame"
+          />
+
+          <section v-else-if="currentQuestion" class="game-layout" aria-label="Current question">
             <GameScreenshot :question="currentQuestion" :revealed="snapshot.phase === 'revealed'" />
 
             <Transition name="panel-swap" mode="out-in">
               <ResultCard
-                v-if="result"
+                v-if="result && revealedSnapshot"
                 key="result"
                 :result="result"
+                :completion-reason="revealedSnapshot.completionReason"
                 :next-label="nextLabel"
                 :disabled="advancePending"
-                @share="shareResult"
+                @share="shareRoundResult"
                 @next="nextQuestion"
               />
               <AnswerForm
@@ -221,14 +471,15 @@ async function shareResult(): Promise<void> {
             </Transition>
           </section>
 
-          <section v-else class="empty-catalog" aria-labelledby="empty-catalog-title">
-            <p class="panel-kicker">Question archive</p>
-            <h2 id="empty-catalog-title">No questions available.</h2>
-            <p>
-              Add a validated question manifest and its flattened redacted image, then regenerate
-              the question catalog.
-            </p>
-          </section>
+          <GameSummary
+            v-else-if="snapshot.phase === 'finished'"
+            :plan="snapshot.plan"
+            :summary="snapshot.summary"
+            :start-state="snapshot.start"
+            @replay="replayGame"
+            @settings="changeSettings"
+            @share="shareGameResult"
+          />
         </div>
 
         <footer class="footer">

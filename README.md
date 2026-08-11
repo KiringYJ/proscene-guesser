@@ -9,6 +9,19 @@ Identify a competitive League match from one redacted broadcast frame. Each roun
 
 This repository is bootstrapped as a static, client-only MVP. A validated question enters the browser catalog as soon as its flattened `redacted.webp` exists beside the manifest.
 
+## Playing
+
+The Home screen offers two solo modes:
+
+- **Quick Play** starts immediately with the Mixed pool, requests 5 unique random questions, and uses a 90-second timer for each round.
+- **Custom Game** lets you choose Mixed, Classics, or Deep Cuts; 5, 10, or All rounds; and a timer setting of 60 seconds, 90 seconds, 2 minutes, or No limit. The defaults are 5 rounds and 90 seconds.
+
+Solo games start without a room or lobby. Questions do not repeat within a game. If the selected pool contains fewer questions than requested, the game uses every available question and shows the actual round count rather than promising unavailable rounds.
+
+Each round shows one redacted frame and, when enabled, a countdown. Fill in the four scored answers and submit to lock them. If time expires first, the current partial answer is locked. The reveal shows the correct answer and the round score out of 4 before continuing.
+
+A finite game ends with the total score, a per-round breakdown, and actions to play again, change settings, or share the final result. Multiplayer remains unimplemented; its proposed product flow and authority boundaries are documented in [Future multiplayer design](docs/multiplayer-architecture.md).
+
 ## Stack
 
 - Vue 3 and TypeScript
@@ -17,7 +30,7 @@ This repository is bootstrapped as a static, client-only MVP. A validated questi
 - Vitest, Vue TypeScript checking, ESLint, and Oxlint
 - GitHub Pages through GitHub Actions
 
-There is intentionally no router, account system, backend, or leaderboard in the first architecture.
+There is intentionally no router, account system, backend, or leaderboard in the current architecture.
 
 ## Local development
 
@@ -59,7 +72,7 @@ sources/
 
 Question answers are bundled into the browser. That is acceptable for a casual MVP, but it is not an anti-cheat design. A competitive daily challenge or trusted leaderboard would require server-side answer validation.
 
-The UI now consumes a narrow asynchronous game-session port, and pre-reveal prompts are structurally separate from reveal-only solutions. This keeps the static MVP straightforward while leaving a clean migration seam for synchronized rooms later. See [Multiplayer-ready architecture](docs/multiplayer-architecture.md) for the current boundary, future room state machine, authority model, timing/concurrency rules, and staged migration plan. Multiplayer is not implemented yet.
+The solo experience remains a static browser game. Question answers are therefore inspectable in the built assets, and local scoring is appropriate only for casual play. A future synchronized room mode requires an authoritative backend; see [Future multiplayer design](docs/multiplayer-architecture.md). That document describes a proposed design only. Multiplayer is not implemented.
 
 ## Question IDs
 

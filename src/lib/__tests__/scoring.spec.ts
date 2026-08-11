@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import { evaluateAnswer, isAnswerComplete } from '@/game/scoring'
+import type { SoloGamePlan, SoloGameSummary } from '@/game/solo'
 import { scoreAnswer } from '@/lib/scoring'
-import { buildShareText } from '@/lib/share'
+import { buildGameShareText, buildShareText } from '@/lib/share'
 import type {
   PlayerAnswer,
   QuestionAnswer,
@@ -131,6 +132,55 @@ describe('buildShareText', () => {
     )
 
     expect(text).toContain('🟩🟩🟩🟩 4/4')
+    expect(text).not.toContain('Blue Comets')
+    expect(text).not.toContain(expected.tournament)
+  })
+
+  it('shares a complete game breakdown without revealing answers', () => {
+    const perfectResult = scoreAnswer(perfectAnswer, solution, { teamChoices })
+    const imperfectResult = scoreAnswer(
+      { ...perfectAnswer, year: 2023 },
+      solution,
+      { teamChoices },
+    )
+    const plan: SoloGamePlan = {
+      config: { pool: 'mixed', rounds: 5, timerSeconds: 90 },
+      eligibleQuestionCount: 2,
+      roundCount: 2,
+      constrainedByAvailability: true,
+    }
+    const summary: SoloGameSummary = {
+      points: 7,
+      total: 8,
+      rounds: [
+        {
+          roundNumber: 1,
+          roundId: 'round-1',
+          questionId: 'q-000000000001',
+          archiveLabel: 'Archive 1',
+          pool: 'classic',
+          result: perfectResult,
+          completionReason: 'submitted',
+        },
+        {
+          roundNumber: 2,
+          roundId: 'round-2',
+          questionId: 'q-000000000002',
+          archiveLabel: 'Archive 2',
+          pool: 'deep-cut',
+          result: imperfectResult,
+          completionReason: 'timed-out',
+        },
+      ],
+    }
+
+    const text = buildGameShareText(summary, plan, 'https://example.com/play')
+
+    expect(text).toContain('ProScene Guesser · 7/8')
+    expect(text).toContain('R1 🟩🟩🟩🟩 4/4')
+    expect(text).toContain('R2 ⬛🟩🟩🟩 3/4 · timed out')
+    expect(text).toContain('Mixed · 2 archives · 90s')
+    expect(text).toContain('https://example.com/play')
     expect(text).not.toContain('Blue Comets')
     expect(text).not.toContain(expected.tournament)
   })

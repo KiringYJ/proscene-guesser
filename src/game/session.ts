@@ -1,4 +1,12 @@
 import type {
+  RoundCompletionReason,
+  SoloGameAvailability,
+  SoloGameConfig,
+  SoloGamePlan,
+  SoloGameSummary,
+  TimedSoloGameSeconds,
+} from '@/game/solo'
+import type {
   PlayerAnswer,
   QuestionPrompt,
   RevealDisclosure,
@@ -9,13 +17,31 @@ export interface SessionProgress {
   roundNumber: number
   roundCount: number
   roundsPlayed: number
-  bestPoints: number
+  points: number
+  possiblePoints: number
 }
+
+export type RoundTimer =
+  | { kind: 'unlimited' }
+  | {
+      kind: 'deadline'
+      durationSeconds: TimedSoloGameSeconds
+      deadlineAt: number
+    }
+
+export type StartRejectionCode =
+  | 'invalid-config'
+  | 'no-questions-in-pool'
+  | 'not-startable'
+  | 'already-starting'
+  | 'temporarily-unavailable'
 
 export type SubmitRejectionCode =
   | 'incomplete-answer'
   | 'not-answering'
   | 'already-submitted'
+  | 'stale-round'
+  | 'round-not-expired'
   | 'temporarily-unavailable'
 
 export type AdvanceRejectionCode =
@@ -23,10 +49,19 @@ export type AdvanceRejectionCode =
   | 'already-advancing'
   | 'temporarily-unavailable'
 
+export type StartState =
+  | { status: 'ready' }
+  | { status: 'pending' }
+  | {
+      status: 'rejected'
+      code: StartRejectionCode
+      message: string
+      retryable: boolean
+    }
+
 export type SubmissionState =
   | { status: 'editable' }
   | { status: 'pending' }
-  | { status: 'accepted' }
   | {
       status: 'rejected'
       code: SubmitRejectionCode
@@ -46,26 +81,55 @@ export type AdvanceState =
 
 export type ActiveGameSnapshot =
   | {
-      phase: 'empty'
-      reason: 'no-playable-questions'
-      progress: SessionProgress & { roundNumber: 0; roundCount: 0 }
+      phase: 'setup'
+      availability: SoloGameAvailability
+      initialConfig: SoloGameConfig
+      start: StartState
     }
   | {
       phase: 'answering'
+      gameId: string
       roundId: string
       prompt: QuestionPrompt
+      plan: SoloGamePlan
       progress: SessionProgress
+      timer: RoundTimer
       submission: SubmissionState
     }
   | {
       phase: 'revealed'
+      gameId: string
       roundId: string
       prompt: QuestionPrompt
       disclosure: RevealDisclosure
       result: ScoreResult
+      completionReason: RoundCompletionReason
+      plan: SoloGamePlan
       progress: SessionProgress
       advance: AdvanceState
-      nextLabel: 'Next archive' | 'Replay archive'
+      nextLabel: 'Next archive' | 'View results'
+    }
+  | {
+      phase: 'finished'
+      gameId: string
+      plan: SoloGamePlan
+      summary: SoloGameSummary
+      availability: SoloGameAvailability
+      start: StartState
+    }
+
+export type StartOutcome =
+  | {
+      ok: true
+      gameId: string
+      roundCount: number
+      constrainedByAvailability: boolean
+    }
+  | {
+      ok: false
+      code: StartRejectionCode
+      message: string
+      retryable: boolean
     }
 
 export type SubmitOutcome =
@@ -79,7 +143,17 @@ export type SubmitOutcome =
     }
 
 export type AdvanceOutcome =
-  | { ok: true; previousRoundId: string; nextRoundId: string }
+  | {
+      ok: true
+      destination: 'round'
+      previousRoundId: string
+      nextRoundId: string
+    }
+  | {
+      ok: true
+      destination: 'finished'
+      previousRoundId: string
+    }
   | {
       ok: false
       roundId?: string
@@ -91,6 +165,9 @@ export type AdvanceOutcome =
 export interface ActiveGameSessionPort {
   getSnapshot(): ActiveGameSnapshot
   subscribe(listener: (snapshot: ActiveGameSnapshot) => void): () => void
+  startGame(config: SoloGameConfig): Promise<StartOutcome>
   submitAnswer(answer: PlayerAnswer): Promise<SubmitOutcome>
+  expireRound(roundId: string, answer: PlayerAnswer): Promise<SubmitOutcome>
   advanceRound(): Promise<AdvanceOutcome>
+  returnToSetup(): void
 }

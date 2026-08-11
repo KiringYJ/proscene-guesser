@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import {
   getInternationalEditionOptions,
@@ -25,6 +25,10 @@ const emit = defineEmits<{
   'update:modelValue': [value: PlayerAnswer]
   submit: []
 }>()
+
+const heading = ref<HTMLElement>()
+
+onMounted(() => heading.value?.focus({ preventScroll: true }))
 
 function updateAnswer<Key extends keyof PlayerAnswer>(key: Key, value: PlayerAnswer[Key]) {
   emit('update:modelValue', {
@@ -144,11 +148,18 @@ const gameNumber = computed({
 </script>
 
 <template>
-  <v-card class="answer-card" tag="section">
+  <v-card class="answer-card" tag="section" aria-labelledby="answer-panel-title">
     <div class="answer-card__header">
       <div>
         <p class="panel-kicker">Reconstruct the match</p>
-        <h2>Lock your read</h2>
+        <h2
+          id="answer-panel-title"
+          ref="heading"
+          class="phase-heading"
+          tabindex="-1"
+        >
+          Lock your read
+        </h2>
       </div>
       <span class="answer-card__count">04 signals</span>
     </div>

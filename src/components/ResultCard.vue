@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+import type { RoundCompletionReason } from '@/game/solo'
 import type { ScoreResult } from '@/types/question'
 
 defineProps<{
   result: ScoreResult
+  completionReason: RoundCompletionReason
   nextLabel: string
   disabled?: boolean
 }>()
@@ -11,18 +15,35 @@ const emit = defineEmits<{
   share: []
   next: []
 }>()
+
+const heading = ref<HTMLElement>()
+
+onMounted(() => heading.value?.focus({ preventScroll: true }))
 </script>
 
 <template>
-  <v-card class="result-card" tag="section">
+  <v-card class="result-card" tag="section" aria-labelledby="round-result-title">
     <div class="result-card__score">
-      <p class="panel-kicker">Reconstruction complete</p>
+      <h2
+        id="round-result-title"
+        ref="heading"
+        class="panel-kicker phase-heading"
+        tabindex="-1"
+      >
+        {{ completionReason === 'timed-out' ? 'Time expired' : 'Reconstruction complete' }}
+      </h2>
       <div class="score-lockup">
         <strong>{{ result.points }}</strong>
         <span>/ {{ result.total }}</span>
       </div>
       <p>
-        {{ result.points === result.total ? 'Perfect archive read.' : 'The frame kept some secrets.' }}
+        {{
+          completionReason === 'timed-out'
+            ? 'Your current selections were locked.'
+            : result.points === result.total
+              ? 'Perfect archive read.'
+              : 'The frame kept some secrets.'
+        }}
       </p>
       <v-progress-linear
         :model-value="(result.points / result.total) * 100"
@@ -59,7 +80,7 @@ const emit = defineEmits<{
       <v-btn
         color="primary"
         size="large"
-        append-icon="mdi-refresh"
+        append-icon="mdi-arrow-right"
         :loading="disabled"
         :disabled="disabled"
         @click="emit('next')"
