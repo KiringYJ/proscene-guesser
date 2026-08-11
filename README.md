@@ -7,7 +7,7 @@ Identify a competitive League match from one redacted broadcast frame. Each roun
 3. blue-side and red-side teams; and
 4. game number.
 
-This repository is bootstrapped as a static, client-only MVP. It currently ships one synthetic fixture so the complete play, score, replay, and share loop can be exercised without committing a third-party broadcast screenshot.
+This repository is bootstrapped as a static, client-only MVP. Production source frames remain unpublished drafts until a flattened redaction and the required release checks are complete; the browser catalog may therefore be empty during question preparation.
 
 ## Stack
 

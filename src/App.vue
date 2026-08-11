@@ -21,31 +21,30 @@ const sessionBest = ref(0)
 const toast = ref('')
 const snackbarOpen = ref(false)
 
-const currentQuestion = computed(() => {
-  const question = questions[currentIndex.value]
-
-  if (!question) {
-    throw new Error('Question index is out of range')
-  }
-
-  return question
-})
+const currentQuestion = computed(() => questions[currentIndex.value])
 
 const answerComplete = computed(() => isAnswerComplete(answer.value))
-const nextLabel = computed(() => (questions.length > 1 ? 'Next archive' : 'Replay demo'))
+const archiveStatus = computed(() => (currentQuestion.value ? 'Archive online' : 'Archive preparation'))
+const nextLabel = computed(() => (questions.length > 1 ? 'Next archive' : 'Replay archive'))
 
 function submitAnswer() {
-  if (!answerComplete.value || result.value) {
+  const question = currentQuestion.value
+
+  if (!question || !answerComplete.value || result.value) {
     return
   }
 
-  const scored = scoreAnswer(answer.value, currentQuestion.value.answer)
+  const scored = scoreAnswer(answer.value, question.answer)
   result.value = scored
   roundsPlayed.value += 1
   sessionBest.value = Math.max(sessionBest.value, scored.points)
 }
 
 function nextQuestion() {
+  if (questions.length === 0) {
+    return
+  }
+
   currentIndex.value = (currentIndex.value + 1) % questions.length
   answer.value = createEmptyAnswer()
   result.value = null
@@ -73,12 +72,14 @@ async function copyText(text: string): Promise<void> {
 }
 
 async function shareResult() {
-  if (!result.value) {
+  const question = currentQuestion.value
+
+  if (!question || !result.value) {
     return
   }
 
   const siteUrl = `${window.location.origin}${import.meta.env.BASE_URL}`
-  const shareText = buildShareText(currentQuestion.value.id, result.value, siteUrl)
+  const shareText = buildShareText(question.id, result.value, siteUrl)
 
   try {
     if (navigator.share) {
@@ -119,7 +120,7 @@ async function shareResult() {
 
           <div class="topbar__status">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            Demo archive online
+            {{ archiveStatus }}
           </div>
         </header>
 
@@ -137,7 +138,7 @@ async function shareResult() {
             <dl class="session-stats" aria-label="Session statistics">
               <div>
                 <dt>Round</dt>
-                <dd>{{ String(currentIndex + 1).padStart(2, '0') }}/{{ String(questions.length).padStart(2, '0') }}</dd>
+                <dd>{{ String(currentQuestion ? currentIndex + 1 : 0).padStart(2, '0') }}/{{ String(questions.length).padStart(2, '0') }}</dd>
               </div>
               <div>
                 <dt>Played</dt>
@@ -150,7 +151,7 @@ async function shareResult() {
             </dl>
           </section>
 
-          <section class="game-layout" aria-label="Current question">
+          <section v-if="currentQuestion" class="game-layout" aria-label="Current question">
             <GameScreenshot :question="currentQuestion" :revealed="Boolean(result)" />
 
             <Transition name="panel-swap" mode="out-in">
@@ -173,10 +174,19 @@ async function shareResult() {
               />
             </Transition>
           </section>
+
+          <section v-else class="empty-catalog" aria-labelledby="empty-catalog-title">
+            <p class="panel-kicker">Archive maintenance</p>
+            <h2 id="empty-catalog-title">New questions are being prepared.</h2>
+            <p>
+              No playable frame is published yet. Source images stay outside the app until their
+              redactions and release checks are complete.
+            </p>
+          </section>
         </div>
 
         <footer class="footer">
-          <p>Bootstrap fixture only · No production screenshots are included.</p>
+          <p>Published questions use flattened redactions; originals stay outside the build.</p>
           <p>
             Event data from
             <a

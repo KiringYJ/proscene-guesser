@@ -139,10 +139,6 @@ async function main(): Promise<void> {
     .filter((manifest): manifest is PublishedQuestionManifest => manifest.status === 'published')
     .sort((left, right) => left.id.localeCompare(right.id))
 
-  if (published.length === 0) {
-    throw new Error('At least one published question is required')
-  }
-
   const generatedModule = createGeneratedModule(published)
 
   if (checkOnly) {

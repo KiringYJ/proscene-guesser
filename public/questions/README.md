@@ -8,4 +8,3 @@ Only publish already-redacted question images in this directory.
 - Name the public derivative `<question-id>.webp` using the same opaque ID as its source directory and `question.json` manifest.
 - Do not set a manifest to `published` until its flattened public derivative exists here.
 - Record source and rights-review information in the question metadata before public release.
-- Treat the SVG referenced by the synthetic manifest as a UI fixture, not a production question.
