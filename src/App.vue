@@ -156,6 +156,17 @@ async function shareResult(): Promise<void> {
               <small>Guesser</small>
             </span>
           </a>
+
+          <div class="game-modes" role="group" aria-label="Game modes">
+            <div class="game-mode game-mode--active" aria-label="Solo mode, active">
+              <span class="game-mode__dot" aria-hidden="true"></span>
+              <span>Solo</span>
+            </div>
+            <div class="game-mode game-mode--planned" aria-label="Multiplayer mode, planned">
+              <span>Multiplayer</span>
+              <span class="game-mode__badge">Planned</span>
+            </div>
+          </div>
         </header>
 
         <div id="top">
