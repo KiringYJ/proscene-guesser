@@ -154,25 +154,14 @@ const gameNumber = computed({
     </div>
 
     <v-form class="answer-form" @submit.prevent="emit('submit')">
-      <div class="field-grid field-grid--event">
-        <v-select
-          v-model="year"
-          :items="question.choices.years"
-          :disabled="disabled"
-          label="Year"
-          aria-label="Year"
-          hide-details
-        />
-        <v-select
-          v-model="gameNumber"
-          :items="question.choices.games"
-          :disabled="disabled"
-          label="Game"
-          aria-label="Game number"
-          prefix="Game"
-          hide-details
-        />
-      </div>
+      <v-select
+        v-model="year"
+        :items="question.choices.years"
+        :disabled="disabled"
+        label="Year"
+        aria-label="Year"
+        hide-details
+      />
 
       <v-select
         v-model="tournament"
@@ -219,6 +208,16 @@ const gameNumber = computed({
           hide-details
         />
       </div>
+
+      <v-select
+        v-model="gameNumber"
+        :items="question.choices.games"
+        :disabled="disabled"
+        label="Game"
+        aria-label="Game number"
+        prefix="Game"
+        hide-details
+      />
 
       <div class="answer-form__footer">
         <p>Event and teams score as grouped signals.</p>

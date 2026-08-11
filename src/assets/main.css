@@ -445,10 +445,6 @@ a {
   gap: 12px;
 }
 
-.field-grid--event {
-  grid-template-columns: 1fr 1fr;
-}
-
 .field-grid--teams {
   grid-template-columns: 1fr 1fr;
 }
