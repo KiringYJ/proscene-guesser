@@ -9,6 +9,7 @@ export interface QuestionAnswer {
 
 export interface PlayerAnswer {
   year: number | null
+  catalogEditionId: string | null
   tournament: string | null
   stage: string | null
   blueTeam: string | null
@@ -37,6 +38,8 @@ export interface Question {
   clue: string
   answer: QuestionAnswer
   choices: QuestionChoices
+  catalogEditionId?: string
+  catalogEditionIds?: readonly string[]
   source?: QuestionSource
 }
 
@@ -59,6 +62,7 @@ export interface ScoreResult {
 export function createEmptyAnswer(): PlayerAnswer {
   return {
     year: null,
+    catalogEditionId: null,
     tournament: null,
     stage: null,
     blueTeam: null,

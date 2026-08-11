@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-11T08:59:39.460Z",
+  "generatedAt": "2026-08-11T09:37:09.429Z",
   "sourceName": "Liquipedia",
   "sourceTermsUrl": "https://liquipedia.net/api-terms-of-use",
   "sourceLicense": "CC BY-SA 3.0",
@@ -1142,6 +1142,12 @@
       "seriesId": "wcg",
       "year": 2010,
       "name": "World Cyber Games 2010",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1176,6 +1182,11 @@
       "seriesId": "worlds",
       "year": 2011,
       "name": "Riot Season 1 Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1226,6 +1237,11 @@
       "seriesId": "iem-world-championship",
       "year": 2012,
       "name": "IEM Season VI - World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1292,6 +1308,11 @@
       "seriesId": "ipl",
       "year": 2012,
       "name": "IGN Pro League Season 5",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1374,6 +1395,11 @@
       "seriesId": "worlds",
       "year": 2012,
       "name": "Season 2 World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1440,6 +1466,11 @@
       "seriesId": "iem-world-championship",
       "year": 2013,
       "name": "IEM Season VII - World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1506,6 +1537,11 @@
       "seriesId": "international-wildcard",
       "year": 2013,
       "name": "International Wildcard Qualifier 2013",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -1544,6 +1580,14 @@
       "seriesId": "worlds",
       "year": 2013,
       "name": "Season 3 World Championship",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1618,6 +1662,14 @@
       "seriesId": "worlds",
       "year": 2014,
       "name": "2014 World Championship",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1700,6 +1752,11 @@
       "seriesId": "iem-world-championship",
       "year": 2014,
       "name": "IEM Season VIII - World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1750,6 +1807,11 @@
       "seriesId": "international-wildcard",
       "year": 2014,
       "name": "International Wildcard Tournament 2014 - Gamescom",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -1780,6 +1842,9 @@
       "seriesId": "international-wildcard",
       "year": 2014,
       "name": "International Wildcard Tournament PAX 2014",
+      "stages": [
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -1798,7 +1863,8 @@
         "pageTitle": "International Wildcard Tournament/PAX/2014",
         "revisionId": 1022100,
         "revisionTimestamp": "2026-06-03T12:31:07Z",
-        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Tournament/PAX/2014"
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Tournament/PAX/2014",
+        "note": "Liquipedia records this two-team event as one unlabeled best-of-five match; the reviewed match is the final."
       }
     },
     {
@@ -1806,6 +1872,14 @@
       "seriesId": "msi",
       "year": 2015,
       "name": "2015 Mid-Season Invitational",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1848,6 +1922,14 @@
       "seriesId": "worlds",
       "year": 2015,
       "name": "2015 World Championship",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1930,6 +2012,11 @@
       "seriesId": "iem-world-championship",
       "year": 2015,
       "name": "IEM Season IX - World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -1980,6 +2067,11 @@
       "seriesId": "international-wildcard",
       "year": 2015,
       "name": "International Wildcard Invitational 2015",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -2026,6 +2118,11 @@
       "seriesId": "international-wildcard",
       "year": 2015,
       "name": "International Wildcard Tournament Chile 2015",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -2057,6 +2154,11 @@
       "seriesId": "international-wildcard",
       "year": 2015,
       "name": "International Wildcard Tournament Turkey 2015",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -2091,6 +2193,11 @@
       "seriesId": "msi",
       "year": 2016,
       "name": "2016 Mid-Season Invitational",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2133,6 +2240,13 @@
       "seriesId": "worlds",
       "year": 2016,
       "name": "2016 World Championship",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2215,6 +2329,11 @@
       "seriesId": "iem-world-championship",
       "year": 2016,
       "name": "IEM Season X - World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2265,6 +2384,11 @@
       "seriesId": "international-wildcard",
       "year": 2016,
       "name": "International Wildcard Invitational 2016",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -2315,6 +2439,11 @@
       "seriesId": "international-wildcard",
       "year": 2016,
       "name": "International Wildcard Qualifier 2016",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international_qualifier",
       "teamKind": "organization",
       "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
@@ -2365,6 +2494,14 @@
       "seriesId": "msi",
       "year": 2017,
       "name": "2017 Mid-Season Invitational",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2435,6 +2572,15 @@
       "seriesId": "worlds",
       "year": 2017,
       "name": "2017 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2549,6 +2695,11 @@
       "seriesId": "iem-world-championship",
       "year": 2017,
       "name": "IEM Season XI - World Championship",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2599,6 +2750,11 @@
       "seriesId": "rift-rivals",
       "year": 2017,
       "name": "Rift Rivals 2017: GPL vs LJL vs OPL",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -2654,6 +2810,13 @@
       "seriesId": "rift-rivals",
       "year": 2017,
       "name": "Rift Rivals 2017: LCK vs LPL vs LMS",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -2721,6 +2884,11 @@
       "seriesId": "rift-rivals",
       "year": 2017,
       "name": "Rift Rivals 2017: LCL vs TCL",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -2772,6 +2940,11 @@
       "seriesId": "rift-rivals",
       "year": 2017,
       "name": "Rift Rivals 2017: LLN vs CLS vs CBLOL",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -2815,6 +2988,13 @@
       "seriesId": "rift-rivals",
       "year": 2017,
       "name": "Rift Rivals 2017: NA vs EU",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -2858,6 +3038,14 @@
       "seriesId": "msi",
       "year": 2018,
       "name": "2018 Mid-Season Invitational",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -2932,6 +3120,15 @@
       "seriesId": "worlds",
       "year": 2018,
       "name": "2018 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3046,6 +3243,13 @@
       "seriesId": "rift-rivals",
       "year": 2018,
       "name": "Rift Rivals 2018: LCK vs LPL vs LMS",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3113,6 +3317,13 @@
       "seriesId": "rift-rivals",
       "year": 2018,
       "name": "Rift Rivals 2018: LCL vs TCL vs VCS",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3168,6 +3379,13 @@
       "seriesId": "rift-rivals",
       "year": 2018,
       "name": "Rift Rivals 2018: LLN vs CLS vs CBLOL",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3211,6 +3429,11 @@
       "seriesId": "rift-rivals",
       "year": 2018,
       "name": "Rift Rivals 2018: NA vs EU",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3254,6 +3477,13 @@
       "seriesId": "rift-rivals",
       "year": 2018,
       "name": "Rift Rivals 2018: SEA vs LJL vs OPL",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3309,6 +3539,13 @@
       "seriesId": "msi",
       "year": 2019,
       "name": "2019 Mid-Season Invitational",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3379,6 +3616,15 @@
       "seriesId": "worlds",
       "year": 2019,
       "name": "2019 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3493,6 +3739,13 @@
       "seriesId": "rift-rivals",
       "year": 2019,
       "name": "Rift Rivals 2019: LCK vs LPL vs LMS vs VCS",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3560,6 +3813,11 @@
       "seriesId": "rift-rivals",
       "year": 2019,
       "name": "Rift Rivals 2019: NA vs EU",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_cross_regional_challenge",
       "teamKind": "organization",
       "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
@@ -3603,6 +3861,12 @@
       "seriesId": "worlds",
       "year": 2020,
       "name": "2020 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Bracket Stage",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3709,6 +3973,14 @@
       "seriesId": "msi",
       "year": 2021,
       "name": "2021 Mid-Season Invitational",
+      "stages": [
+        "Group Stage",
+        "Rumble Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3771,6 +4043,15 @@
       "seriesId": "worlds",
       "year": 2021,
       "name": "2021 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Playoffs",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3877,6 +4158,14 @@
       "seriesId": "msi",
       "year": 2022,
       "name": "2022 Mid-Season Invitational",
+      "stages": [
+        "Group Stage",
+        "Rumble Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -3939,6 +4228,14 @@
       "seriesId": "worlds",
       "year": 2022,
       "name": "2022 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4053,6 +4350,12 @@
       "seriesId": "msi",
       "year": 2023,
       "name": "2023 Mid-Season Invitational",
+      "stages": [
+        "Play-In Stage",
+        "Bracket Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4123,6 +4426,14 @@
       "seriesId": "worlds",
       "year": 2023,
       "name": "2023 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Swiss Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4229,6 +4540,11 @@
       "seriesId": "msi",
       "year": 2024,
       "name": "2024 Mid-Season Invitational",
+      "stages": [
+        "Play-In Stage",
+        "Bracket Stage",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4295,6 +4611,14 @@
       "seriesId": "worlds",
       "year": 2024,
       "name": "2024 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Swiss Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4393,6 +4717,11 @@
       "seriesId": "ewc",
       "year": 2024,
       "name": "Esports World Cup 2024",
+      "stages": [
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4443,6 +4772,13 @@
       "seriesId": "first-stand",
       "year": 2025,
       "name": "2025 First Stand Tournament",
+      "stages": [
+        "Round Robin Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4481,6 +4817,11 @@
       "seriesId": "msi",
       "year": 2025,
       "name": "2025 Mid-Season Invitational",
+      "stages": [
+        "Play-In Stage",
+        "Bracket Stage",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4539,6 +4880,14 @@
       "seriesId": "worlds",
       "year": 2025,
       "name": "2025 World Championship",
+      "stages": [
+        "Play-In Stage",
+        "Swiss Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4625,6 +4974,11 @@
       "seriesId": "ewc",
       "year": 2025,
       "name": "Esports World Cup 2025",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4691,6 +5045,13 @@
       "seriesId": "first-stand",
       "year": 2026,
       "name": "2026 First Stand Tournament",
+      "stages": [
+        "Group Stage",
+        "Knockout Stage",
+        "Quarterfinal",
+        "Semifinal",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4742,6 +5103,11 @@
       "seriesId": "msi",
       "year": 2026,
       "name": "2026 Mid-Season Invitational",
+      "stages": [
+        "Play-In Stage",
+        "Bracket Stage",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
@@ -4804,6 +5170,11 @@
       "seriesId": "ewc",
       "year": 2026,
       "name": "Esports World Cup 2026",
+      "stages": [
+        "Group Stage",
+        "Playoffs",
+        "Final"
+      ],
       "competitionKind": "club_international",
       "teamKind": "organization",
       "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",

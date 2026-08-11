@@ -9,6 +9,7 @@ export interface LiquipediaRevisionPage {
 export interface ParsedLiquipediaEdition {
   name: string
   declaredTeamCount: number | null
+  stageNames: readonly string[]
   teamNames: readonly string[]
 }
 
@@ -42,6 +43,128 @@ function extractLevelTwoSection(wikitext: string, title: string): string | null 
   }
 
   return collecting || sectionLines.length > 0 ? sectionLines.join('\n') : null
+}
+
+const canonicalStageOrder = [
+  'Play-In Stage',
+  'Group Stage',
+  'Round Robin Stage',
+  'Rumble Stage',
+  'Swiss Stage',
+  'Bracket Stage',
+  'Knockout Stage',
+  'Playoffs',
+  'Round of 16',
+  'Quarterfinal',
+  'Semifinal',
+  'Final',
+] as const
+
+type CanonicalStageName = (typeof canonicalStageOrder)[number]
+
+function canonicalizeStageName(rawLabel: string): CanonicalStageName | null {
+  const stageTemplate = /\{\{\s*Stage\s*\|\s*([^|}]+)/i.exec(rawLabel)
+  const label = (stageTemplate?.[1] ?? rawLabel)
+    .replace(/<!--.*?-->/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/'{2,}/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLocaleLowerCase('en-US')
+
+  if (/^play[ -]?in(?: stage)?(?:\s*:\s*round \d+|\s+stage \d+)?$/.test(label)) {
+    return 'Play-In Stage'
+  }
+
+  if (/^group stage(?: teams| matches)?$/.test(label)) {
+    return 'Group Stage'
+  }
+
+  if (/^round robin(?: stage)?$/.test(label)) {
+    return 'Round Robin Stage'
+  }
+
+  if (label === 'rumble stage') {
+    return 'Rumble Stage'
+  }
+
+  if (/^swiss(?: stage)?$/.test(label)) {
+    return 'Swiss Stage'
+  }
+
+  if (label === 'bracket stage') {
+    return 'Bracket Stage'
+  }
+
+  if (label === 'knockout stage') {
+    return 'Knockout Stage'
+  }
+
+  if (/^playoffs?$/.test(label)) {
+    return 'Playoffs'
+  }
+
+  if (label === 'round of 16') {
+    return 'Round of 16'
+  }
+
+  if (/^quarter[ -]?finals?$/.test(label)) {
+    return 'Quarterfinal'
+  }
+
+  if (/^semi[ -]?finals?$/.test(label)) {
+    return 'Semifinal'
+  }
+
+  if (/^(?:grand )?finals?$/.test(label)) {
+    return 'Final'
+  }
+
+  return null
+}
+
+function collectStageLabels(section: string): readonly string[] {
+  const labels: string[] = []
+  const patterns = [
+    /^={3,6}\s*(.+?)\s*={3,6}\s*$/gm,
+    /^\*+\s*'''([^']+)'''/gm,
+    /<!--\s*([^<>]+?)\s*-->/g,
+    /^\s*\|(?:title|R\d+)\s*=\s*([^|\r\n]+)/gim,
+  ]
+
+  for (const pattern of patterns) {
+    for (const match of section.matchAll(pattern)) {
+      if (match[1]) {
+        labels.push(match[1])
+      }
+    }
+  }
+
+  return labels
+}
+
+export function extractLiquipediaStageNames(wikitext: string): readonly string[] {
+  const relevantSections = ['Overview', 'Format', 'Result', 'Results']
+    .map((title) => extractLevelTwoSection(wikitext, title))
+    .filter((section): section is string => section !== null)
+  const stageNames = new Set(
+    relevantSections
+      .flatMap(collectStageLabels)
+      .map(canonicalizeStageName)
+      .filter((stageName): stageName is CanonicalStageName => stageName !== null),
+  )
+
+  if (stageNames.has('Knockout Stage')) {
+    for (const knockoutRound of ['Quarterfinal', 'Semifinal', 'Final'] as const) {
+      stageNames.add(knockoutRound)
+    }
+  }
+
+  if (stageNames.size > 0) {
+    stageNames.add('Final')
+  }
+
+  return canonicalStageOrder.filter((stageName) => stageNames.has(stageName))
 }
 
 function cleanWikitextValue(value: string): string | null {
@@ -130,6 +253,7 @@ export function parseLiquipediaEdition(
   }
 
   const teamNames = extractTeamNames(participantsSection)
+  const stageNames = extractLiquipediaStageNames(wikitext)
 
   if (teamNames.length < 2) {
     throw new Error(`Liquipedia page "${name}" yielded fewer than two participant teams`)
@@ -149,6 +273,7 @@ export function parseLiquipediaEdition(
   return {
     name,
     declaredTeamCount,
+    stageNames,
     teamNames,
   }
 }

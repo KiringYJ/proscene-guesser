@@ -23,7 +23,9 @@ const snackbarOpen = ref(false)
 
 const currentQuestion = computed(() => questions[currentIndex.value])
 
-const answerComplete = computed(() => isAnswerComplete(answer.value))
+const answerComplete = computed(() =>
+  isAnswerComplete(answer.value, currentQuestion.value?.catalogEditionIds !== undefined),
+)
 const archiveStatus = computed(() => (currentQuestion.value ? 'Archive online' : 'Archive preparation'))
 const nextLabel = computed(() => (questions.length > 1 ? 'Next archive' : 'Replay archive'))
 
@@ -34,7 +36,7 @@ function submitAnswer() {
     return
   }
 
-  const scored = scoreAnswer(answer.value, question.answer)
+  const scored = scoreAnswer(answer.value, question.answer, question.catalogEditionId)
   result.value = scored
   roundsPlayed.value += 1
   sessionBest.value = Math.max(sessionBest.value, scored.points)

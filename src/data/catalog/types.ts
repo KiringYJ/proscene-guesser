@@ -39,6 +39,7 @@ export interface InternationalEdition {
   seriesId: string
   year: number
   name: string
+  stages: readonly string[]
   competitionKind: CompetitionKind
   teamKind: TeamKind
   whyIncluded: string

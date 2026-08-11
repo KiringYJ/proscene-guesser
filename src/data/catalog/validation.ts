@@ -90,6 +90,18 @@ export function validateInternationalCatalog(catalog: InternationalCatalog): rea
       issues.push(`Edition ${edition.id} has fewer than two participants`)
     }
 
+    if (edition.stages.length === 0) {
+      issues.push(`Edition ${edition.id} has no tournament stages`)
+    }
+
+    for (const duplicate of findDuplicates(edition.stages)) {
+      issues.push(`Edition ${edition.id} repeats stage ${duplicate}`)
+    }
+
+    if (edition.stages.some((stage) => !stage.trim())) {
+      issues.push(`Edition ${edition.id} has an empty stage name`)
+    }
+
     if (!edition.whyIncluded.trim()) {
       issues.push(`Edition ${edition.id} is missing its inclusion rationale`)
     }

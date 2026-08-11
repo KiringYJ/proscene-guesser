@@ -6,8 +6,8 @@ This directory is the application's small, checked-in database of League of Lege
 
 1. `scripts/sync-liquipedia-catalog.ts` defines which event editions belong in scope.
 2. The script reads the selected pages through Liquipedia's no-key MediaWiki API.
-3. The parser extracts the event name and reviewed main-event organization teams.
-4. Validation rejects missing references, duplicate IDs, participant-count drift, and incomplete revision provenance.
+3. The parser extracts the event name, playable stages, and reviewed main-event organization teams.
+4. Validation rejects missing references, duplicate IDs, empty stage lists, participant-count drift, and incomplete revision provenance.
 5. `international-catalog.json` is committed as the cached deployment snapshot.
 
 Do not edit the generated JSON by hand. Inclusion decisions and exceptional participant reviews belong in the sync script.
@@ -43,12 +43,16 @@ Liquipedia text is licensed under [CC BY-SA 3.0](https://liquipedia.net/commons/
 
 ## Using the catalog
 
-Choose teams from the exact event edition so historical names stay intact:
+Choose stages and teams from the exact event edition so historical names stay intact:
 
 ```ts
-import { getInternationalTeamNamesForEdition } from '@/data/catalog'
+import {
+  getInternationalStageNamesForEdition,
+  getInternationalTeamNamesForEdition,
+} from '@/data/catalog'
 
 const ewc2024Teams = getInternationalTeamNamesForEdition('ewc-2024')
+const ewc2024Stages = getInternationalStageNamesForEdition('ewc-2024')
 ```
 
 Avoid using every historical team name as one global answer list. A question should normally use its edition's participants, plus separately reviewed decoys if the game design calls for them.

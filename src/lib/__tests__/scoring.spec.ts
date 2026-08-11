@@ -13,7 +13,7 @@ const expected: QuestionAnswer = {
   gameNumber: 3,
 }
 
-const perfectAnswer: PlayerAnswer = { ...expected }
+const perfectAnswer: PlayerAnswer = { ...expected, catalogEditionId: null }
 
 describe('scoreAnswer', () => {
   it('awards one point for each of the four game dimensions', () => {
@@ -39,6 +39,26 @@ describe('scoreAnswer', () => {
     expect(result.lines.find((line) => line.id === 'event')?.correct).toBe(false)
     expect(result.lines.find((line) => line.id === 'teams')?.correct).toBe(false)
   })
+
+  it('distinguishes same-series editions by their stable catalog ID', () => {
+    const result = scoreAnswer(
+      {
+        ...perfectAnswer,
+        catalogEditionId: 'rift-rivals-na-eu-2018',
+        tournament: 'Rift Rivals',
+        stage: 'Group Stage',
+      },
+      {
+        ...expected,
+        tournament: 'Rift Rivals',
+        stage: 'Group Stage',
+      },
+      'rift-rivals-lck-lpl-lms-2018',
+    )
+
+    expect(result.lines.find((line) => line.id === 'event')?.correct).toBe(false)
+    expect(result.lines.find((line) => line.id === 'event')?.actual).toContain('NA vs EU')
+  })
 })
 
 describe('isAnswerComplete', () => {
@@ -48,6 +68,13 @@ describe('isAnswerComplete', () => {
 
   it('accepts a fully selected answer', () => {
     expect(isAnswerComplete(perfectAnswer)).toBe(true)
+  })
+
+  it('requires an edition ID only for catalog-backed questions', () => {
+    expect(isAnswerComplete(perfectAnswer, true)).toBe(false)
+    expect(
+      isAnswerComplete({ ...perfectAnswer, catalogEditionId: 'worlds-2024' }, true),
+    ).toBe(true)
   })
 })
 

@@ -68,7 +68,9 @@ Generate each ID once, confirm that it is unused, and keep it unchanged. Do not 
 
 ## Question data
 
-Each question's canonical answer and lifecycle metadata live beside its source image in `sources/questions/<question-id>/question.json`. Draft manifests are retained in Git but omitted from the browser bundle. `npm run questions:sync` validates every manifest and generates `src/data/questions.generated.ts` from only the published records; do not edit that generated module by hand.
+Each question's canonical answer and lifecycle metadata live beside its source image in `sources/questions/<question-id>/question.json`. Draft manifests are retained in Git but omitted from the browser bundle. `npm run questions:sync` validates every manifest, resolves catalog-backed choices, and generates `src/data/questions.generated.ts` from only the client-safe fields of published records; do not edit that generated module by hand. Authoring fields such as draft status are never copied into the client catalog. Stable edition IDs and the permitted edition scope are included because the answer form uses them for cascading choices.
+
+For a catalog-backed question, selecting a year limits the tournament selector to editions from that year. Selecting an edition then limits stage and team choices to that edition, and changing either upstream value clears stale downstream selections. When one series has multiple editions in the same year, such as Rift Rivals, the form displays the full edition name and scores its stable edition ID. Stage and participant lists come from the edition catalog rather than being duplicated in each question manifest.
 
 The runtime adapter in `src/data/questions.ts` turns the generated records into Vite-aware image URLs. Because this remains a static client, answers for published questions are still inspectable in the built JavaScript.
 

@@ -33,6 +33,7 @@ const catalog: InternationalCatalog = {
       seriesId: 'worlds',
       year: 2024,
       name: '2024 World Championship',
+      stages: ['Semifinal', 'Final'],
       competitionKind: 'club_international',
       teamKind: 'organization',
       whyIncluded: 'Test fixture.',
@@ -95,6 +96,20 @@ describe('question manifest validation', () => {
     ).toEqual([])
   })
 
+  it('derives stage and team choices for a catalog-backed manifest', () => {
+    const catalogBacked = {
+      ...publishedManifest,
+      choices: {
+        years: publishedManifest.choices.years,
+        tournaments: publishedManifest.choices.tournaments,
+        games: publishedManifest.choices.games,
+      },
+    }
+
+    expect(validateQuestionManifest(catalogBacked, { catalog })).toEqual([])
+    expect(validateQuestionManifest(catalogBacked)).toEqual([])
+  })
+
   it('accepts a draft with an answer but no public presentation data', () => {
     const draft: DraftQuestionManifest = {
       schemaVersion: 1,
@@ -144,6 +159,38 @@ describe('question manifest validation', () => {
 
     expect(validateQuestionManifest(withoutSource, { catalog })).toContain(
       'source is required for a published production question',
+    )
+  })
+
+  it('rejects an answer stage outside the catalog edition', () => {
+    const invalidStage = {
+      ...publishedManifest,
+      answer: {
+        ...publishedManifest.answer,
+        stage: 'Swiss Stage',
+      },
+      choices: {
+        ...publishedManifest.choices,
+        stages: ['Swiss Stage', 'Final'],
+      },
+    }
+
+    expect(validateQuestionManifest(invalidStage, { catalog })).toContain(
+      'answer.stage is not a stage in worlds-2024',
+    )
+  })
+
+  it('rejects unknown tournament decoys for a catalog-backed question', () => {
+    const invalidTournament = {
+      ...publishedManifest,
+      choices: {
+        ...publishedManifest.choices,
+        tournaments: ['World Championship', 'Imaginary Cup'],
+      },
+    }
+
+    expect(validateQuestionManifest(invalidTournament, { catalog })).toContain(
+      'choices.tournaments includes unknown catalog series Imaginary Cup',
     )
   })
 })

@@ -13,6 +13,14 @@ if (catalogIssues.length > 0) {
 const editionById = new Map(
   internationalCatalog.editions.map((edition) => [edition.id, edition]),
 )
+const seriesById = new Map(
+  internationalCatalog.series.map((series) => [series.id, series]),
+)
+
+export interface InternationalEditionOption {
+  title: string
+  value: string
+}
 
 export const internationalTournamentNames = Object.freeze(
   internationalCatalog.series.map((series) => series.name),
@@ -34,6 +42,51 @@ export function getInternationalEdition(editionId: string): InternationalEdition
 
 export function getInternationalEditionsForYear(year: number): readonly InternationalEdition[] {
   return internationalCatalog.editions.filter((edition) => edition.year === year)
+}
+
+export function getInternationalEditionOptions(
+  editionIds: readonly string[],
+  year: number,
+): readonly InternationalEditionOption[] {
+  const editions = editionIds
+    .map(getInternationalEdition)
+    .filter((edition) => edition.year === year)
+  const editionCountBySeries = new Map<string, number>()
+
+  for (const edition of editions) {
+    editionCountBySeries.set(
+      edition.seriesId,
+      (editionCountBySeries.get(edition.seriesId) ?? 0) + 1,
+    )
+  }
+
+  return editions.map((edition) => {
+    const series = seriesById.get(edition.seriesId)
+
+    if (!series) {
+      throw new Error(`Unknown international series: ${edition.seriesId}`)
+    }
+
+    return {
+      title: editionCountBySeries.get(edition.seriesId) === 1 ? series.name : edition.name,
+      value: edition.id,
+    }
+  })
+}
+
+export function getInternationalTournamentNameForEdition(editionId: string): string {
+  const edition = getInternationalEdition(editionId)
+  const series = seriesById.get(edition.seriesId)
+
+  if (!series) {
+    throw new Error(`Unknown international series: ${edition.seriesId}`)
+  }
+
+  return series.name
+}
+
+export function getInternationalStageNamesForEdition(editionId: string): readonly string[] {
+  return getInternationalEdition(editionId).stages
 }
 
 export function getInternationalTeamNamesForEdition(editionId: string): readonly string[] {

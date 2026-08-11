@@ -30,6 +30,10 @@ interface EditionDefinition {
     teamNameReplacements?: Readonly<Record<string, string>>
     reason: string
   }
+  stageReview?: {
+    stages: readonly string[]
+    reason: string
+  }
 }
 
 interface MediaWikiRevision {
@@ -290,6 +294,14 @@ const wildcardEditions: readonly EditionDefinition[] = [
     }
   }
 
+  if (id === 'iwct-pax-2014') {
+    definition.stageReview = {
+      stages: ['Final'],
+      reason:
+        'Liquipedia records this two-team event as one unlabeled best-of-five match; the reviewed match is the final.',
+    }
+  }
+
   return definition
 })
 
@@ -521,12 +533,17 @@ function buildCatalog(revisionPages: readonly LiquipediaRevisionPage[]): Interna
 
       return { teamId, nameAtEvent }
     })
+    const reviewNotes = [
+      definition.participantReview?.reason,
+      definition.stageReview?.reason,
+    ].filter((note): note is string => note !== undefined)
 
     return {
       id: definition.id,
       seriesId: definition.seriesId,
       year: definition.year,
       name: parsed.name,
+      stages: definition.stageReview?.stages ?? parsed.stageNames,
       competitionKind: definition.competitionKind,
       teamKind: 'organization',
       whyIncluded: definition.whyIncluded,
@@ -537,9 +554,7 @@ function buildCatalog(revisionPages: readonly LiquipediaRevisionPage[]): Interna
         revisionId: page.revisionId,
         revisionTimestamp: page.revisionTimestamp,
         url: createPageUrl(page.pageTitle),
-        ...(definition.participantReview
-          ? { note: definition.participantReview.reason }
-          : {}),
+        ...(reviewNotes.length > 0 ? { note: reviewNotes.join(' ') } : {}),
       },
     }
   })

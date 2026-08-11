@@ -1,5 +1,9 @@
 import type { InternationalCatalog } from './catalog/types'
-import type { QuestionAnswer, QuestionSource } from '../types/question'
+import type {
+  QuestionAnswer,
+  QuestionChoices,
+  QuestionSource,
+} from '../types/question'
 
 export const QUESTION_ID_PATTERN = /^q-[0-9a-hj-km-np-tv-z]{12}$/
 
@@ -13,9 +17,22 @@ export interface InternationalTournamentChoiceSource {
 export interface QuestionManifestChoices {
   years: readonly number[]
   tournaments: readonly string[] | InternationalTournamentChoiceSource
-  stages: readonly string[]
-  teams: readonly string[]
+  stages?: readonly string[]
+  teams?: readonly string[]
   games: readonly number[]
+}
+
+export interface ClientQuestionRecord {
+  id: string
+  publicImage: string
+  imageAlt: string
+  archiveLabel: string
+  clue: string
+  answer: QuestionAnswer
+  choices: QuestionChoices
+  catalogEditionId?: string
+  catalogEditionIds?: readonly string[]
+  source?: QuestionSource
 }
 
 interface QuestionManifestBase {
@@ -215,6 +232,7 @@ function validateChoices(
   value: unknown,
   answer: UnknownRecord | null,
   catalog: InternationalCatalog | undefined,
+  catalogEditionId: unknown,
   issues: string[],
 ): void {
   if (!isRecord(value)) {
@@ -225,9 +243,19 @@ function validateChoices(
   reportUnknownKeys(value, choiceKeys, 'choices', issues)
 
   const years = validateIntegerArray(value.years, 'choices.years', issues)
-  const stages = validateStringArray(value.stages, 'choices.stages', issues)
-  const teams = validateStringArray(value.teams, 'choices.teams', issues)
   const games = validateIntegerArray(value.games, 'choices.games', issues)
+  const catalogBacked = isNonEmptyString(catalogEditionId)
+  const catalogEdition = catalogBacked
+    ? catalog?.editions.find((edition) => edition.id === catalogEditionId)
+    : undefined
+  const stages = value.stages === undefined && catalogBacked
+    ? (catalogEdition?.stages ?? [])
+    : validateStringArray(value.stages, 'choices.stages', issues)
+  const teams = value.teams === undefined && catalogBacked
+    ? (catalogEdition?.participants.map((participant) => participant.nameAtEvent) ?? [])
+    : validateStringArray(value.teams, 'choices.teams', issues)
+  const stagesResolved = value.stages !== undefined || catalogEdition !== undefined
+  const teamsResolved = value.teams !== undefined || catalogEdition !== undefined
   let tournaments: readonly string[] = []
   let tournamentsResolved = true
 
@@ -247,17 +275,35 @@ function validateChoices(
     issues.push('choices.tournaments must be a non-empty array or a catalog source')
   }
 
+  if (catalogBacked && catalog) {
+    const catalogTournamentNames = new Set(catalog.series.map((series) => series.name))
+
+    for (const tournament of tournaments) {
+      if (!catalogTournamentNames.has(tournament)) {
+        issues.push(`choices.tournaments includes unknown catalog series ${tournament}`)
+      }
+    }
+  }
+
   if (!answer) {
     return
   }
 
-  const inclusions: readonly [unknown, readonly unknown[], string][] = [
+  const inclusions: [unknown, readonly unknown[], string][] = [
     [answer.year, years, 'choices.years'],
-    [answer.stage, stages, 'choices.stages'],
-    [answer.blueTeam, teams, 'choices.teams'],
-    [answer.redTeam, teams, 'choices.teams'],
     [answer.gameNumber, games, 'choices.games'],
   ]
+
+  if (stagesResolved) {
+    inclusions.push([answer.stage, stages, 'choices.stages'])
+  }
+
+  if (teamsResolved) {
+    inclusions.push(
+      [answer.blueTeam, teams, 'choices.teams'],
+      [answer.redTeam, teams, 'choices.teams'],
+    )
+  }
 
   for (const [expected, values, path] of inclusions) {
     if ((typeof expected === 'string' || typeof expected === 'number') && !values.includes(expected)) {
@@ -309,6 +355,10 @@ function validateCatalogReference(
 
   if (series && answer.tournament !== series.name) {
     issues.push(`answer.tournament does not match catalog edition ${manifest.catalogEditionId}`)
+  }
+
+  if (isNonEmptyString(answer.stage) && !edition.stages.includes(answer.stage)) {
+    issues.push(`answer.stage is not a stage in ${manifest.catalogEditionId}`)
   }
 
   for (const side of ['blueTeam', 'redTeam'] as const) {
@@ -397,7 +447,7 @@ export function validateQuestionManifest(
       }
     }
 
-    validateChoices(value.choices, answer, context.catalog, issues)
+    validateChoices(value.choices, answer, context.catalog, value.catalogEditionId, issues)
 
     if (value.kind === 'production' && value.source === undefined) {
       issues.push('source is required for a published production question')
@@ -410,7 +460,7 @@ export function validateQuestionManifest(
     }
 
     if (value.choices !== undefined) {
-      validateChoices(value.choices, answer, context.catalog, issues)
+      validateChoices(value.choices, answer, context.catalog, value.catalogEditionId, issues)
     }
   }
 

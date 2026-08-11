@@ -3,9 +3,11 @@ import { describe, expect, it } from 'vitest'
 import {
   applyLiquipediaParticipantReview,
   createStableCatalogId,
+  extractLiquipediaStageNames,
   parseLiquipediaEdition,
 } from '@/data/catalog/liquipedia'
 import {
+  getInternationalEditionOptions,
   getInternationalTeamNamesForEdition,
   internationalCatalog,
 } from '@/data/catalog'
@@ -37,6 +39,7 @@ const revisionFixture = `
 }}
 
 ==Results==
+===Group Stage===
 |team1=alpha
 |team2=beta
 `
@@ -46,6 +49,7 @@ describe('parseLiquipediaEdition', () => {
     expect(parseLiquipediaEdition(revisionFixture)).toEqual({
       name: 'Example International 2025',
       declaredTeamCount: 3,
+      stageNames: ['Group Stage', 'Final'],
       teamNames: ['Team Alpha', 'Team Beta', 'Team Gamma'],
     })
   })
@@ -53,6 +57,35 @@ describe('parseLiquipediaEdition', () => {
   it('fails closed when the declared participant count does not match', () => {
     expect(() => parseLiquipediaEdition(revisionFixture.replace('|team_number=3', '|team_number=4')))
       .toThrow('expects 4 teams but yielded 3')
+  })
+})
+
+describe('extractLiquipediaStageNames', () => {
+  it('reads explicit result headings without treating format prose as extra stages', () => {
+    const wikitext = `
+==Format==
+* '''Play-In Stage''' - Double elimination
+** Teams play a double round robin before advancing to the bracket.
+==Results==
+==={{Stage|Bracket Stage}}===
+==Trivia==
+The domestic qualifier used a Swiss Stage and ended in a Quarterfinal.
+`
+
+    expect(extractLiquipediaStageNames(wikitext)).toEqual([
+      'Play-In Stage',
+      'Bracket Stage',
+      'Final',
+    ])
+  })
+
+  it('expands an explicit knockout stage into its playable rounds', () => {
+    expect(
+      extractLiquipediaStageNames(`
+==Results==
+===Knockout Stage===
+`),
+    ).toEqual(['Knockout Stage', 'Quarterfinal', 'Semifinal', 'Final'])
   })
 })
 
@@ -109,6 +142,7 @@ describe('validateInternationalCatalog', () => {
           seriesId: 'example',
           year: 2025,
           name: 'Example International 2025',
+          stages: ['Group Stage', 'Final'],
           competitionKind: 'club_international',
           teamKind: 'organization',
           whyIncluded: 'Professional organization teams from multiple competitive regions.',
@@ -189,6 +223,20 @@ describe('bundled international catalog', () => {
       'Team Liquid',
       'Top Esports',
     ])
+  })
+
+  it('uses edition names only when one year has multiple editions from a series', () => {
+    const editionIds = internationalCatalog.editions
+      .filter((edition) => edition.year === 2018)
+      .map((edition) => edition.id)
+    const options = getInternationalEditionOptions(editionIds, 2018)
+
+    expect(options).toContainEqual({ title: 'World Championship', value: 'worlds-2018' })
+    expect(options).toContainEqual({
+      title: 'Rift Rivals 2018: NA vs EU',
+      value: 'rift-rivals-na-eu-2018',
+    })
+    expect(options.some((option) => option.title === 'Rift Rivals')).toBe(false)
   })
 
   it('replaces Liquipedia template shortcodes with reviewed display names', () => {

@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import {
+  getInternationalEditionOptions,
+  getInternationalStageNamesForEdition,
+  getInternationalTeamNamesForEdition,
+  getInternationalTournamentNameForEdition,
+} from '@/data/catalog'
+import {
+  applyCatalogEditionSelection,
+  applyYearSelection,
+  excludeOpposingTeam,
+} from '@/lib/answer-cascade'
 import type { PlayerAnswer, Question } from '@/types/question'
 
 const props = defineProps<{
@@ -22,14 +33,93 @@ function updateAnswer<Key extends keyof PlayerAnswer>(key: Key, value: PlayerAns
   })
 }
 
+const catalogBacked = computed(() => props.question.catalogEditionIds !== undefined)
+
+const tournamentItems = computed(() => {
+  if (!catalogBacked.value) {
+    return props.question.choices.tournaments
+  }
+
+  if (props.modelValue.year === null) {
+    return []
+  }
+
+  return getInternationalEditionOptions(
+    props.question.catalogEditionIds ?? [],
+    props.modelValue.year,
+  )
+})
+
+const selectedCatalogEditionId = computed(() => {
+  const editionId = props.modelValue.catalogEditionId
+
+  if (
+    !catalogBacked.value ||
+    editionId === null ||
+    !tournamentItems.value.some((item) => typeof item !== 'string' && item.value === editionId)
+  ) {
+    return null
+  }
+
+  return editionId
+})
+
+const stageItems = computed(() => {
+  if (!catalogBacked.value) {
+    return props.question.choices.stages
+  }
+
+  return selectedCatalogEditionId.value
+    ? getInternationalStageNamesForEdition(selectedCatalogEditionId.value)
+    : []
+})
+
+const teamItems = computed(() => {
+  if (!catalogBacked.value) {
+    return props.question.choices.teams
+  }
+
+  return selectedCatalogEditionId.value
+    ? getInternationalTeamNamesForEdition(selectedCatalogEditionId.value)
+    : []
+})
+
+const blueTeamItems = computed(() =>
+  excludeOpposingTeam(teamItems.value, props.modelValue.redTeam),
+)
+const redTeamItems = computed(() =>
+  excludeOpposingTeam(teamItems.value, props.modelValue.blueTeam),
+)
+
 const year = computed({
   get: () => props.modelValue.year,
-  set: (value: number | null) => updateAnswer('year', value),
+  set: (value: number | null) => {
+    emit(
+      'update:modelValue',
+      applyYearSelection(props.modelValue, value, catalogBacked.value),
+    )
+  },
 })
 
 const tournament = computed({
-  get: () => props.modelValue.tournament,
-  set: (value: string | null) => updateAnswer('tournament', value),
+  get: () => catalogBacked.value
+    ? props.modelValue.catalogEditionId
+    : props.modelValue.tournament,
+  set: (value: string | null) => {
+    if (!catalogBacked.value) {
+      updateAnswer('tournament', value)
+      return
+    }
+
+    emit(
+      'update:modelValue',
+      applyCatalogEditionSelection(
+        props.modelValue,
+        value,
+        value ? getInternationalTournamentNameForEdition(value) : null,
+      ),
+    )
+  },
 })
 
 const stage = computed({
@@ -86,8 +176,8 @@ const gameNumber = computed({
 
       <v-select
         v-model="tournament"
-        :items="question.choices.tournaments"
-        :disabled="disabled"
+        :items="tournamentItems"
+        :disabled="disabled || (catalogBacked && year === null)"
         label="Tournament"
         aria-label="Tournament"
         hide-details
@@ -95,8 +185,8 @@ const gameNumber = computed({
 
       <v-select
         v-model="stage"
-        :items="question.choices.stages"
-        :disabled="disabled"
+        :items="stageItems"
+        :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
         label="Stage"
         aria-label="Tournament stage"
         hide-details
@@ -110,16 +200,16 @@ const gameNumber = computed({
       <div class="field-grid field-grid--teams">
         <v-select
           v-model="blueTeam"
-          :items="question.choices.teams"
-          :disabled="disabled"
+          :items="blueTeamItems"
+          :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
           label="Blue team"
           aria-label="Blue-side team"
           hide-details
         />
         <v-select
           v-model="redTeam"
-          :items="question.choices.teams"
-          :disabled="disabled"
+          :items="redTeamItems"
+          :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
           label="Red team"
           aria-label="Red-side team"
           hide-details
