@@ -1,0 +1,4 @@
+# Keep screenshots and sidecars in this local intake queue out of Git.
+*
+!.gitignore
+!README.md
