@@ -1,3 +1,4 @@
+import { getInternationalTournamentIdentityForEdition } from '@/data/catalog'
 import type {
   PlayerAnswer,
   QuestionPrompt,
@@ -21,9 +22,12 @@ export function evaluateAnswer(
   solution: QuestionSolution,
 ): ScoreEvaluation {
   const expected = solution.answer
-  const eventCorrect = solution.catalogEditionId
-    ? answer.catalogEditionId === solution.catalogEditionId && answer.stage === expected.stage
-    : answer.tournament === expected.tournament && answer.stage === expected.stage
+  const tournamentCorrect = solution.catalogEditionId
+    ? answer.catalogEditionId !== null &&
+      getInternationalTournamentIdentityForEdition(answer.catalogEditionId) ===
+        getInternationalTournamentIdentityForEdition(solution.catalogEditionId)
+    : answer.tournament === expected.tournament
+  const eventCorrect = tournamentCorrect && answer.stage === expected.stage
   const lines: ScoreEvaluationLine[] = [
     {
       id: 'year',

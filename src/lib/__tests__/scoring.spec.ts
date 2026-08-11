@@ -75,6 +75,25 @@ describe('scoreAnswer', () => {
     expect(result.lines.find((line) => line.id === 'teams')?.correct).toBe(false)
   })
 
+  it('awards the event point when the tournament and stage are right but the year is wrong', () => {
+    const result = scoreAnswer(
+      {
+        ...perfectAnswer,
+        year: 2023,
+        catalogEditionId: 'worlds-2023',
+      },
+      {
+        ...solution,
+        catalogEditionId: 'worlds-2024',
+      },
+      { teamChoices },
+    )
+
+    expect(result.points).toBe(3)
+    expect(result.lines.find((line) => line.id === 'year')?.correct).toBe(false)
+    expect(result.lines.find((line) => line.id === 'event')?.correct).toBe(true)
+  })
+
   it('distinguishes same-series editions by their stable catalog ID', () => {
     const result = scoreAnswer(
       {

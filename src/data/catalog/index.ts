@@ -45,6 +45,15 @@ export function getInternationalEdition(editionId: string): InternationalEdition
   return edition
 }
 
+export function getInternationalTournamentIdentityForEdition(editionId: string): string {
+  const edition = getInternationalEdition(editionId)
+  const yearSuffix = `-${edition.year}`
+
+  return edition.id.endsWith(yearSuffix)
+    ? edition.id.slice(0, -yearSuffix.length)
+    : edition.id
+}
+
 export function getInternationalEditionsForYear(year: number): readonly InternationalEdition[] {
   return internationalCatalog.editions.filter((edition) => edition.year === year)
 }
