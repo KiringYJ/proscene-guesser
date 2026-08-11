@@ -5,17 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-s questions:check build:app",
+    "build:app": "run-p type-check \"build-only {@}\" --",
     "build-only": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --build",
     "test": "vitest run",
     "test:watch": "vitest",
+    "data:sync": "node scripts/sync-liquipedia-catalog.ts",
+    "questions:sync": "node scripts/sync-question-catalog.ts",
+    "questions:check": "node scripts/sync-question-catalog.ts --check",
     "lint": "run-s lint:oxlint lint:eslint",
     "lint:oxlint": "oxlint .",
     "lint:eslint": "eslint . --cache",
     "lint:fix": "oxlint . --fix && eslint . --fix --cache",
-    "check": "run-s type-check lint test build-only"
+    "check": "run-s questions:check type-check lint test build-only"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",

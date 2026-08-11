@@ -45,6 +45,8 @@ src/
   lib/              Scoring and share-result rules
   plugins/          Vuetify configuration
   types/            Question and score contracts
+sources/
+  questions/        Canonical question JSON and tracked original PNGs
 public/
   questions/        Pre-redacted public question images only
 .github/workflows/  GitHub Pages deployment
@@ -52,13 +54,35 @@ public/
 
 Question answers are bundled into the browser. That is acceptable for a casual MVP, but it is not an anti-cheat design. A competitive daily challenge or trusted leaderboard would require server-side answer validation.
 
+## Question IDs
+
+Question IDs are intentionally opaque. Use `q-` followed by 12 random lowercase Crockford Base32 characters, matching `^q-[0-9a-hj-km-np-tv-z]{12}$`.
+
+Generate an ID with Node.js:
+
+```powershell
+node -e "const {randomBytes}=require('node:crypto'); const a='0123456789abcdefghjkmnpqrstvwxyz'; console.log('q-'+[...randomBytes(12)].map(b=>a[b&31]).join(''))"
+```
+
+Generate each ID once, confirm that it is unused, and keep it unchanged. Do not derive IDs from dates, events, teams, answers, source filenames, image hashes, timestamps, or insertion order.
+
+## Question data
+
+Each question's canonical answer and lifecycle metadata live beside its source image in `sources/questions/<question-id>/question.json`. Draft manifests are retained in Git but omitted from the browser bundle. `npm run questions:sync` validates every manifest and generates `src/data/questions.generated.ts` from only the published records; do not edit that generated module by hand.
+
+The runtime adapter in `src/data/questions.ts` turns the generated records into Vite-aware image URLs. Because this remains a static client, answers for published questions are still inspectable in the built JavaScript.
+
 ## Adding a question
 
-1. Redact the source image offline and export a flattened WebP.
-2. Keep the original, unredacted image outside this repository.
-3. Add the public derivative under `public/questions/`.
-4. Add a typed record to `src/data/questions.ts` with answer choices, the exact answer, alt text, and source information when appropriate.
-5. Run `npm run check` and manually play the round at narrow and wide viewport sizes.
+1. Generate a new opaque question ID.
+2. Create `sources/questions/<question-id>/question.json` with `status` set to `draft` and record the exact answer.
+3. Add the original PNG beside it as `original.png` so it is tracked by Git without entering the Vite build.
+4. Redact the source image offline and export a flattened WebP to `public/questions/<question-id>.webp`.
+5. Complete the presentation fields, answer choices, and source attribution in `question.json`, then change its status to `published`.
+6. Run `npm run questions:sync` to validate the manifests and regenerate the client catalog.
+7. Run `npm run check` and manually play the round at narrow and wide viewport sizes.
+
+The `sources/` directory is not copied into `dist/` or deployed by Vite. It is still part of the Git history, so originals are downloadable from the Git host whenever the repository is public. Confirm source rights and publication permission before adding an original.
 
 The scorer intentionally awards four points. Tournament plus stage form one event point, and both side-specific team selections form one teams point.
 

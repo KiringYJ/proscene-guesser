@@ -177,6 +177,15 @@ async function shareResult() {
 
         <footer class="footer">
           <p>Bootstrap fixture only · No production screenshots are included.</p>
+          <p>
+            Event data from
+            <a
+              href="https://liquipedia.net/leagueoflegends/Main_Page"
+              target="_blank"
+              rel="noreferrer"
+            >Liquipedia</a>
+            · CC BY-SA 3.0
+          </p>
           <p>Unofficial fan project. Not affiliated with Riot Games.</p>
         </footer>
       </v-container>

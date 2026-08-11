@@ -53,7 +53,7 @@ describe('isAnswerComplete', () => {
 
 describe('buildShareText', () => {
   it('shares only the score pattern, not the hidden answer', () => {
-    const text = buildShareText('demo-001', scoreAnswer(perfectAnswer, expected))
+    const text = buildShareText('q-7m4k2d9xrp6v', scoreAnswer(perfectAnswer, expected))
 
     expect(text).toContain('🟩🟩🟩🟩 4/4')
     expect(text).not.toContain(expected.blueTeam)

@@ -1,0 +1,4885 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-11T08:59:39.460Z",
+  "sourceName": "Liquipedia",
+  "sourceTermsUrl": "https://liquipedia.net/api-terms-of-use",
+  "sourceLicense": "CC BY-SA 3.0",
+  "sourceLicenseUrl": "https://liquipedia.net/commons/Help:Reusing_and_remixing_Liquipedia_content",
+  "series": [
+    {
+      "id": "worlds",
+      "name": "World Championship",
+      "shortName": "Worlds",
+      "organizer": "Riot Games",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/World_Championships"
+    },
+    {
+      "id": "msi",
+      "name": "Mid-Season Invitational",
+      "shortName": "MSI",
+      "organizer": "Riot Games",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational"
+    },
+    {
+      "id": "first-stand",
+      "name": "First Stand Tournament",
+      "shortName": "First Stand",
+      "organizer": "Riot Games",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/First_Stand_Tournament"
+    },
+    {
+      "id": "ewc",
+      "name": "Esports World Cup",
+      "shortName": "EWC",
+      "organizer": "Esports World Cup Foundation",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/Esports_World_Cup"
+    },
+    {
+      "id": "iem-world-championship",
+      "name": "Intel Extreme Masters World Championship",
+      "shortName": "IEM World Championship",
+      "organizer": "ESL",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters"
+    },
+    {
+      "id": "ipl",
+      "name": "IGN Pro League",
+      "shortName": "IPL",
+      "organizer": "IGN",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/IGN_ProLeague"
+    },
+    {
+      "id": "wcg",
+      "name": "World Cyber Games",
+      "shortName": "WCG",
+      "organizer": "World Cyber Games",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/World_Cyber_Games"
+    },
+    {
+      "id": "international-wildcard",
+      "name": "International Wildcard",
+      "shortName": "IWC",
+      "organizer": "Riot Games",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/International_Wildcard"
+    },
+    {
+      "id": "rift-rivals",
+      "name": "Rift Rivals",
+      "shortName": "Rift Rivals",
+      "organizer": "Riot Games",
+      "sourceUrl": "https://liquipedia.net/leagueoflegends/Rift_Rivals"
+    }
+  ],
+  "teams": [
+    {
+      "id": "100-thieves",
+      "name": "100 Thieves",
+      "aliases": []
+    },
+    {
+      "id": "1907-fenerbahce-esports",
+      "name": "1907 Fenerbahçe Esports",
+      "aliases": []
+    },
+    {
+      "id": "afreeca-freecs",
+      "name": "Afreeca Freecs",
+      "aliases": []
+    },
+    {
+      "id": "against-all-authority",
+      "name": "against All authority",
+      "aliases": []
+    },
+    {
+      "id": "ahq-e-sports-club",
+      "name": "ahq e-Sports Club",
+      "aliases": []
+    },
+    {
+      "id": "albus-nox-luna",
+      "name": "Albus NoX Luna",
+      "aliases": []
+    },
+    {
+      "id": "alliance",
+      "name": "Alliance",
+      "aliases": []
+    },
+    {
+      "id": "anexis-esports",
+      "name": "Anexis eSports",
+      "aliases": []
+    },
+    {
+      "id": "anotherstory",
+      "name": "AnotherStory",
+      "aliases": []
+    },
+    {
+      "id": "anyones-legend",
+      "name": "Anyone's Legend",
+      "aliases": []
+    },
+    {
+      "id": "ascension-gaming",
+      "name": "Ascension Gaming",
+      "aliases": []
+    },
+    {
+      "id": "azubu-blaze",
+      "name": "Azubu Blaze",
+      "aliases": []
+    },
+    {
+      "id": "azubu-frost",
+      "name": "Azubu Frost",
+      "aliases": []
+    },
+    {
+      "id": "bangkok-titans",
+      "name": "Bangkok Titans",
+      "aliases": []
+    },
+    {
+      "id": "besiktas-e-sports-club",
+      "name": "Beşiktaş e-Sports Club",
+      "aliases": []
+    },
+    {
+      "id": "beyond-gaming",
+      "name": "Beyond Gaming",
+      "aliases": []
+    },
+    {
+      "id": "bilibili-gaming",
+      "name": "Bilibili Gaming",
+      "aliases": []
+    },
+    {
+      "id": "blackbean",
+      "name": "Blackbean",
+      "aliases": []
+    },
+    {
+      "id": "bombers",
+      "name": "Bombers",
+      "aliases": []
+    },
+    {
+      "id": "chiefs-esports-club",
+      "name": "Chiefs Esports Club",
+      "aliases": [
+        "Chiefs eSports Club"
+      ]
+    },
+    {
+      "id": "chinahero",
+      "name": "ChinaHero",
+      "aliases": []
+    },
+    {
+      "id": "cj-entus",
+      "name": "CJ Entus",
+      "aliases": []
+    },
+    {
+      "id": "cj-entus-blaze",
+      "name": "CJ Entus Blaze",
+      "aliases": []
+    },
+    {
+      "id": "cj-entus-frost",
+      "name": "CJ Entus Frost",
+      "aliases": []
+    },
+    {
+      "id": "clg-europe",
+      "name": "CLG Europe",
+      "aliases": []
+    },
+    {
+      "id": "cloud9",
+      "name": "Cloud9",
+      "aliases": []
+    },
+    {
+      "id": "clutch-gaming",
+      "name": "Clutch Gaming",
+      "aliases": []
+    },
+    {
+      "id": "counter-logic-gaming",
+      "name": "Counter Logic Gaming",
+      "aliases": []
+    },
+    {
+      "id": "counter-logic-gaming-eu",
+      "name": "Counter Logic Gaming EU",
+      "aliases": []
+    },
+    {
+      "id": "crew-e-sports-club",
+      "name": "Crew e-Sports Club",
+      "aliases": []
+    },
+    {
+      "id": "ctbc-flying-oyster",
+      "name": "CTBC Flying Oyster",
+      "aliases": []
+    },
+    {
+      "id": "curse-gaming",
+      "name": "Curse Gaming",
+      "aliases": []
+    },
+    {
+      "id": "curse-gaming-europe",
+      "name": "Curse Gaming Europe",
+      "aliases": []
+    },
+    {
+      "id": "damwon-gaming",
+      "name": "DAMWON Gaming",
+      "aliases": []
+    },
+    {
+      "id": "dark-passage",
+      "name": "Dark Passage",
+      "aliases": []
+    },
+    {
+      "id": "dashing-buffalo",
+      "name": "Dashing Buffalo",
+      "aliases": []
+    },
+    {
+      "id": "deep-cross-gaming",
+      "name": "Deep Cross Gaming",
+      "aliases": []
+    },
+    {
+      "id": "detonation-focusme",
+      "name": "DetonatioN FocusMe",
+      "aliases": []
+    },
+    {
+      "id": "dire-wolves",
+      "name": "Dire Wolves",
+      "aliases": []
+    },
+    {
+      "id": "dplus",
+      "name": "Dplus",
+      "aliases": []
+    },
+    {
+      "id": "drx",
+      "name": "DRX",
+      "aliases": []
+    },
+    {
+      "id": "echo-fox",
+      "name": "Echo Fox",
+      "aliases": []
+    },
+    {
+      "id": "edward-gaming",
+      "name": "EDward Gaming",
+      "aliases": []
+    },
+    {
+      "id": "ehome",
+      "name": "EHOME",
+      "aliases": []
+    },
+    {
+      "id": "epik-gamer",
+      "name": "Epik Gamer",
+      "aliases": []
+    },
+    {
+      "id": "esc-ever",
+      "name": "ESC Ever",
+      "aliases": []
+    },
+    {
+      "id": "estral-esports",
+      "name": "Estral Esports",
+      "aliases": []
+    },
+    {
+      "id": "evil-geniuses",
+      "name": "Evil Geniuses",
+      "aliases": []
+    },
+    {
+      "id": "evos-esports",
+      "name": "EVOS Esports",
+      "aliases": []
+    },
+    {
+      "id": "fearx",
+      "name": "FEARX",
+      "aliases": []
+    },
+    {
+      "id": "flamengo-esports",
+      "name": "Flamengo eSports",
+      "aliases": []
+    },
+    {
+      "id": "flash-wolves",
+      "name": "Flash Wolves",
+      "aliases": []
+    },
+    {
+      "id": "flyquest",
+      "name": "FlyQuest",
+      "aliases": []
+    },
+    {
+      "id": "fnatic",
+      "name": "Fnatic",
+      "aliases": []
+    },
+    {
+      "id": "fukuoka-hawks-gaming",
+      "name": "Fukuoka HAWKS gaming",
+      "aliases": []
+    },
+    {
+      "id": "funplus-phoenix",
+      "name": "FunPlus Phoenix",
+      "aliases": []
+    },
+    {
+      "id": "furia",
+      "name": "FURIA",
+      "aliases": []
+    },
+    {
+      "id": "furious-gaming",
+      "name": "Furious Gaming",
+      "aliases": []
+    },
+    {
+      "id": "g-rex",
+      "name": "G-Rex",
+      "aliases": []
+    },
+    {
+      "id": "g2-esports",
+      "name": "G2 Esports",
+      "aliases": []
+    },
+    {
+      "id": "galatasaray-esports",
+      "name": "Galatasaray Esports",
+      "aliases": []
+    },
+    {
+      "id": "gam-esports",
+      "name": "GAM Esports",
+      "aliases": []
+    },
+    {
+      "id": "gamania-bears",
+      "name": "Gamania Bears",
+      "aliases": []
+    },
+    {
+      "id": "gambit-esports",
+      "name": "Gambit Esports",
+      "aliases": []
+    },
+    {
+      "id": "gambit-gaming",
+      "name": "Gambit Gaming",
+      "aliases": []
+    },
+    {
+      "id": "gaminggear-eu",
+      "name": "GamingGear.eu",
+      "aliases": []
+    },
+    {
+      "id": "ge-tigers",
+      "name": "GE Tigers",
+      "aliases": []
+    },
+    {
+      "id": "gen-g",
+      "name": "Gen.G",
+      "aliases": []
+    },
+    {
+      "id": "gen-g-esports",
+      "name": "Gen.G Esports",
+      "aliases": []
+    },
+    {
+      "id": "gigabyte-marines",
+      "name": "GIGABYTE Marines",
+      "aliases": []
+    },
+    {
+      "id": "golden-guardians",
+      "name": "Golden Guardians",
+      "aliases": []
+    },
+    {
+      "id": "griffin",
+      "name": "Griffin",
+      "aliases": []
+    },
+    {
+      "id": "h2k",
+      "name": "H2K",
+      "aliases": []
+    },
+    {
+      "id": "hanwha-life-esports",
+      "name": "Hanwha Life Esports",
+      "aliases": []
+    },
+    {
+      "id": "hard-random",
+      "name": "Hard Random",
+      "aliases": []
+    },
+    {
+      "id": "hong-kong-attitude",
+      "name": "Hong Kong Attitude",
+      "aliases": []
+    },
+    {
+      "id": "hong-kong-esports",
+      "name": "Hong Kong Esports",
+      "aliases": []
+    },
+    {
+      "id": "i-may",
+      "name": "I May",
+      "aliases": []
+    },
+    {
+      "id": "iceland",
+      "name": "IceLanD",
+      "aliases": []
+    },
+    {
+      "id": "immortals",
+      "name": "Immortals",
+      "aliases": []
+    },
+    {
+      "id": "incredible-miracle",
+      "name": "Incredible Miracle",
+      "aliases": []
+    },
+    {
+      "id": "infinity",
+      "name": "Infinity",
+      "aliases": []
+    },
+    {
+      "id": "infinity-esports",
+      "name": "Infinity eSports",
+      "aliases": [
+        "Infinity Esports"
+      ]
+    },
+    {
+      "id": "intz",
+      "name": "INTZ",
+      "aliases": []
+    },
+    {
+      "id": "intz-esports",
+      "name": "INTZ eSports",
+      "aliases": []
+    },
+    {
+      "id": "invictus-gaming",
+      "name": "Invictus Gaming",
+      "aliases": []
+    },
+    {
+      "id": "istanbul-wildcats",
+      "name": "İstanbul Wildcats",
+      "aliases": [
+        "İstanbul Wild Cats"
+      ]
+    },
+    {
+      "id": "isurus",
+      "name": "Isurus",
+      "aliases": []
+    },
+    {
+      "id": "isurus-gaming",
+      "name": "Isurus Gaming",
+      "aliases": []
+    },
+    {
+      "id": "j-team",
+      "name": "J Team",
+      "aliases": []
+    },
+    {
+      "id": "jd-gaming",
+      "name": "JD Gaming",
+      "aliases": []
+    },
+    {
+      "id": "just-toys-havoks",
+      "name": "Just Toys Havoks",
+      "aliases": []
+    },
+    {
+      "id": "kabum-e-sports",
+      "name": "KaBuM! e-Sports",
+      "aliases": []
+    },
+    {
+      "id": "kaos-latin-gamers",
+      "name": "Kaos Latin Gamers",
+      "aliases": []
+    },
+    {
+      "id": "karmine-corp",
+      "name": "Karmine Corp",
+      "aliases": []
+    },
+    {
+      "id": "keyd-stars",
+      "name": "Keyd Stars",
+      "aliases": []
+    },
+    {
+      "id": "kingzone-dragonx",
+      "name": "Kingzone DragonX",
+      "aliases": [
+        "KING-ZONE DragonX"
+      ]
+    },
+    {
+      "id": "kongdoo-monster",
+      "name": "Kongdoo Monster",
+      "aliases": []
+    },
+    {
+      "id": "koo-tigers",
+      "name": "KOO Tigers",
+      "aliases": []
+    },
+    {
+      "id": "kt-rolster",
+      "name": "KT Rolster",
+      "aliases": []
+    },
+    {
+      "id": "kt-rolster-bullets",
+      "name": "KT Rolster Bullets",
+      "aliases": []
+    },
+    {
+      "id": "kuala-lumpur-hunters",
+      "name": "Kuala Lumpur Hunters",
+      "aliases": []
+    },
+    {
+      "id": "legacy-esports",
+      "name": "Legacy Esports",
+      "aliases": [
+        "Legacy eSports"
+      ]
+    },
+    {
+      "id": "lemondogs",
+      "name": "Lemondogs",
+      "aliases": []
+    },
+    {
+      "id": "lgd-gaming",
+      "name": "LGD Gaming",
+      "aliases": []
+    },
+    {
+      "id": "lmq",
+      "name": "LMQ",
+      "aliases": []
+    },
+    {
+      "id": "lng-esports",
+      "name": "LNG Esports",
+      "aliases": []
+    },
+    {
+      "id": "longzhu-gaming",
+      "name": "Longzhu Gaming",
+      "aliases": []
+    },
+    {
+      "id": "los",
+      "name": "LOS",
+      "aliases": []
+    },
+    {
+      "id": "loud",
+      "name": "LOUD",
+      "aliases": []
+    },
+    {
+      "id": "lowkey-esports",
+      "name": "Lowkey Esports",
+      "aliases": []
+    },
+    {
+      "id": "lyon",
+      "name": "LYON",
+      "aliases": []
+    },
+    {
+      "id": "lyon-gaming",
+      "name": "Lyon Gaming",
+      "aliases": []
+    },
+    {
+      "id": "m19",
+      "name": "M19",
+      "aliases": []
+    },
+    {
+      "id": "machi-esports",
+      "name": "Machi Esports",
+      "aliases": []
+    },
+    {
+      "id": "mad-lions",
+      "name": "MAD Lions",
+      "aliases": []
+    },
+    {
+      "id": "mad-lions-koi",
+      "name": "MAD Lions KOI",
+      "aliases": []
+    },
+    {
+      "id": "mad-team",
+      "name": "MAD Team",
+      "aliases": []
+    },
+    {
+      "id": "mammoth",
+      "name": "MAMMOTH",
+      "aliases": []
+    },
+    {
+      "id": "meat-playground",
+      "name": "Meat Playground",
+      "aliases": []
+    },
+    {
+      "id": "meetyourmakers",
+      "name": "MeetYourMakers",
+      "aliases": []
+    },
+    {
+      "id": "mega-esports",
+      "name": "MEGA Esports",
+      "aliases": []
+    },
+    {
+      "id": "millenium",
+      "name": "Millenium",
+      "aliases": []
+    },
+    {
+      "id": "mineski",
+      "name": "Mineski",
+      "aliases": []
+    },
+    {
+      "id": "misfits-gaming",
+      "name": "Misfits Gaming",
+      "aliases": []
+    },
+    {
+      "id": "moscow-five",
+      "name": "Moscow Five",
+      "aliases": []
+    },
+    {
+      "id": "movistar-koi",
+      "name": "Movistar KOI",
+      "aliases": []
+    },
+    {
+      "id": "mvp",
+      "name": "MVP",
+      "aliases": []
+    },
+    {
+      "id": "najin-black-sword",
+      "name": "NaJin Black Sword",
+      "aliases": []
+    },
+    {
+      "id": "najin-sword",
+      "name": "NaJin Sword",
+      "aliases": []
+    },
+    {
+      "id": "najin-white-shield",
+      "name": "NaJin White Shield",
+      "aliases": []
+    },
+    {
+      "id": "nrg",
+      "name": "NRG",
+      "aliases": []
+    },
+    {
+      "id": "oh-my-god",
+      "name": "Oh My God",
+      "aliases": []
+    },
+    {
+      "id": "order",
+      "name": "ORDER",
+      "aliases": []
+    },
+    {
+      "id": "origen",
+      "name": "Origen",
+      "aliases": []
+    },
+    {
+      "id": "pacific-esports",
+      "name": "Pacific eSports",
+      "aliases": []
+    },
+    {
+      "id": "pain-gaming",
+      "name": "paiN Gaming",
+      "aliases": []
+    },
+    {
+      "id": "peace",
+      "name": "PEACE",
+      "aliases": []
+    },
+    {
+      "id": "pentagram",
+      "name": "PENTAGRAM",
+      "aliases": []
+    },
+    {
+      "id": "pentanet-gg",
+      "name": "Pentanet.GG",
+      "aliases": []
+    },
+    {
+      "id": "pex-team",
+      "name": "PEX Team",
+      "aliases": []
+    },
+    {
+      "id": "phoenix1",
+      "name": "Phoenix1",
+      "aliases": []
+    },
+    {
+      "id": "phong-vu-buffalo",
+      "name": "Phong Vũ Buffalo",
+      "aliases": []
+    },
+    {
+      "id": "psg-talon",
+      "name": "PSG Talon",
+      "aliases": []
+    },
+    {
+      "id": "qiao-gu-reapers",
+      "name": "Qiao Gu Reapers",
+      "aliases": []
+    },
+    {
+      "id": "rainbow7",
+      "name": "Rainbow7",
+      "aliases": []
+    },
+    {
+      "id": "rampage",
+      "name": "Rampage",
+      "aliases": []
+    },
+    {
+      "id": "rebirth-esports",
+      "name": "Rebirth eSports",
+      "aliases": []
+    },
+    {
+      "id": "red-canids",
+      "name": "RED Canids",
+      "aliases": []
+    },
+    {
+      "id": "rogue",
+      "name": "Rogue",
+      "aliases": []
+    },
+    {
+      "id": "rogue-warriors",
+      "name": "Rogue Warriors",
+      "aliases": []
+    },
+    {
+      "id": "rox",
+      "name": "RoX",
+      "aliases": []
+    },
+    {
+      "id": "rox-tigers",
+      "name": "ROX Tigers",
+      "aliases": []
+    },
+    {
+      "id": "royal-bandits",
+      "name": "Royal Bandits",
+      "aliases": []
+    },
+    {
+      "id": "royal-club",
+      "name": "Royal Club",
+      "aliases": []
+    },
+    {
+      "id": "royal-never-give-up",
+      "name": "Royal Never Give Up",
+      "aliases": []
+    },
+    {
+      "id": "royal-youth",
+      "name": "Royal Youth",
+      "aliases": []
+    },
+    {
+      "id": "russian-force",
+      "name": "Russian Force",
+      "aliases": []
+    },
+    {
+      "id": "saigon-buffalo",
+      "name": "Saigon Buffalo",
+      "aliases": []
+    },
+    {
+      "id": "saigon-jokers",
+      "name": "Saigon Jokers",
+      "aliases": []
+    },
+    {
+      "id": "samsung-blue",
+      "name": "Samsung Blue",
+      "aliases": []
+    },
+    {
+      "id": "samsung-galaxy",
+      "name": "Samsung Galaxy",
+      "aliases": []
+    },
+    {
+      "id": "samsung-ozone",
+      "name": "Samsung Ozone",
+      "aliases": []
+    },
+    {
+      "id": "samsung-white",
+      "name": "Samsung White",
+      "aliases": []
+    },
+    {
+      "id": "secret-whales",
+      "name": "Secret Whales",
+      "aliases": []
+    },
+    {
+      "id": "sentinels",
+      "name": "Sentinels",
+      "aliases": []
+    },
+    {
+      "id": "sin-gaming",
+      "name": "Sin Gaming",
+      "aliases": []
+    },
+    {
+      "id": "singapore-sentinels",
+      "name": "Singapore Sentinels",
+      "aliases": []
+    },
+    {
+      "id": "sk-gaming",
+      "name": "SK Gaming",
+      "aliases": []
+    },
+    {
+      "id": "sk-telecom-t1",
+      "name": "SK Telecom T1",
+      "aliases": []
+    },
+    {
+      "id": "sk-telecom-t1-s",
+      "name": "SK Telecom T1 S",
+      "aliases": []
+    },
+    {
+      "id": "splyce",
+      "name": "Splyce",
+      "aliases": []
+    },
+    {
+      "id": "star-horn-royal-club",
+      "name": "Star Horn Royal Club",
+      "aliases": []
+    },
+    {
+      "id": "suning",
+      "name": "Suning",
+      "aliases": []
+    },
+    {
+      "id": "supermassive-esports",
+      "name": "SuperMassive eSports",
+      "aliases": []
+    },
+    {
+      "id": "t1",
+      "name": "T1",
+      "aliases": []
+    },
+    {
+      "id": "taipei-assassins",
+      "name": "Taipei Assassins",
+      "aliases": []
+    },
+    {
+      "id": "team-alternate",
+      "name": "Team ALTERNATE",
+      "aliases": []
+    },
+    {
+      "id": "team-aurora",
+      "name": "Team AURORA",
+      "aliases": []
+    },
+    {
+      "id": "team-aze",
+      "name": "Team Aze",
+      "aliases": []
+    },
+    {
+      "id": "team-bds",
+      "name": "Team BDS",
+      "aliases": []
+    },
+    {
+      "id": "team-curse",
+      "name": "Team Curse",
+      "aliases": []
+    },
+    {
+      "id": "team-dignitas",
+      "name": "Team Dignitas",
+      "aliases": []
+    },
+    {
+      "id": "team-dynamic",
+      "name": "Team Dynamic",
+      "aliases": []
+    },
+    {
+      "id": "team-fear",
+      "name": "Team FeaR",
+      "aliases": []
+    },
+    {
+      "id": "team-gamed-de",
+      "name": "Team gamed!de",
+      "aliases": []
+    },
+    {
+      "id": "team-immunity",
+      "name": "Team Immunity",
+      "aliases": []
+    },
+    {
+      "id": "team-just-alpha",
+      "name": "Team Just Alpha",
+      "aliases": []
+    },
+    {
+      "id": "team-liquid",
+      "name": "Team Liquid",
+      "aliases": []
+    },
+    {
+      "id": "team-one-esports",
+      "name": "Team oNe eSports",
+      "aliases": []
+    },
+    {
+      "id": "team-solomid",
+      "name": "Team SoloMid",
+      "aliases": []
+    },
+    {
+      "id": "team-sypher",
+      "name": "Team Sypher",
+      "aliases": []
+    },
+    {
+      "id": "team-vitality",
+      "name": "Team Vitality",
+      "aliases": []
+    },
+    {
+      "id": "team-vulcun",
+      "name": "Team Vulcun",
+      "aliases": []
+    },
+    {
+      "id": "team-we",
+      "name": "Team WE",
+      "aliases": []
+    },
+    {
+      "id": "team-whales",
+      "name": "Team Whales",
+      "aliases": []
+    },
+    {
+      "id": "top-esports",
+      "name": "Top Esports",
+      "aliases": [
+        "TOP Esports"
+      ]
+    },
+    {
+      "id": "tsm",
+      "name": "TSM",
+      "aliases": []
+    },
+    {
+      "id": "unicorns-of-love",
+      "name": "Unicorns of Love",
+      "aliases": [
+        "Unicorns Of Love"
+      ]
+    },
+    {
+      "id": "unsold-stuff-gaming",
+      "name": "Unsold Stuff Gaming",
+      "aliases": []
+    },
+    {
+      "id": "v3-esports",
+      "name": "V3 Esports",
+      "aliases": []
+    },
+    {
+      "id": "vaevictis-esports",
+      "name": "Vaevictis eSports",
+      "aliases": []
+    },
+    {
+      "id": "vega-squadron",
+      "name": "Vega Squadron",
+      "aliases": []
+    },
+    {
+      "id": "vikings-esports",
+      "name": "Vikings Esports",
+      "aliases": []
+    },
+    {
+      "id": "vikings-gaming",
+      "name": "Vikings Gaming",
+      "aliases": []
+    },
+    {
+      "id": "virtus-pro",
+      "name": "Virtus.pro",
+      "aliases": []
+    },
+    {
+      "id": "weibo-gaming",
+      "name": "Weibo Gaming",
+      "aliases": []
+    },
+    {
+      "id": "xan",
+      "name": "Xan",
+      "aliases": []
+    },
+    {
+      "id": "young-generation",
+      "name": "Young Generation",
+      "aliases": []
+    },
+    {
+      "id": "youthcrew-esports",
+      "name": "YouthCrew Esports",
+      "aliases": []
+    }
+  ],
+  "editions": [
+    {
+      "id": "wcg-2010",
+      "seriesId": "wcg",
+      "year": 2010,
+      "name": "World Cyber Games 2010",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "anotherstory",
+          "nameAtEvent": "AnotherStory"
+        },
+        {
+          "teamId": "chinahero",
+          "nameAtEvent": "ChinaHero"
+        },
+        {
+          "teamId": "sk-gaming",
+          "nameAtEvent": "SK Gaming"
+        },
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        }
+      ],
+      "source": {
+        "pageId": 21126,
+        "pageTitle": "World Cyber Games/2010",
+        "revisionId": 1021506,
+        "revisionTimestamp": "2026-06-03T11:31:37Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Cyber_Games/2010"
+      }
+    },
+    {
+      "id": "worlds-2011",
+      "seriesId": "worlds",
+      "year": 2011,
+      "name": "Riot Season 1 Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "against-all-authority",
+          "nameAtEvent": "against All authority"
+        },
+        {
+          "teamId": "team-gamed-de",
+          "nameAtEvent": "Team gamed!de"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "xan",
+          "nameAtEvent": "Xan"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "epik-gamer",
+          "nameAtEvent": "Epik Gamer"
+        },
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "pacific-esports",
+          "nameAtEvent": "Pacific eSports"
+        }
+      ],
+      "source": {
+        "pageId": 4854,
+        "pageTitle": "World Championship/2011",
+        "revisionId": 1025454,
+        "revisionTimestamp": "2026-06-08T09:50:15Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2011"
+      }
+    },
+    {
+      "id": "iem-world-championship-2012",
+      "seriesId": "iem-world-championship",
+      "year": 2012,
+      "name": "IEM Season VI - World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "sk-gaming",
+          "nameAtEvent": "SK Gaming"
+        },
+        {
+          "teamId": "moscow-five",
+          "nameAtEvent": "Moscow Five"
+        },
+        {
+          "teamId": "ehome",
+          "nameAtEvent": "EHOME"
+        },
+        {
+          "teamId": "millenium",
+          "nameAtEvent": "Millenium"
+        },
+        {
+          "teamId": "team-curse",
+          "nameAtEvent": "Team Curse"
+        },
+        {
+          "teamId": "team-dignitas",
+          "nameAtEvent": "Team Dignitas"
+        },
+        {
+          "teamId": "team-sypher",
+          "nameAtEvent": "Team Sypher"
+        },
+        {
+          "teamId": "against-all-authority",
+          "nameAtEvent": "against All authority"
+        },
+        {
+          "teamId": "team-alternate",
+          "nameAtEvent": "Team ALTERNATE"
+        }
+      ],
+      "source": {
+        "pageId": 4940,
+        "pageTitle": "Intel Extreme Masters/Season VI/World Championship",
+        "revisionId": 1024451,
+        "revisionTimestamp": "2026-06-03T15:48:38Z",
+        "url": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters/Season_VI/World_Championship"
+      }
+    },
+    {
+      "id": "ipl-5",
+      "seriesId": "ipl",
+      "year": 2012,
+      "name": "IGN Pro League Season 5",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "team-dynamic",
+          "nameAtEvent": "Team Dynamic"
+        },
+        {
+          "teamId": "curse-gaming",
+          "nameAtEvent": "Curse Gaming"
+        },
+        {
+          "teamId": "meat-playground",
+          "nameAtEvent": "Meat Playground"
+        },
+        {
+          "teamId": "team-fear",
+          "nameAtEvent": "Team FeaR"
+        },
+        {
+          "teamId": "clg-europe",
+          "nameAtEvent": "CLG Europe"
+        },
+        {
+          "teamId": "moscow-five",
+          "nameAtEvent": "Moscow Five"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "curse-gaming-europe",
+          "nameAtEvent": "Curse Gaming Europe"
+        },
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "taipei-assassins",
+          "nameAtEvent": "Taipei Assassins"
+        },
+        {
+          "teamId": "iceland",
+          "nameAtEvent": "IceLanD"
+        },
+        {
+          "teamId": "singapore-sentinels",
+          "nameAtEvent": "Singapore Sentinels"
+        },
+        {
+          "teamId": "azubu-blaze",
+          "nameAtEvent": "Azubu Blaze"
+        },
+        {
+          "teamId": "blackbean",
+          "nameAtEvent": "Blackbean"
+        },
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        }
+      ],
+      "source": {
+        "pageId": 8437,
+        "pageTitle": "IGN ProLeague/Season 5",
+        "revisionId": 1021325,
+        "revisionTimestamp": "2026-06-03T11:07:03Z",
+        "url": "https://liquipedia.net/leagueoflegends/IGN_ProLeague/Season_5"
+      }
+    },
+    {
+      "id": "worlds-2012",
+      "seriesId": "worlds",
+      "year": 2012,
+      "name": "Season 2 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "moscow-five",
+          "nameAtEvent": "Moscow Five"
+        },
+        {
+          "teamId": "taipei-assassins",
+          "nameAtEvent": "Taipei Assassins"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "sk-gaming",
+          "nameAtEvent": "SK Gaming"
+        },
+        {
+          "teamId": "counter-logic-gaming-eu",
+          "nameAtEvent": "Counter Logic Gaming EU"
+        },
+        {
+          "teamId": "team-dignitas",
+          "nameAtEvent": "Team Dignitas"
+        },
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "azubu-frost",
+          "nameAtEvent": "Azubu Frost"
+        },
+        {
+          "teamId": "najin-sword",
+          "nameAtEvent": "NaJin Sword"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "saigon-jokers",
+          "nameAtEvent": "Saigon Jokers"
+        }
+      ],
+      "source": {
+        "pageId": 6211,
+        "pageTitle": "World Championship/2012",
+        "revisionId": 1025453,
+        "revisionTimestamp": "2026-06-08T09:49:28Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2012"
+      }
+    },
+    {
+      "id": "iem-world-championship-2013",
+      "seriesId": "iem-world-championship",
+      "year": 2013,
+      "name": "IEM Season VII - World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "anexis-esports",
+          "nameAtEvent": "Anexis eSports"
+        },
+        {
+          "teamId": "cj-entus-blaze",
+          "nameAtEvent": "CJ Entus Blaze"
+        },
+        {
+          "teamId": "cj-entus-frost",
+          "nameAtEvent": "CJ Entus Frost"
+        },
+        {
+          "teamId": "evil-geniuses",
+          "nameAtEvent": "Evil Geniuses"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "gambit-gaming",
+          "nameAtEvent": "Gambit Gaming"
+        },
+        {
+          "teamId": "incredible-miracle",
+          "nameAtEvent": "Incredible Miracle"
+        },
+        {
+          "teamId": "meetyourmakers",
+          "nameAtEvent": "MeetYourMakers"
+        },
+        {
+          "teamId": "millenium",
+          "nameAtEvent": "Millenium"
+        },
+        {
+          "teamId": "pain-gaming",
+          "nameAtEvent": "paiN Gaming"
+        },
+        {
+          "teamId": "sk-gaming",
+          "nameAtEvent": "SK Gaming"
+        },
+        {
+          "teamId": "sk-telecom-t1-s",
+          "nameAtEvent": "SK Telecom T1 S"
+        }
+      ],
+      "source": {
+        "pageId": 10817,
+        "pageTitle": "Intel Extreme Masters/Season VII/World Championship",
+        "revisionId": 1021365,
+        "revisionTimestamp": "2026-06-03T11:12:52Z",
+        "url": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters/Season_VII/World_Championship"
+      }
+    },
+    {
+      "id": "iwcq-2013",
+      "seriesId": "international-wildcard",
+      "year": 2013,
+      "name": "International Wildcard Qualifier 2013",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "dark-passage",
+          "nameAtEvent": "Dark Passage"
+        },
+        {
+          "teamId": "gaminggear-eu",
+          "nameAtEvent": "GamingGear.eu"
+        },
+        {
+          "teamId": "lyon-gaming",
+          "nameAtEvent": "Lyon Gaming"
+        },
+        {
+          "teamId": "pain-gaming",
+          "nameAtEvent": "paiN Gaming"
+        },
+        {
+          "teamId": "team-immunity",
+          "nameAtEvent": "Team Immunity"
+        }
+      ],
+      "source": {
+        "pageId": 50134,
+        "pageTitle": "International Wildcard Qualifier/2013",
+        "revisionId": 1022192,
+        "revisionTimestamp": "2026-06-03T12:40:12Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Qualifier/2013"
+      }
+    },
+    {
+      "id": "worlds-2013",
+      "seriesId": "worlds",
+      "year": 2013,
+      "name": "Season 3 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "gamania-bears",
+          "nameAtEvent": "Gamania Bears"
+        },
+        {
+          "teamId": "najin-black-sword",
+          "nameAtEvent": "NaJin Black Sword"
+        },
+        {
+          "teamId": "royal-club",
+          "nameAtEvent": "Royal Club"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "team-vulcun",
+          "nameAtEvent": "Team Vulcun"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "lemondogs",
+          "nameAtEvent": "Lemondogs"
+        },
+        {
+          "teamId": "gambit-gaming",
+          "nameAtEvent": "Gambit Gaming"
+        },
+        {
+          "teamId": "samsung-ozone",
+          "nameAtEvent": "Samsung Ozone"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "oh-my-god",
+          "nameAtEvent": "Oh My God"
+        },
+        {
+          "teamId": "mineski",
+          "nameAtEvent": "Mineski"
+        },
+        {
+          "teamId": "gaminggear-eu",
+          "nameAtEvent": "GamingGear.eu"
+        }
+      ],
+      "source": {
+        "pageId": 6284,
+        "pageTitle": "World Championship/2013",
+        "revisionId": 1025452,
+        "revisionTimestamp": "2026-06-08T09:49:06Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2013"
+      }
+    },
+    {
+      "id": "worlds-2014",
+      "seriesId": "worlds",
+      "year": 2014,
+      "name": "2014 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "alliance",
+          "nameAtEvent": "Alliance"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "samsung-blue",
+          "nameAtEvent": "Samsung Blue"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "star-horn-royal-club",
+          "nameAtEvent": "Star Horn Royal Club"
+        },
+        {
+          "teamId": "oh-my-god",
+          "nameAtEvent": "Oh My God"
+        },
+        {
+          "teamId": "samsung-white",
+          "nameAtEvent": "Samsung White"
+        },
+        {
+          "teamId": "najin-white-shield",
+          "nameAtEvent": "NaJin White Shield"
+        },
+        {
+          "teamId": "taipei-assassins",
+          "nameAtEvent": "Taipei Assassins"
+        },
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "sk-gaming",
+          "nameAtEvent": "SK Gaming"
+        },
+        {
+          "teamId": "lmq",
+          "nameAtEvent": "LMQ"
+        },
+        {
+          "teamId": "dark-passage",
+          "nameAtEvent": "Dark Passage"
+        },
+        {
+          "teamId": "kabum-e-sports",
+          "nameAtEvent": "KaBuM! e-Sports"
+        }
+      ],
+      "source": {
+        "pageId": 6365,
+        "pageTitle": "World Championship/2014",
+        "revisionId": 1025451,
+        "revisionTimestamp": "2026-06-08T09:48:39Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2014"
+      }
+    },
+    {
+      "id": "iem-world-championship-2014",
+      "seriesId": "iem-world-championship",
+      "year": 2014,
+      "name": "IEM Season VIII - World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "gambit-gaming",
+          "nameAtEvent": "Gambit Gaming"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "millenium",
+          "nameAtEvent": "Millenium"
+        },
+        {
+          "teamId": "taipei-assassins",
+          "nameAtEvent": "Taipei Assassins"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "kt-rolster-bullets",
+          "nameAtEvent": "KT Rolster Bullets"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        }
+      ],
+      "source": {
+        "pageId": 10830,
+        "pageTitle": "Intel Extreme Masters/Season VIII/World Championship",
+        "revisionId": 1021369,
+        "revisionTimestamp": "2026-06-03T11:13:26Z",
+        "url": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters/Season_VIII/World_Championship"
+      }
+    },
+    {
+      "id": "iwct-gamescom-2014",
+      "seriesId": "international-wildcard",
+      "year": 2014,
+      "name": "International Wildcard Tournament 2014 - Gamescom",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "dark-passage",
+          "nameAtEvent": "Dark Passage"
+        },
+        {
+          "teamId": "legacy-esports",
+          "nameAtEvent": "Legacy Esports"
+        },
+        {
+          "teamId": "russian-force",
+          "nameAtEvent": "Russian Force"
+        }
+      ],
+      "source": {
+        "pageId": 49292,
+        "pageTitle": "International Wildcard Tournament/Gamescom/2014",
+        "revisionId": 1022099,
+        "revisionTimestamp": "2026-06-03T12:31:02Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Tournament/Gamescom/2014"
+      }
+    },
+    {
+      "id": "iwct-pax-2014",
+      "seriesId": "international-wildcard",
+      "year": 2014,
+      "name": "International Wildcard Tournament PAX 2014",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "kabum-e-sports",
+          "nameAtEvent": "KaBuM! e-Sports"
+        },
+        {
+          "teamId": "pex-team",
+          "nameAtEvent": "PEX Team"
+        }
+      ],
+      "source": {
+        "pageId": 49293,
+        "pageTitle": "International Wildcard Tournament/PAX/2014",
+        "revisionId": 1022100,
+        "revisionTimestamp": "2026-06-03T12:31:07Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Tournament/PAX/2014"
+      }
+    },
+    {
+      "id": "msi-2015",
+      "seriesId": "msi",
+      "year": 2015,
+      "name": "2015 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "besiktas-e-sports-club",
+          "nameAtEvent": "Beşiktaş e-Sports Club"
+        }
+      ],
+      "source": {
+        "pageId": 7333,
+        "pageTitle": "Mid-Season Invitational/2015",
+        "revisionId": 1035114,
+        "revisionTimestamp": "2026-07-15T18:51:22Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2015"
+      }
+    },
+    {
+      "id": "worlds-2015",
+      "seriesId": "worlds",
+      "year": 2015,
+      "name": "2015 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "lgd-gaming",
+          "nameAtEvent": "LGD Gaming"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "h2k",
+          "nameAtEvent": "H2K"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "koo-tigers",
+          "nameAtEvent": "KOO Tigers"
+        },
+        {
+          "teamId": "kt-rolster",
+          "nameAtEvent": "KT Rolster"
+        },
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "origen",
+          "nameAtEvent": "Origen"
+        },
+        {
+          "teamId": "bangkok-titans",
+          "nameAtEvent": "Bangkok Titans"
+        },
+        {
+          "teamId": "pain-gaming",
+          "nameAtEvent": "paiN Gaming"
+        }
+      ],
+      "source": {
+        "pageId": 6668,
+        "pageTitle": "World Championship/2015",
+        "revisionId": 1025450,
+        "revisionTimestamp": "2026-06-08T09:48:08Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2015"
+      }
+    },
+    {
+      "id": "iem-world-championship-2015",
+      "seriesId": "iem-world-championship",
+      "year": 2015,
+      "name": "IEM Season IX - World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "gambit-gaming",
+          "nameAtEvent": "Gambit Gaming"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "sk-gaming",
+          "nameAtEvent": "SK Gaming"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "ge-tigers",
+          "nameAtEvent": "GE Tigers"
+        },
+        {
+          "teamId": "cj-entus",
+          "nameAtEvent": "CJ Entus"
+        }
+      ],
+      "source": {
+        "pageId": 10818,
+        "pageTitle": "Intel Extreme Masters/Season IX/World Championship",
+        "revisionId": 974437,
+        "revisionTimestamp": "2025-12-17T15:01:01Z",
+        "url": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters/Season_IX/World_Championship"
+      }
+    },
+    {
+      "id": "iwci-2015",
+      "seriesId": "international-wildcard",
+      "year": 2015,
+      "name": "International Wildcard Invitational 2015",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "bangkok-titans",
+          "nameAtEvent": "Bangkok Titans"
+        },
+        {
+          "teamId": "besiktas-e-sports-club",
+          "nameAtEvent": "Beşiktaş e-Sports Club"
+        },
+        {
+          "teamId": "chiefs-esports-club",
+          "nameAtEvent": "Chiefs eSports Club"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "hard-random",
+          "nameAtEvent": "Hard Random"
+        },
+        {
+          "teamId": "intz-esports",
+          "nameAtEvent": "INTZ eSports"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        }
+      ],
+      "source": {
+        "pageId": 26111,
+        "pageTitle": "International Wildcard Invitational/2015",
+        "revisionId": 1021589,
+        "revisionTimestamp": "2026-06-03T11:39:27Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Invitational/2015"
+      }
+    },
+    {
+      "id": "iwct-chile-2015",
+      "seriesId": "international-wildcard",
+      "year": 2015,
+      "name": "International Wildcard Tournament Chile 2015",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "hard-random",
+          "nameAtEvent": "Hard Random"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        },
+        {
+          "teamId": "pain-gaming",
+          "nameAtEvent": "paiN Gaming"
+        }
+      ],
+      "source": {
+        "pageId": 26997,
+        "pageTitle": "International Wildcard Tournament/2015/Chile",
+        "revisionId": 1021617,
+        "revisionTimestamp": "2026-06-03T11:41:57Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Tournament/2015/Chile",
+        "note": "Liquipedia declares four teams in the infobox but lists three teams in the reviewed main-event participant section."
+      }
+    },
+    {
+      "id": "iwct-turkey-2015",
+      "seriesId": "international-wildcard",
+      "year": 2015,
+      "name": "International Wildcard Tournament Turkey 2015",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "bangkok-titans",
+          "nameAtEvent": "Bangkok Titans"
+        },
+        {
+          "teamId": "chiefs-esports-club",
+          "nameAtEvent": "Chiefs eSports Club"
+        },
+        {
+          "teamId": "dark-passage",
+          "nameAtEvent": "Dark Passage"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        }
+      ],
+      "source": {
+        "pageId": 26987,
+        "pageTitle": "International Wildcard Tournament/2015/Turkey",
+        "revisionId": 1021616,
+        "revisionTimestamp": "2026-06-03T11:41:50Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Tournament/2015/Turkey"
+      }
+    },
+    {
+      "id": "msi-2016",
+      "seriesId": "msi",
+      "year": 2016,
+      "name": "2016 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        }
+      ],
+      "source": {
+        "pageId": 7334,
+        "pageTitle": "Mid-Season Invitational/2016",
+        "revisionId": 1025497,
+        "revisionTimestamp": "2026-06-08T12:08:03Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2016"
+      }
+    },
+    {
+      "id": "worlds-2016",
+      "seriesId": "worlds",
+      "year": 2016,
+      "name": "2016 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "rox-tigers",
+          "nameAtEvent": "ROX Tigers"
+        },
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "h2k",
+          "nameAtEvent": "H2K"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "i-may",
+          "nameAtEvent": "I May"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "samsung-galaxy",
+          "nameAtEvent": "Samsung Galaxy"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "splyce",
+          "nameAtEvent": "Splyce"
+        },
+        {
+          "teamId": "albus-nox-luna",
+          "nameAtEvent": "Albus NoX Luna"
+        },
+        {
+          "teamId": "intz-esports",
+          "nameAtEvent": "INTZ eSports"
+        }
+      ],
+      "source": {
+        "pageId": 1794,
+        "pageTitle": "World Championship/2016",
+        "revisionId": 1025492,
+        "revisionTimestamp": "2026-06-08T12:07:22Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2016"
+      }
+    },
+    {
+      "id": "iem-world-championship-2016",
+      "seriesId": "iem-world-championship",
+      "year": 2016,
+      "name": "IEM Season X - World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "counter-logic-gaming",
+          "nameAtEvent": "Counter Logic Gaming"
+        },
+        {
+          "teamId": "origen",
+          "nameAtEvent": "Origen"
+        },
+        {
+          "teamId": "esc-ever",
+          "nameAtEvent": "ESC Ever"
+        },
+        {
+          "teamId": "qiao-gu-reapers",
+          "nameAtEvent": "Qiao Gu Reapers"
+        }
+      ],
+      "source": {
+        "pageId": 8866,
+        "pageTitle": "Intel Extreme Masters/Season X/World Championship",
+        "revisionId": 1021328,
+        "revisionTimestamp": "2026-06-03T11:07:31Z",
+        "url": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters/Season_X/World_Championship"
+      }
+    },
+    {
+      "id": "iwci-2016",
+      "seriesId": "international-wildcard",
+      "year": 2016,
+      "name": "International Wildcard Invitational 2016",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "chiefs-esports-club",
+          "nameAtEvent": "Chiefs Esports Club"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "hard-random",
+          "nameAtEvent": "Hard Random"
+        },
+        {
+          "teamId": "intz-esports",
+          "nameAtEvent": "INTZ eSports"
+        },
+        {
+          "teamId": "isurus-gaming",
+          "nameAtEvent": "Isurus Gaming"
+        },
+        {
+          "teamId": "lyon-gaming",
+          "nameAtEvent": "Lyon Gaming"
+        },
+        {
+          "teamId": "saigon-jokers",
+          "nameAtEvent": "Saigon Jokers"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        }
+      ],
+      "source": {
+        "pageId": 26481,
+        "pageTitle": "International Wildcard/2016/Invitational",
+        "revisionId": 1021595,
+        "revisionTimestamp": "2026-06-03T11:40:01Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard/2016/Invitational"
+      }
+    },
+    {
+      "id": "iwcq-2016",
+      "seriesId": "international-wildcard",
+      "year": 2016,
+      "name": "International Wildcard Qualifier 2016",
+      "competitionKind": "club_international_qualifier",
+      "teamKind": "organization",
+      "whyIncluded": "International qualifier featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "albus-nox-luna",
+          "nameAtEvent": "Albus NoX Luna"
+        },
+        {
+          "teamId": "chiefs-esports-club",
+          "nameAtEvent": "Chiefs Esports Club"
+        },
+        {
+          "teamId": "dark-passage",
+          "nameAtEvent": "Dark Passage"
+        },
+        {
+          "teamId": "intz-esports",
+          "nameAtEvent": "INTZ eSports"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        },
+        {
+          "teamId": "lyon-gaming",
+          "nameAtEvent": "Lyon Gaming"
+        },
+        {
+          "teamId": "rampage",
+          "nameAtEvent": "Rampage"
+        },
+        {
+          "teamId": "saigon-jokers",
+          "nameAtEvent": "Saigon Jokers"
+        }
+      ],
+      "source": {
+        "pageId": 27181,
+        "pageTitle": "International Wildcard Qualifier/2016",
+        "revisionId": 1021624,
+        "revisionTimestamp": "2026-06-03T11:42:43Z",
+        "url": "https://liquipedia.net/leagueoflegends/International_Wildcard_Qualifier/2016"
+      }
+    },
+    {
+      "id": "msi-2017",
+      "seriesId": "msi",
+      "year": 2017,
+      "name": "2017 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "dire-wolves",
+          "nameAtEvent": "Dire Wolves"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "gigabyte-marines",
+          "nameAtEvent": "GIGABYTE Marines"
+        },
+        {
+          "teamId": "isurus-gaming",
+          "nameAtEvent": "Isurus Gaming"
+        },
+        {
+          "teamId": "lyon-gaming",
+          "nameAtEvent": "Lyon Gaming"
+        },
+        {
+          "teamId": "rampage",
+          "nameAtEvent": "Rampage"
+        },
+        {
+          "teamId": "red-canids",
+          "nameAtEvent": "RED Canids"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "virtus-pro",
+          "nameAtEvent": "Virtus.pro"
+        }
+      ],
+      "source": {
+        "pageId": 3878,
+        "pageTitle": "Mid-Season Invitational/2017",
+        "revisionId": 1026579,
+        "revisionTimestamp": "2026-06-11T14:28:04Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2017"
+      }
+    },
+    {
+      "id": "worlds-2017",
+      "seriesId": "worlds",
+      "year": 2017,
+      "name": "2017 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "longzhu-gaming",
+          "nameAtEvent": "Longzhu Gaming"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "samsung-galaxy",
+          "nameAtEvent": "Samsung Galaxy"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "gigabyte-marines",
+          "nameAtEvent": "GIGABYTE Marines"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "misfits-gaming",
+          "nameAtEvent": "Misfits Gaming"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "immortals",
+          "nameAtEvent": "Immortals"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "1907-fenerbahce-esports",
+          "nameAtEvent": "1907 Fenerbahçe Esports"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "dire-wolves",
+          "nameAtEvent": "Dire Wolves"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "gambit-esports",
+          "nameAtEvent": "Gambit Esports"
+        },
+        {
+          "teamId": "hong-kong-attitude",
+          "nameAtEvent": "Hong Kong Attitude"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        },
+        {
+          "teamId": "lyon-gaming",
+          "nameAtEvent": "Lyon Gaming"
+        },
+        {
+          "teamId": "rampage",
+          "nameAtEvent": "Rampage"
+        },
+        {
+          "teamId": "team-one-esports",
+          "nameAtEvent": "Team oNe eSports"
+        },
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "young-generation",
+          "nameAtEvent": "Young Generation"
+        }
+      ],
+      "source": {
+        "pageId": 4959,
+        "pageTitle": "World Championship/2017",
+        "revisionId": 1025449,
+        "revisionTimestamp": "2026-06-08T09:47:01Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2017"
+      }
+    },
+    {
+      "id": "iem-world-championship-2017",
+      "seriesId": "iem-world-championship",
+      "year": 2017,
+      "name": "IEM Season XI - World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "hong-kong-esports",
+          "nameAtEvent": "Hong Kong Esports"
+        },
+        {
+          "teamId": "rox-tigers",
+          "nameAtEvent": "ROX Tigers"
+        },
+        {
+          "teamId": "h2k",
+          "nameAtEvent": "H2K"
+        },
+        {
+          "teamId": "m19",
+          "nameAtEvent": "M19"
+        },
+        {
+          "teamId": "kongdoo-monster",
+          "nameAtEvent": "Kongdoo Monster"
+        },
+        {
+          "teamId": "unicorns-of-love",
+          "nameAtEvent": "Unicorns Of Love"
+        }
+      ],
+      "source": {
+        "pageId": 2590,
+        "pageTitle": "Intel Extreme Masters/Season XI/World Championship",
+        "revisionId": 1032130,
+        "revisionTimestamp": "2026-07-03T00:42:36Z",
+        "url": "https://liquipedia.net/leagueoflegends/Intel_Extreme_Masters/Season_XI/World_Championship"
+      }
+    },
+    {
+      "id": "rift-rivals-gpl-ljl-opl-2017",
+      "seriesId": "rift-rivals",
+      "year": 2017,
+      "name": "Rift Rivals 2017: GPL vs LJL vs OPL",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "gigabyte-marines",
+          "nameAtEvent": "GIGABYTE Marines"
+        },
+        {
+          "teamId": "ascension-gaming",
+          "nameAtEvent": "Ascension Gaming"
+        },
+        {
+          "teamId": "mineski",
+          "nameAtEvent": "Mineski"
+        },
+        {
+          "teamId": "rampage",
+          "nameAtEvent": "Rampage"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "unsold-stuff-gaming",
+          "nameAtEvent": "Unsold Stuff Gaming"
+        },
+        {
+          "teamId": "dire-wolves",
+          "nameAtEvent": "Dire Wolves"
+        },
+        {
+          "teamId": "legacy-esports",
+          "nameAtEvent": "Legacy eSports"
+        },
+        {
+          "teamId": "sin-gaming",
+          "nameAtEvent": "Sin Gaming"
+        }
+      ],
+      "source": {
+        "pageId": 6378,
+        "pageTitle": "Rift Rivals/GPL-LJL-OPL/2017",
+        "revisionId": 1021269,
+        "revisionTimestamp": "2026-06-03T10:58:46Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/GPL-LJL-OPL/2017",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-lck-lpl-lms-2017",
+      "seriesId": "rift-rivals",
+      "year": 2017,
+      "name": "Rift Rivals 2017: LCK vs LPL vs LMS",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "kt-rolster",
+          "nameAtEvent": "KT Rolster"
+        },
+        {
+          "teamId": "samsung-galaxy",
+          "nameAtEvent": "Samsung Galaxy"
+        },
+        {
+          "teamId": "mvp",
+          "nameAtEvent": "MVP"
+        },
+        {
+          "teamId": "team-we",
+          "nameAtEvent": "Team WE"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "oh-my-god",
+          "nameAtEvent": "Oh My God"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "j-team",
+          "nameAtEvent": "J Team"
+        },
+        {
+          "teamId": "machi-esports",
+          "nameAtEvent": "Machi Esports"
+        }
+      ],
+      "source": {
+        "pageId": 6379,
+        "pageTitle": "Rift Rivals/LCK-LPL-LMS/2017",
+        "revisionId": 1021270,
+        "revisionTimestamp": "2026-06-03T10:58:57Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LCK-LPL-LMS/2017",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-lcl-tcl-2017",
+      "seriesId": "rift-rivals",
+      "year": 2017,
+      "name": "Rift Rivals 2017: LCL vs TCL",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "virtus-pro",
+          "nameAtEvent": "Virtus.pro"
+        },
+        {
+          "teamId": "vaevictis-esports",
+          "nameAtEvent": "Vaevictis eSports"
+        },
+        {
+          "teamId": "vega-squadron",
+          "nameAtEvent": "Vega Squadron"
+        },
+        {
+          "teamId": "m19",
+          "nameAtEvent": "M19"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        },
+        {
+          "teamId": "crew-e-sports-club",
+          "nameAtEvent": "Crew e-Sports Club"
+        },
+        {
+          "teamId": "1907-fenerbahce-esports",
+          "nameAtEvent": "1907 Fenerbahçe Esports"
+        },
+        {
+          "teamId": "team-aurora",
+          "nameAtEvent": "Team AURORA"
+        }
+      ],
+      "source": {
+        "pageId": 6085,
+        "pageTitle": "Rift Rivals/LCL-TCL/2017",
+        "revisionId": 1021261,
+        "revisionTimestamp": "2026-06-03T10:57:33Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LCL-TCL/2017",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-lln-cls-cblol-2017",
+      "seriesId": "rift-rivals",
+      "year": 2017,
+      "name": "Rift Rivals 2017: LLN vs CLS vs CBLOL",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "lyon-gaming",
+          "nameAtEvent": "Lyon Gaming"
+        },
+        {
+          "teamId": "just-toys-havoks",
+          "nameAtEvent": "Just Toys Havoks"
+        },
+        {
+          "teamId": "isurus-gaming",
+          "nameAtEvent": "Isurus Gaming"
+        },
+        {
+          "teamId": "furious-gaming",
+          "nameAtEvent": "Furious Gaming"
+        },
+        {
+          "teamId": "red-canids",
+          "nameAtEvent": "RED Canids"
+        },
+        {
+          "teamId": "keyd-stars",
+          "nameAtEvent": "Keyd Stars"
+        }
+      ],
+      "source": {
+        "pageId": 6096,
+        "pageTitle": "Rift Rivals/LLN-CLS-CBLOL/2017",
+        "revisionId": 1021264,
+        "revisionTimestamp": "2026-06-03T10:57:58Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LLN-CLS-CBLOL/2017",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-na-eu-2017",
+      "seriesId": "rift-rivals",
+      "year": 2017,
+      "name": "Rift Rivals 2017: NA vs EU",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "phoenix1",
+          "nameAtEvent": "Phoenix1"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "unicorns-of-love",
+          "nameAtEvent": "Unicorns Of Love"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        }
+      ],
+      "source": {
+        "pageId": 6084,
+        "pageTitle": "Rift Rivals/NA-EU/2017",
+        "revisionId": 1021260,
+        "revisionTimestamp": "2026-06-03T10:57:23Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/NA-EU/2017",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "msi-2018",
+      "seriesId": "msi",
+      "year": 2018,
+      "name": "2018 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "kingzone-dragonx",
+          "nameAtEvent": "KING-ZONE DragonX"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "ascension-gaming",
+          "nameAtEvent": "Ascension Gaming"
+        },
+        {
+          "teamId": "dire-wolves",
+          "nameAtEvent": "Dire Wolves"
+        },
+        {
+          "teamId": "evos-esports",
+          "nameAtEvent": "EVOS Esports"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "gambit-esports",
+          "nameAtEvent": "Gambit Esports"
+        },
+        {
+          "teamId": "kabum-e-sports",
+          "nameAtEvent": "KaBuM! e-Sports"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        },
+        {
+          "teamId": "pentagram",
+          "nameAtEvent": "PENTAGRAM"
+        },
+        {
+          "teamId": "rainbow7",
+          "nameAtEvent": "Rainbow7"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        }
+      ],
+      "source": {
+        "pageId": 20183,
+        "pageTitle": "Mid-Season Invitational/2018",
+        "revisionId": 1025443,
+        "revisionTimestamp": "2026-06-08T09:35:40Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2018"
+      }
+    },
+    {
+      "id": "worlds-2018",
+      "seriesId": "worlds",
+      "year": 2018,
+      "name": "2018 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "kt-rolster",
+          "nameAtEvent": "KT Rolster"
+        },
+        {
+          "teamId": "afreeca-freecs",
+          "nameAtEvent": "Afreeca Freecs"
+        },
+        {
+          "teamId": "gen-g",
+          "nameAtEvent": "Gen.G"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "phong-vu-buffalo",
+          "nameAtEvent": "Phong Vũ Buffalo"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "team-vitality",
+          "nameAtEvent": "Team Vitality"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "100-thieves",
+          "nameAtEvent": "100 Thieves"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "mad-team",
+          "nameAtEvent": "MAD Team"
+        },
+        {
+          "teamId": "ascension-gaming",
+          "nameAtEvent": "Ascension Gaming"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "dire-wolves",
+          "nameAtEvent": "Dire Wolves"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "gambit-esports",
+          "nameAtEvent": "Gambit Esports"
+        },
+        {
+          "teamId": "g-rex",
+          "nameAtEvent": "G-Rex"
+        },
+        {
+          "teamId": "infinity-esports",
+          "nameAtEvent": "Infinity eSports"
+        },
+        {
+          "teamId": "kabum-e-sports",
+          "nameAtEvent": "KaBuM! e-Sports"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        }
+      ],
+      "source": {
+        "pageId": 20182,
+        "pageTitle": "World Championship/2018",
+        "revisionId": 1025448,
+        "revisionTimestamp": "2026-06-08T09:44:47Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2018"
+      }
+    },
+    {
+      "id": "rift-rivals-lck-lpl-lms-2018",
+      "seriesId": "rift-rivals",
+      "year": 2018,
+      "name": "Rift Rivals 2018: LCK vs LPL vs LMS",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "kingzone-dragonx",
+          "nameAtEvent": "KING-ZONE DragonX"
+        },
+        {
+          "teamId": "afreeca-freecs",
+          "nameAtEvent": "Afreeca Freecs"
+        },
+        {
+          "teamId": "kt-rolster",
+          "nameAtEvent": "KT Rolster"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "rogue-warriors",
+          "nameAtEvent": "Rogue Warriors"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "g-rex",
+          "nameAtEvent": "G-Rex"
+        },
+        {
+          "teamId": "mad-team",
+          "nameAtEvent": "MAD Team"
+        },
+        {
+          "teamId": "machi-esports",
+          "nameAtEvent": "Machi Esports"
+        }
+      ],
+      "source": {
+        "pageId": 23241,
+        "pageTitle": "Rift Rivals/LCK-LPL-LMS/2018",
+        "revisionId": 1033088,
+        "revisionTimestamp": "2026-07-09T03:36:58Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LCK-LPL-LMS/2018",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-lcl-tcl-vcs-2018",
+      "seriesId": "rift-rivals",
+      "year": 2018,
+      "name": "Rift Rivals 2018: LCL vs TCL vs VCS",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "gambit-esports",
+          "nameAtEvent": "Gambit Esports"
+        },
+        {
+          "teamId": "rox",
+          "nameAtEvent": "RoX"
+        },
+        {
+          "teamId": "team-just-alpha",
+          "nameAtEvent": "Team Just Alpha"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        },
+        {
+          "teamId": "royal-bandits",
+          "nameAtEvent": "Royal Bandits"
+        },
+        {
+          "teamId": "youthcrew-esports",
+          "nameAtEvent": "YouthCrew Esports"
+        },
+        {
+          "teamId": "evos-esports",
+          "nameAtEvent": "EVOS Esports"
+        },
+        {
+          "teamId": "gigabyte-marines",
+          "nameAtEvent": "GIGABYTE Marines"
+        },
+        {
+          "teamId": "vikings-gaming",
+          "nameAtEvent": "Vikings Gaming"
+        }
+      ],
+      "source": {
+        "pageId": 23239,
+        "pageTitle": "Rift Rivals/LCL-TCL-VCS/2018",
+        "revisionId": 1021544,
+        "revisionTimestamp": "2026-06-03T11:35:17Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LCL-TCL-VCS/2018",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-lln-cls-cblol-2018",
+      "seriesId": "rift-rivals",
+      "year": 2018,
+      "name": "Rift Rivals 2018: LLN vs CLS vs CBLOL",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "rainbow7",
+          "nameAtEvent": "Rainbow7"
+        },
+        {
+          "teamId": "infinity-esports",
+          "nameAtEvent": "Infinity eSports"
+        },
+        {
+          "teamId": "kaos-latin-gamers",
+          "nameAtEvent": "Kaos Latin Gamers"
+        },
+        {
+          "teamId": "rebirth-esports",
+          "nameAtEvent": "Rebirth eSports"
+        },
+        {
+          "teamId": "kabum-e-sports",
+          "nameAtEvent": "KaBuM! e-Sports"
+        },
+        {
+          "teamId": "keyd-stars",
+          "nameAtEvent": "Keyd Stars"
+        }
+      ],
+      "source": {
+        "pageId": 23238,
+        "pageTitle": "Rift Rivals/LLN-CLS-CBLOL/2018",
+        "revisionId": 1021543,
+        "revisionTimestamp": "2026-06-03T11:35:08Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LLN-CLS-CBLOL/2018",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-na-eu-2018",
+      "seriesId": "rift-rivals",
+      "year": 2018,
+      "name": "Rift Rivals 2018: NA vs EU",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "100-thieves",
+          "nameAtEvent": "100 Thieves"
+        },
+        {
+          "teamId": "echo-fox",
+          "nameAtEvent": "Echo Fox"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "splyce",
+          "nameAtEvent": "Splyce"
+        }
+      ],
+      "source": {
+        "pageId": 23230,
+        "pageTitle": "Rift Rivals/NA-EU/2018",
+        "revisionId": 1031055,
+        "revisionTimestamp": "2026-06-27T19:58:32Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/NA-EU/2018",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-sea-ljl-opl-2018",
+      "seriesId": "rift-rivals",
+      "year": 2018,
+      "name": "Rift Rivals 2018: SEA vs LJL vs OPL",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "ascension-gaming",
+          "nameAtEvent": "Ascension Gaming"
+        },
+        {
+          "teamId": "kuala-lumpur-hunters",
+          "nameAtEvent": "Kuala Lumpur Hunters"
+        },
+        {
+          "teamId": "mineski",
+          "nameAtEvent": "Mineski"
+        },
+        {
+          "teamId": "pentagram",
+          "nameAtEvent": "PENTAGRAM"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "unsold-stuff-gaming",
+          "nameAtEvent": "Unsold Stuff Gaming"
+        },
+        {
+          "teamId": "dire-wolves",
+          "nameAtEvent": "Dire Wolves"
+        },
+        {
+          "teamId": "chiefs-esports-club",
+          "nameAtEvent": "Chiefs Esports Club"
+        },
+        {
+          "teamId": "legacy-esports",
+          "nameAtEvent": "Legacy eSports"
+        }
+      ],
+      "source": {
+        "pageId": 23240,
+        "pageTitle": "Rift Rivals/SEA-LJL-OPL/2018",
+        "revisionId": 1021546,
+        "revisionTimestamp": "2026-06-03T11:35:25Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/SEA-LJL-OPL/2018",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "msi-2019",
+      "seriesId": "msi",
+      "year": 2019,
+      "name": "2019 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "1907-fenerbahce-esports",
+          "nameAtEvent": "1907 Fenerbahçe Esports"
+        },
+        {
+          "teamId": "bombers",
+          "nameAtEvent": "Bombers"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "intz-esports",
+          "nameAtEvent": "INTZ eSports"
+        },
+        {
+          "teamId": "isurus-gaming",
+          "nameAtEvent": "Isurus Gaming"
+        },
+        {
+          "teamId": "mega-esports",
+          "nameAtEvent": "MEGA Esports"
+        },
+        {
+          "teamId": "phong-vu-buffalo",
+          "nameAtEvent": "Phong Vũ Buffalo"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "vega-squadron",
+          "nameAtEvent": "Vega Squadron"
+        }
+      ],
+      "source": {
+        "pageId": 40477,
+        "pageTitle": "Mid-Season Invitational/2019",
+        "revisionId": 1031058,
+        "revisionTimestamp": "2026-06-27T20:12:27Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2019"
+      }
+    },
+    {
+      "id": "worlds-2019",
+      "seriesId": "worlds",
+      "year": 2019,
+      "name": "2019 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "funplus-phoenix",
+          "nameAtEvent": "FunPlus Phoenix"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "griffin",
+          "nameAtEvent": "Griffin"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "j-team",
+          "nameAtEvent": "J Team"
+        },
+        {
+          "teamId": "ahq-e-sports-club",
+          "nameAtEvent": "ahq e-Sports Club"
+        },
+        {
+          "teamId": "clutch-gaming",
+          "nameAtEvent": "Clutch Gaming"
+        },
+        {
+          "teamId": "damwon-gaming",
+          "nameAtEvent": "DAMWON Gaming"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "flamengo-esports",
+          "nameAtEvent": "Flamengo eSports"
+        },
+        {
+          "teamId": "hong-kong-attitude",
+          "nameAtEvent": "Hong Kong Attitude"
+        },
+        {
+          "teamId": "isurus-gaming",
+          "nameAtEvent": "Isurus Gaming"
+        },
+        {
+          "teamId": "lowkey-esports",
+          "nameAtEvent": "Lowkey Esports"
+        },
+        {
+          "teamId": "mammoth",
+          "nameAtEvent": "MAMMOTH"
+        },
+        {
+          "teamId": "mega-esports",
+          "nameAtEvent": "MEGA Esports"
+        },
+        {
+          "teamId": "royal-youth",
+          "nameAtEvent": "Royal Youth"
+        },
+        {
+          "teamId": "splyce",
+          "nameAtEvent": "Splyce"
+        },
+        {
+          "teamId": "unicorns-of-love",
+          "nameAtEvent": "Unicorns of Love"
+        }
+      ],
+      "source": {
+        "pageId": 46890,
+        "pageTitle": "World Championship/2019",
+        "revisionId": 1025447,
+        "revisionTimestamp": "2026-06-08T09:44:03Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2019"
+      }
+    },
+    {
+      "id": "rift-rivals-lck-lpl-lms-vcs-2019",
+      "seriesId": "rift-rivals",
+      "year": 2019,
+      "name": "Rift Rivals 2019: LCK vs LPL vs LMS vs VCS",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "sk-telecom-t1",
+          "nameAtEvent": "SK Telecom T1"
+        },
+        {
+          "teamId": "griffin",
+          "nameAtEvent": "Griffin"
+        },
+        {
+          "teamId": "kingzone-dragonx",
+          "nameAtEvent": "Kingzone DragonX"
+        },
+        {
+          "teamId": "damwon-gaming",
+          "nameAtEvent": "DAMWON Gaming"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "funplus-phoenix",
+          "nameAtEvent": "FunPlus Phoenix"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        },
+        {
+          "teamId": "flash-wolves",
+          "nameAtEvent": "Flash Wolves"
+        },
+        {
+          "teamId": "mad-team",
+          "nameAtEvent": "MAD Team"
+        },
+        {
+          "teamId": "dashing-buffalo",
+          "nameAtEvent": "Dashing Buffalo"
+        },
+        {
+          "teamId": "evos-esports",
+          "nameAtEvent": "EVOS Esports"
+        }
+      ],
+      "source": {
+        "pageId": 45064,
+        "pageTitle": "Rift Rivals/LCK-LPL-LMS-VCS/2019",
+        "revisionId": 1033089,
+        "revisionTimestamp": "2026-07-09T03:38:47Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/LCK-LPL-LMS-VCS/2019",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "rift-rivals-na-eu-2019",
+      "seriesId": "rift-rivals",
+      "year": 2019,
+      "name": "Rift Rivals 2019: NA vs EU",
+      "competitionKind": "club_cross_regional_challenge",
+      "teamKind": "organization",
+      "whyIncluded": "Cross-regional challenge whose matches are played by professional organization teams.",
+      "participants": [
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "team-solomid",
+          "nameAtEvent": "Team SoloMid"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "origen",
+          "nameAtEvent": "Origen"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        }
+      ],
+      "source": {
+        "pageId": 45063,
+        "pageTitle": "Rift Rivals/NA-EU/2019",
+        "revisionId": 1021948,
+        "revisionTimestamp": "2026-06-03T12:14:43Z",
+        "url": "https://liquipedia.net/leagueoflegends/Rift_Rivals/NA-EU/2019",
+        "note": "Liquipedia infobox counts describe regional-result structure inconsistently; the organization-team participant cards and exclusions were reviewed for this edition."
+      }
+    },
+    {
+      "id": "worlds-2020",
+      "seriesId": "worlds",
+      "year": 2020,
+      "name": "2020 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        },
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "suning",
+          "nameAtEvent": "Suning"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "rogue",
+          "nameAtEvent": "Rogue"
+        },
+        {
+          "teamId": "damwon-gaming",
+          "nameAtEvent": "DAMWON Gaming"
+        },
+        {
+          "teamId": "drx",
+          "nameAtEvent": "DRX"
+        },
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "tsm",
+          "nameAtEvent": "TSM"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "machi-esports",
+          "nameAtEvent": "Machi Esports"
+        },
+        {
+          "teamId": "intz",
+          "nameAtEvent": "INTZ"
+        },
+        {
+          "teamId": "lgd-gaming",
+          "nameAtEvent": "LGD Gaming"
+        },
+        {
+          "teamId": "legacy-esports",
+          "nameAtEvent": "Legacy Esports"
+        },
+        {
+          "teamId": "mad-lions",
+          "nameAtEvent": "MAD Lions"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "rainbow7",
+          "nameAtEvent": "Rainbow7"
+        },
+        {
+          "teamId": "supermassive-esports",
+          "nameAtEvent": "SuperMassive eSports"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "unicorns-of-love",
+          "nameAtEvent": "Unicorns Of Love"
+        },
+        {
+          "teamId": "v3-esports",
+          "nameAtEvent": "V3 Esports"
+        }
+      ],
+      "source": {
+        "pageId": 49484,
+        "pageTitle": "World Championship/2020",
+        "revisionId": 1028974,
+        "revisionTimestamp": "2026-06-19T14:25:50Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2020"
+      }
+    },
+    {
+      "id": "msi-2021",
+      "seriesId": "msi",
+      "year": 2021,
+      "name": "2021 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "damwon-gaming",
+          "nameAtEvent": "DAMWON Gaming"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "infinity-esports",
+          "nameAtEvent": "Infinity Esports"
+        },
+        {
+          "teamId": "istanbul-wildcats",
+          "nameAtEvent": "İstanbul Wild Cats"
+        },
+        {
+          "teamId": "mad-lions",
+          "nameAtEvent": "MAD Lions"
+        },
+        {
+          "teamId": "pain-gaming",
+          "nameAtEvent": "paiN Gaming"
+        },
+        {
+          "teamId": "pentanet-gg",
+          "nameAtEvent": "Pentanet.GG"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "unicorns-of-love",
+          "nameAtEvent": "Unicorns Of Love"
+        }
+      ],
+      "source": {
+        "pageId": 57004,
+        "pageTitle": "Mid-Season Invitational/2021",
+        "revisionId": 1036059,
+        "revisionTimestamp": "2026-07-20T18:25:25Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2021"
+      }
+    },
+    {
+      "id": "worlds-2021",
+      "seriesId": "worlds",
+      "year": 2021,
+      "name": "2021 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "funplus-phoenix",
+          "nameAtEvent": "FunPlus Phoenix"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "damwon-gaming",
+          "nameAtEvent": "DAMWON Gaming"
+        },
+        {
+          "teamId": "gen-g",
+          "nameAtEvent": "Gen.G"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "mad-lions",
+          "nameAtEvent": "MAD Lions"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "rogue",
+          "nameAtEvent": "Rogue"
+        },
+        {
+          "teamId": "100-thieves",
+          "nameAtEvent": "100 Thieves"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "beyond-gaming",
+          "nameAtEvent": "Beyond Gaming"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "galatasaray-esports",
+          "nameAtEvent": "Galatasaray Esports"
+        },
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "infinity",
+          "nameAtEvent": "Infinity"
+        },
+        {
+          "teamId": "lng-esports",
+          "nameAtEvent": "LNG Esports"
+        },
+        {
+          "teamId": "peace",
+          "nameAtEvent": "PEACE"
+        },
+        {
+          "teamId": "red-canids",
+          "nameAtEvent": "RED Canids"
+        },
+        {
+          "teamId": "unicorns-of-love",
+          "nameAtEvent": "Unicorns Of Love"
+        }
+      ],
+      "source": {
+        "pageId": 57212,
+        "pageTitle": "World Championship/2021",
+        "revisionId": 1025494,
+        "revisionTimestamp": "2026-06-08T12:07:39Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2021"
+      }
+    },
+    {
+      "id": "msi-2022",
+      "seriesId": "msi",
+      "year": 2022,
+      "name": "2022 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "evil-geniuses",
+          "nameAtEvent": "Evil Geniuses"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "istanbul-wildcats",
+          "nameAtEvent": "İstanbul Wildcats"
+        },
+        {
+          "teamId": "order",
+          "nameAtEvent": "ORDER"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "red-canids",
+          "nameAtEvent": "RED Canids"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "saigon-buffalo",
+          "nameAtEvent": "Saigon Buffalo"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "team-aze",
+          "nameAtEvent": "Team Aze"
+        }
+      ],
+      "source": {
+        "pageId": 64156,
+        "pageTitle": "Mid-Season Invitational/2022",
+        "revisionId": 1025496,
+        "revisionTimestamp": "2026-06-08T12:07:55Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2022"
+      }
+    },
+    {
+      "id": "worlds-2022",
+      "seriesId": "worlds",
+      "year": 2022,
+      "name": "2022 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        },
+        {
+          "teamId": "edward-gaming",
+          "nameAtEvent": "EDward Gaming"
+        },
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "damwon-gaming",
+          "nameAtEvent": "DAMWON Gaming"
+        },
+        {
+          "teamId": "rogue",
+          "nameAtEvent": "Rogue"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "100-thieves",
+          "nameAtEvent": "100 Thieves"
+        },
+        {
+          "teamId": "ctbc-flying-oyster",
+          "nameAtEvent": "CTBC Flying Oyster"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "beyond-gaming",
+          "nameAtEvent": "Beyond Gaming"
+        },
+        {
+          "teamId": "chiefs-esports-club",
+          "nameAtEvent": "Chiefs Esports Club"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "drx",
+          "nameAtEvent": "DRX"
+        },
+        {
+          "teamId": "evil-geniuses",
+          "nameAtEvent": "Evil Geniuses"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "istanbul-wildcats",
+          "nameAtEvent": "İstanbul Wildcats"
+        },
+        {
+          "teamId": "isurus",
+          "nameAtEvent": "Isurus"
+        },
+        {
+          "teamId": "loud",
+          "nameAtEvent": "LOUD"
+        },
+        {
+          "teamId": "mad-lions",
+          "nameAtEvent": "MAD Lions"
+        },
+        {
+          "teamId": "royal-never-give-up",
+          "nameAtEvent": "Royal Never Give Up"
+        },
+        {
+          "teamId": "saigon-buffalo",
+          "nameAtEvent": "Saigon Buffalo"
+        }
+      ],
+      "source": {
+        "pageId": 65843,
+        "pageTitle": "World Championship/2022",
+        "revisionId": 1028875,
+        "revisionTimestamp": "2026-06-19T03:30:09Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2022"
+      }
+    },
+    {
+      "id": "msi-2023",
+      "seriesId": "msi",
+      "year": 2023,
+      "name": "2023 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "gen-g",
+          "nameAtEvent": "Gen.G"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "mad-lions",
+          "nameAtEvent": "MAD Lions"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "golden-guardians",
+          "nameAtEvent": "Golden Guardians"
+        },
+        {
+          "teamId": "loud",
+          "nameAtEvent": "LOUD"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "rainbow7",
+          "nameAtEvent": "Rainbow7"
+        }
+      ],
+      "source": {
+        "pageId": 71114,
+        "pageTitle": "Mid-Season Invitational/2023",
+        "revisionId": 1025500,
+        "revisionTimestamp": "2026-06-08T12:08:30Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2023"
+      }
+    },
+    {
+      "id": "worlds-2023",
+      "seriesId": "worlds",
+      "year": 2023,
+      "name": "2023 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "gen-g",
+          "nameAtEvent": "Gen.G"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "kt-rolster",
+          "nameAtEvent": "KT Rolster"
+        },
+        {
+          "teamId": "dplus",
+          "nameAtEvent": "Dplus"
+        },
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "lng-esports",
+          "nameAtEvent": "LNG Esports"
+        },
+        {
+          "teamId": "weibo-gaming",
+          "nameAtEvent": "Weibo Gaming"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "mad-lions",
+          "nameAtEvent": "MAD Lions"
+        },
+        {
+          "teamId": "nrg",
+          "nameAtEvent": "NRG"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "ctbc-flying-oyster",
+          "nameAtEvent": "CTBC Flying Oyster"
+        },
+        {
+          "teamId": "detonation-focusme",
+          "nameAtEvent": "DetonatioN FocusMe"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "loud",
+          "nameAtEvent": "LOUD"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "rainbow7",
+          "nameAtEvent": "Rainbow7"
+        },
+        {
+          "teamId": "team-bds",
+          "nameAtEvent": "Team BDS"
+        },
+        {
+          "teamId": "team-whales",
+          "nameAtEvent": "Team Whales"
+        }
+      ],
+      "source": {
+        "pageId": 71105,
+        "pageTitle": "World Championship/2023",
+        "revisionId": 1032142,
+        "revisionTimestamp": "2026-07-03T00:54:04Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2023"
+      }
+    },
+    {
+      "id": "msi-2024",
+      "seriesId": "msi",
+      "year": 2024,
+      "name": "2024 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "estral-esports",
+          "nameAtEvent": "Estral Esports"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "loud",
+          "nameAtEvent": "LOUD"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        }
+      ],
+      "source": {
+        "pageId": 81919,
+        "pageTitle": "Mid-Season Invitational/2024",
+        "revisionId": 1032137,
+        "revisionTimestamp": "2026-07-03T00:46:19Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2024"
+      }
+    },
+    {
+      "id": "worlds-2024",
+      "seriesId": "worlds",
+      "year": 2024,
+      "name": "2024 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "dplus",
+          "nameAtEvent": "Dplus"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        },
+        {
+          "teamId": "lng-esports",
+          "nameAtEvent": "LNG Esports"
+        },
+        {
+          "teamId": "weibo-gaming",
+          "nameAtEvent": "Weibo Gaming"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "mad-lions-koi",
+          "nameAtEvent": "MAD Lions KOI"
+        },
+        {
+          "teamId": "100-thieves",
+          "nameAtEvent": "100 Thieves"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        },
+        {
+          "teamId": "fukuoka-hawks-gaming",
+          "nameAtEvent": "Fukuoka HAWKS gaming"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "vikings-esports",
+          "nameAtEvent": "Vikings Esports"
+        },
+        {
+          "teamId": "pain-gaming",
+          "nameAtEvent": "paiN Gaming"
+        },
+        {
+          "teamId": "rainbow7",
+          "nameAtEvent": "Rainbow7"
+        }
+      ],
+      "source": {
+        "pageId": 85220,
+        "pageTitle": "World Championship/2024",
+        "revisionId": 1017964,
+        "revisionTimestamp": "2026-05-20T04:28:26Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2024"
+      }
+    },
+    {
+      "id": "ewc-2024",
+      "seriesId": "ewc",
+      "year": 2024,
+      "name": "Esports World Cup 2024",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        }
+      ],
+      "source": {
+        "pageId": 85386,
+        "pageTitle": "Esports World Cup/2024",
+        "revisionId": 1023453,
+        "revisionTimestamp": "2026-06-03T14:36:14Z",
+        "url": "https://liquipedia.net/leagueoflegends/Esports_World_Cup/2024"
+      }
+    },
+    {
+      "id": "first-stand-2025",
+      "seriesId": "first-stand",
+      "year": 2025,
+      "name": "2025 First Stand Tournament",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "ctbc-flying-oyster",
+          "nameAtEvent": "CTBC Flying Oyster"
+        },
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "karmine-corp",
+          "nameAtEvent": "Karmine Corp"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        }
+      ],
+      "source": {
+        "pageId": 90794,
+        "pageTitle": "First Stand Tournament/2025",
+        "revisionId": 994110,
+        "revisionTimestamp": "2026-03-06T12:56:59Z",
+        "url": "https://liquipedia.net/leagueoflegends/First_Stand_Tournament/2025"
+      }
+    },
+    {
+      "id": "msi-2025",
+      "seriesId": "msi",
+      "year": 2025,
+      "name": "2025 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "anyones-legend",
+          "nameAtEvent": "Anyone's Legend"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "movistar-koi",
+          "nameAtEvent": "Movistar KOI"
+        },
+        {
+          "teamId": "ctbc-flying-oyster",
+          "nameAtEvent": "CTBC Flying Oyster"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "furia",
+          "nameAtEvent": "FURIA"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        }
+      ],
+      "source": {
+        "pageId": 90799,
+        "pageTitle": "Mid-Season Invitational/2025",
+        "revisionId": 1027506,
+        "revisionTimestamp": "2026-06-15T17:07:11Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2025"
+      }
+    },
+    {
+      "id": "worlds-2025",
+      "seriesId": "worlds",
+      "year": 2025,
+      "name": "2025 World Championship",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "kt-rolster",
+          "nameAtEvent": "KT Rolster"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "anyones-legend",
+          "nameAtEvent": "Anyone's Legend"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "Top Esports"
+        },
+        {
+          "teamId": "invictus-gaming",
+          "nameAtEvent": "Invictus Gaming"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "keyd-stars",
+          "nameAtEvent": "Keyd Stars"
+        },
+        {
+          "teamId": "100-thieves",
+          "nameAtEvent": "100 Thieves"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "movistar-koi",
+          "nameAtEvent": "Movistar KOI"
+        },
+        {
+          "teamId": "fnatic",
+          "nameAtEvent": "Fnatic"
+        },
+        {
+          "teamId": "ctbc-flying-oyster",
+          "nameAtEvent": "CTBC Flying Oyster"
+        },
+        {
+          "teamId": "secret-whales",
+          "nameAtEvent": "Secret Whales"
+        },
+        {
+          "teamId": "psg-talon",
+          "nameAtEvent": "PSG Talon"
+        }
+      ],
+      "source": {
+        "pageId": 90795,
+        "pageTitle": "World Championship/2025",
+        "revisionId": 1040736,
+        "revisionTimestamp": "2026-08-08T21:35:11Z",
+        "url": "https://liquipedia.net/leagueoflegends/World_Championship/2025"
+      }
+    },
+    {
+      "id": "ewc-2025",
+      "seriesId": "ewc",
+      "year": 2025,
+      "name": "Esports World Cup 2025",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "anyones-legend",
+          "nameAtEvent": "Anyone's Legend"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "flyquest",
+          "nameAtEvent": "FlyQuest"
+        },
+        {
+          "teamId": "cloud9",
+          "nameAtEvent": "Cloud9"
+        },
+        {
+          "teamId": "furia",
+          "nameAtEvent": "FURIA"
+        },
+        {
+          "teamId": "movistar-koi",
+          "nameAtEvent": "Movistar KOI"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "ctbc-flying-oyster",
+          "nameAtEvent": "CTBC Flying Oyster"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        }
+      ],
+      "source": {
+        "pageId": 92909,
+        "pageTitle": "Esports World Cup/2025",
+        "revisionId": 1037218,
+        "revisionTimestamp": "2026-07-25T03:06:47Z",
+        "url": "https://liquipedia.net/leagueoflegends/Esports_World_Cup/2025"
+      }
+    },
+    {
+      "id": "first-stand-2026",
+      "seriesId": "first-stand",
+      "year": 2026,
+      "name": "2026 First Stand Tournament",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "gen-g",
+          "nameAtEvent": "Gen.G"
+        },
+        {
+          "teamId": "fearx",
+          "nameAtEvent": "FEARX"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "lyon",
+          "nameAtEvent": "LYON"
+        },
+        {
+          "teamId": "loud",
+          "nameAtEvent": "LOUD"
+        },
+        {
+          "teamId": "secret-whales",
+          "nameAtEvent": "Secret Whales"
+        }
+      ],
+      "source": {
+        "pageId": 91878,
+        "pageTitle": "First Stand Tournament/2026",
+        "revisionId": 1032312,
+        "revisionTimestamp": "2026-07-03T15:17:43Z",
+        "url": "https://liquipedia.net/leagueoflegends/First_Stand_Tournament/2026",
+        "note": "Liquipedia stores Gen.G as the team shorthand \"gen\" in this participant template; the reviewed display name is retained."
+      }
+    },
+    {
+      "id": "msi-2026",
+      "seriesId": "msi",
+      "year": 2026,
+      "name": "2026 Mid-Season Invitational",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "top-esports",
+          "nameAtEvent": "TOP Esports"
+        },
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "lyon",
+          "nameAtEvent": "LYON"
+        },
+        {
+          "teamId": "furia",
+          "nameAtEvent": "FURIA"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "secret-whales",
+          "nameAtEvent": "Secret Whales"
+        },
+        {
+          "teamId": "deep-cross-gaming",
+          "nameAtEvent": "Deep Cross Gaming"
+        },
+        {
+          "teamId": "karmine-corp",
+          "nameAtEvent": "Karmine Corp"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "team-liquid",
+          "nameAtEvent": "Team Liquid"
+        }
+      ],
+      "source": {
+        "pageId": 91879,
+        "pageTitle": "Mid-Season Invitational/2026",
+        "revisionId": 1040734,
+        "revisionTimestamp": "2026-08-08T21:30:52Z",
+        "url": "https://liquipedia.net/leagueoflegends/Mid-Season_Invitational/2026"
+      }
+    },
+    {
+      "id": "ewc-2026",
+      "seriesId": "ewc",
+      "year": 2026,
+      "name": "Esports World Cup 2026",
+      "competitionKind": "club_international",
+      "teamKind": "organization",
+      "whyIncluded": "Main event featuring professional organization teams from multiple competitive regions.",
+      "participants": [
+        {
+          "teamId": "gen-g-esports",
+          "nameAtEvent": "Gen.G Esports"
+        },
+        {
+          "teamId": "hanwha-life-esports",
+          "nameAtEvent": "Hanwha Life Esports"
+        },
+        {
+          "teamId": "bilibili-gaming",
+          "nameAtEvent": "Bilibili Gaming"
+        },
+        {
+          "teamId": "g2-esports",
+          "nameAtEvent": "G2 Esports"
+        },
+        {
+          "teamId": "lyon",
+          "nameAtEvent": "LYON"
+        },
+        {
+          "teamId": "furia",
+          "nameAtEvent": "FURIA"
+        },
+        {
+          "teamId": "secret-whales",
+          "nameAtEvent": "Secret Whales"
+        },
+        {
+          "teamId": "gam-esports",
+          "nameAtEvent": "GAM Esports"
+        },
+        {
+          "teamId": "los",
+          "nameAtEvent": "LOS"
+        },
+        {
+          "teamId": "sentinels",
+          "nameAtEvent": "Sentinels"
+        },
+        {
+          "teamId": "karmine-corp",
+          "nameAtEvent": "Karmine Corp"
+        },
+        {
+          "teamId": "movistar-koi",
+          "nameAtEvent": "Movistar KOI"
+        },
+        {
+          "teamId": "anyones-legend",
+          "nameAtEvent": "Anyone's Legend"
+        },
+        {
+          "teamId": "jd-gaming",
+          "nameAtEvent": "JD Gaming"
+        },
+        {
+          "teamId": "t1",
+          "nameAtEvent": "T1"
+        },
+        {
+          "teamId": "dplus",
+          "nameAtEvent": "Dplus"
+        }
+      ],
+      "source": {
+        "pageId": 100621,
+        "pageTitle": "Esports World Cup/2026",
+        "revisionId": 1038734,
+        "revisionTimestamp": "2026-07-31T14:01:51Z",
+        "url": "https://liquipedia.net/leagueoflegends/Esports_World_Cup/2026"
+      }
+    }
+  ]
+}

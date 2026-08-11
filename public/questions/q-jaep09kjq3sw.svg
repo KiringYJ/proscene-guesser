@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic redacted competitive game broadcast</title>
+  <desc id="desc">An abstract game map, champion panels, scoreboard, and black redaction bars. No real match image is used.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#122131" />
+      <stop offset="0.55" stop-color="#0b1720" />
+      <stop offset="1" stop-color="#26171c" />
+    </linearGradient>
+    <linearGradient id="river" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#163f55" />
+      <stop offset="0.5" stop-color="#28697a" />
+      <stop offset="1" stop-color="#163b53" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16222e" />
+      <stop offset="1" stop-color="#0c1219" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <pattern id="noise" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="3" r="0.6" fill="#fff" opacity="0.1" />
+      <circle cx="9" cy="8" r="0.5" fill="#fff" opacity="0.07" />
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)" />
+  <rect width="1600" height="900" fill="url(#noise)" opacity="0.45" />
+
+  <!-- Broadcast header -->
+  <path d="M0 0h1600v108H0z" fill="#080c11" opacity="0.97" />
+  <path d="M0 106h1600v2H0z" fill="#b7d9e8" opacity="0.15" />
+  <g font-family="Arial, sans-serif" fill="#dceaf0">
+    <text x="44" y="40" font-size="17" letter-spacing="5" opacity="0.58">INTERNATIONAL BROADCAST</text>
+    <text x="44" y="74" font-size="28" font-weight="700">SEMIFINAL · GAME 03</text>
+    <text x="1458" y="50" font-size="19" text-anchor="end" letter-spacing="3" opacity="0.6">LIVE</text>
+    <circle cx="1485" cy="43" r="6" fill="#ff5c6c" filter="url(#glow)" />
+  </g>
+
+  <!-- Team score panels with permanent redaction -->
+  <g transform="translate(470 18)">
+    <path d="M0 0h270l38 36-38 54H0z" fill="#112b3b" stroke="#42d6ff" stroke-opacity="0.34" />
+    <rect x="26" y="20" width="178" height="26" rx="4" fill="#020304" />
+    <rect x="26" y="55" width="122" height="13" rx="3" fill="#020304" opacity="0.88" />
+    <text x="232" y="58" font-family="Arial" font-size="30" font-weight="700" fill="#42d6ff">07</text>
+  </g>
+  <g transform="translate(860 18)">
+    <path d="M308 0H38L0 36l38 54h270z" fill="#391b23" stroke="#ff5c6c" stroke-opacity="0.34" />
+    <rect x="104" y="20" width="178" height="26" rx="4" fill="#020304" />
+    <rect x="160" y="55" width="122" height="13" rx="3" fill="#020304" opacity="0.88" />
+    <text x="53" y="58" font-family="Arial" font-size="30" font-weight="700" fill="#ff5c6c">05</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="753" y="22" width="94" height="64" rx="8" fill="#151d26" stroke="#fff" stroke-opacity="0.1" />
+    <text x="800" y="48" font-size="13" fill="#fff" opacity="0.4">TIME</text>
+    <text x="800" y="72" font-size="22" font-weight="700" fill="#fff">28:41</text>
+  </g>
+
+  <!-- Game map -->
+  <g transform="translate(310 128)">
+    <rect width="980" height="620" rx="24" fill="#0c1b18" stroke="#fff" stroke-opacity="0.08" />
+    <path d="M35 567C210 425 330 380 479 310S742 169 945 50" fill="none" stroke="url(#river)" stroke-width="96" opacity="0.95" />
+    <path d="M30 60C280 82 360 166 489 304S717 522 950 560" fill="none" stroke="#627353" stroke-width="34" opacity="0.75" />
+    <path d="M80 590C155 404 265 348 476 310S788 227 920 32" fill="none" stroke="#586e4b" stroke-width="28" opacity="0.7" />
+    <path d="M48 80C198 187 278 258 485 311S790 470 930 548" fill="none" stroke="#465b3f" stroke-width="14" opacity="0.72" />
+
+    <!-- Terrain masses -->
+    <g fill="#1b3026" stroke="#7e9b71" stroke-opacity="0.13">
+      <path d="M0 0h388l-62 132-98 66-86 129L0 378z" />
+      <path d="M980 620H585l77-123 112-74 83-139 123-54z" />
+      <path d="M0 620V420l130-30 108 76 129 154z" />
+      <path d="M980 0v185l-132 27-108-70L612 0z" />
+    </g>
+
+    <!-- Bases and objectives -->
+    <g filter="url(#glow)">
+      <circle cx="88" cy="534" r="28" fill="#42d6ff" opacity="0.85" />
+      <circle cx="892" cy="86" r="28" fill="#ff5c6c" opacity="0.85" />
+      <circle cx="394" cy="367" r="16" fill="#c6ff3d" opacity="0.72" />
+      <circle cx="606" cy="251" r="16" fill="#ffca5c" opacity="0.72" />
+    </g>
+
+    <!-- Towers -->
+    <g stroke-width="7" fill="#101923">
+      <g stroke="#42d6ff">
+        <rect x="179" y="473" width="22" height="22" transform="rotate(45 190 484)" />
+        <rect x="292" y="397" width="22" height="22" transform="rotate(45 303 408)" />
+        <rect x="360" y="284" width="22" height="22" transform="rotate(45 371 295)" />
+      </g>
+      <g stroke="#ff5c6c">
+        <rect x="778" y="124" width="22" height="22" transform="rotate(45 789 135)" />
+        <rect x="668" y="199" width="22" height="22" transform="rotate(45 679 210)" />
+        <rect x="597" y="313" width="22" height="22" transform="rotate(45 608 324)" />
+      </g>
+    </g>
+
+    <!-- Player markers -->
+    <g font-family="Arial" font-size="13" font-weight="700" text-anchor="middle">
+      <g fill="#42d6ff" stroke="#bdefff" stroke-width="3">
+        <circle cx="430" cy="341" r="16" /><circle cx="467" cy="379" r="16" />
+        <circle cx="388" cy="405" r="16" /><circle cx="523" cy="364" r="16" />
+        <circle cx="446" cy="442" r="16" />
+      </g>
+      <g fill="#ff5c6c" stroke="#ffd3d7" stroke-width="3">
+        <circle cx="551" cy="273" r="16" /><circle cx="590" cy="308" r="16" />
+        <circle cx="629" cy="267" r="16" /><circle cx="508" cy="255" r="16" />
+        <circle cx="574" cy="215" r="16" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Side rosters -->
+  <g transform="translate(24 146)">
+    <rect width="258" height="574" rx="18" fill="url(#panel)" stroke="#42d6ff" stroke-opacity="0.18" />
+    <text x="22" y="36" fill="#42d6ff" font-family="Arial" font-size="14" letter-spacing="4">BLUE SIDE</text>
+    <g transform="translate(18 55)">
+      <g>
+        <rect width="222" height="88" rx="10" fill="#132838" />
+        <circle cx="43" cy="44" r="27" fill="#315e72" /><path d="M30 50l13-24 17 31z" fill="#8dddf2" />
+        <rect x="82" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="82" y="50" width="76" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 98)">
+        <rect width="222" height="88" rx="10" fill="#132838" />
+        <circle cx="43" cy="44" r="27" fill="#315e72" /><circle cx="43" cy="43" r="13" fill="#a4edff" />
+        <rect x="82" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="82" y="50" width="88" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 196)">
+        <rect width="222" height="88" rx="10" fill="#132838" />
+        <circle cx="43" cy="44" r="27" fill="#315e72" /><path d="M27 48h32L43 25z" fill="#8dddf2" />
+        <rect x="82" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="82" y="50" width="72" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 294)">
+        <rect width="222" height="88" rx="10" fill="#132838" />
+        <circle cx="43" cy="44" r="27" fill="#315e72" /><path d="M43 23l19 37H24z" fill="#a4edff" />
+        <rect x="82" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="82" y="50" width="94" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 392)">
+        <rect width="222" height="88" rx="10" fill="#132838" />
+        <circle cx="43" cy="44" r="27" fill="#315e72" /><rect x="31" y="31" width="24" height="24" rx="6" fill="#8dddf2" />
+        <rect x="82" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="82" y="50" width="83" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+    </g>
+  </g>
+
+  <g transform="translate(1318 146)">
+    <rect width="258" height="574" rx="18" fill="url(#panel)" stroke="#ff5c6c" stroke-opacity="0.18" />
+    <text x="236" y="36" text-anchor="end" fill="#ff5c6c" font-family="Arial" font-size="14" letter-spacing="4">RED SIDE</text>
+    <g transform="translate(18 55)">
+      <g>
+        <rect width="222" height="88" rx="10" fill="#351b24" />
+        <circle cx="179" cy="44" r="27" fill="#673341" /><path d="M166 50l13-24 17 31z" fill="#ff9aaa" />
+        <rect x="24" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="62" y="50" width="78" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 98)">
+        <rect width="222" height="88" rx="10" fill="#351b24" />
+        <circle cx="179" cy="44" r="27" fill="#673341" /><circle cx="179" cy="43" r="13" fill="#ffc0c9" />
+        <rect x="24" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="48" y="50" width="92" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 196)">
+        <rect width="222" height="88" rx="10" fill="#351b24" />
+        <circle cx="179" cy="44" r="27" fill="#673341" /><path d="M163 48h32l-16-23z" fill="#ff9aaa" />
+        <rect x="24" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="68" y="50" width="72" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 294)">
+        <rect width="222" height="88" rx="10" fill="#351b24" />
+        <circle cx="179" cy="44" r="27" fill="#673341" /><path d="M179 23l19 37h-38z" fill="#ffc0c9" />
+        <rect x="24" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="54" y="50" width="86" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+      <g transform="translate(0 392)">
+        <rect width="222" height="88" rx="10" fill="#351b24" />
+        <circle cx="179" cy="44" r="27" fill="#673341" /><rect x="167" y="31" width="24" height="24" rx="6" fill="#ff9aaa" />
+        <rect x="24" y="18" width="116" height="21" rx="4" fill="#020304" />
+        <rect x="60" y="50" width="80" height="11" rx="3" fill="#020304" opacity="0.86" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Lower-third broadcast package -->
+  <g transform="translate(0 774)">
+    <rect width="1600" height="126" fill="#070a0e" opacity="0.98" />
+    <rect x="0" y="0" width="1600" height="2" fill="#fff" opacity="0.12" />
+    <g transform="translate(324 21)" font-family="Arial">
+      <text x="0" y="18" fill="#fff" opacity="0.38" font-size="13" letter-spacing="3">OBJECTIVES</text>
+      <text x="0" y="58" fill="#42d6ff" font-size="24" font-weight="700">3 DRG · 6 TUR · 1 BAR</text>
+    </g>
+    <g transform="translate(800 21)" font-family="Arial" text-anchor="middle">
+      <text y="18" fill="#fff" opacity="0.38" font-size="13" letter-spacing="3">GOLD DIFFERENCE</text>
+      <text y="58" fill="#c6ff3d" font-size="28" font-weight="700">+2.4K</text>
+    </g>
+    <g transform="translate(1276 21)" font-family="Arial" text-anchor="end">
+      <text x="0" y="18" fill="#fff" opacity="0.38" font-size="13" letter-spacing="3">OBJECTIVES</text>
+      <text x="0" y="58" fill="#ff5c6c" font-size="24" font-weight="700">1 DRG · 4 TUR · 0 BAR</text>
+    </g>
+    <rect x="540" y="96" width="520" height="14" rx="4" fill="#020304" />
+    <text x="800" y="88" text-anchor="middle" fill="#fff" opacity="0.28" font-family="Arial" font-size="11" letter-spacing="4">SPONSOR IDENTIFIER REDACTED</text>
+  </g>
+
+  <g transform="translate(35 742)" font-family="Arial">
+    <rect width="292" height="42" rx="8" fill="#c6ff3d" />
+    <text x="146" y="27" text-anchor="middle" fill="#111820" font-size="15" font-weight="800" letter-spacing="2">SYNTHETIC DEMO FIXTURE</text>
+  </g>
+</svg>

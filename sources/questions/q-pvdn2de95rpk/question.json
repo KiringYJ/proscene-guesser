@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "q-pvdn2de95rpk",
+  "kind": "production",
+  "status": "draft",
+  "catalogEditionId": "worlds-2024",
+  "answer": {
+    "year": 2024,
+    "tournament": "World Championship",
+    "stage": "Quarterfinal",
+    "blueTeam": "Hanwha Life Esports",
+    "redTeam": "Bilibili Gaming",
+    "gameNumber": 4
+  }
+}
