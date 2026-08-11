@@ -1,9 +1,11 @@
 import type { InternationalCatalog } from './catalog/types'
-import type {
-  QuestionAnswer,
-  QuestionChoices,
-  QuestionSource,
-} from '../types/question'
+import {
+  QUESTION_POOLS,
+  type QuestionAnswer,
+  type QuestionChoices,
+  type QuestionPool,
+  type QuestionSource,
+} from '../types/question.ts'
 
 export const QUESTION_ID_PATTERN = /^q-[0-9a-hj-km-np-tv-z]{12}$/
 export const QUESTION_PUBLIC_IMAGE_PATTERN = /^(q-[0-9a-hj-km-np-tv-z]{12})\.webp$/
@@ -22,6 +24,7 @@ export interface QuestionManifestChoices {
 
 export interface ClientQuestionRecord {
   id: string
+  pool: QuestionPool
   publicImage: string
   imageAlt: string
   archiveLabel: string
@@ -34,6 +37,7 @@ export interface ClientQuestionRecord {
 }
 
 interface QuestionManifestBase {
+  pool: QuestionPool
   catalogEditionId?: string
   answer: QuestionAnswer
   source?: QuestionSource
@@ -62,6 +66,7 @@ export interface QuestionManifestValidationContext {
 type UnknownRecord = Record<string, unknown>
 
 const manifestKeys = new Set([
+  'pool',
   'catalogEditionId',
   'imageAlt',
   'archiveLabel',
@@ -365,6 +370,10 @@ export function validateQuestionManifest(
   }
 
   reportUnknownKeys(value, manifestKeys, 'manifest', issues)
+
+  if (!QUESTION_POOLS.some((pool) => pool === value.pool)) {
+    issues.push('pool must be classic or deep-cut')
+  }
 
   const answer = validateAnswer(value.answer, issues)
 

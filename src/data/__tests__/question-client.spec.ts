@@ -5,6 +5,7 @@ import { createClientQuestionRecord } from '@/data/question-client'
 import type { PublishedQuestionManifest } from '@/data/question-manifest'
 
 const publishedManifest: PublishedQuestionManifest = {
+  pool: 'classic',
   catalogEditionId: 'worlds-2024',
   imageAlt: 'A redacted broadcast frame.',
   archiveLabel: 'Archive',
@@ -63,6 +64,7 @@ describe('client question records', () => {
     )
 
     expect(record.id).toBe('q-7m4k2d9xrp6v')
+    expect(record.pool).toBe('classic')
     expect(record.publicImage).toBe('q-7m4k2d9xrp6v.webp')
   })
 

@@ -67,6 +67,7 @@ export function createClientQuestionRecord(
 
   return {
     id,
+    pool: manifest.pool,
     publicImage: getQuestionPublicImageFilename(id),
     imageAlt: manifest.imageAlt,
     archiveLabel: manifest.archiveLabel,

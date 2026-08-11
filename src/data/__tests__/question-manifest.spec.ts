@@ -54,6 +54,7 @@ const catalog: InternationalCatalog = {
 }
 
 const publishedManifest: PublishedQuestionManifest = {
+  pool: 'classic',
   catalogEditionId: 'worlds-2024',
   imageAlt: 'A redacted broadcast frame.',
   archiveLabel: 'Archive',
@@ -106,6 +107,7 @@ describe('question manifest validation', () => {
 
   it('accepts a draft with an answer but no public presentation data', () => {
     const draft: QuestionManifest = {
+      pool: 'deep-cut',
       catalogEditionId: 'worlds-2024',
       answer: publishedManifest.answer,
     }
@@ -166,6 +168,17 @@ describe('question manifest validation', () => {
         'manifest has unknown field publicImage',
       ]),
     )
+  })
+
+  it('requires membership in one of the two question pools', () => {
+    const { pool: _pool, ...missingPool } = publishedManifest
+
+    expect(validateQuestionManifest(missingPool, { catalog })).toContain(
+      'pool must be classic or deep-cut',
+    )
+    expect(
+      validateQuestionManifest({ ...publishedManifest, pool: 'featured' }, { catalog }),
+    ).toContain('pool must be classic or deep-cut')
   })
 
   it('rejects an answer stage outside the catalog edition', () => {

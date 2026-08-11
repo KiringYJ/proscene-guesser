@@ -6,6 +6,7 @@ import type { ClientQuestionRecord } from './question-manifest'
 function createQuestion(record: ClientQuestionRecord): Question {
   return {
     id: record.id,
+    pool: record.pool,
     image: `${import.meta.env.BASE_URL}questions/${record.publicImage}`,
     imageAlt: record.imageAlt,
     archiveLabel: record.archiveLabel,
