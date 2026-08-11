@@ -4,6 +4,7 @@ import type { ScoreResult } from '@/types/question'
 defineProps<{
   result: ScoreResult
   nextLabel: string
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -46,10 +47,23 @@ const emit = defineEmits<{
     </div>
 
     <div class="result-card__actions">
-      <v-btn variant="outlined" size="large" prepend-icon="mdi-share-variant" @click="emit('share')">
+      <v-btn
+        variant="outlined"
+        size="large"
+        prepend-icon="mdi-share-variant"
+        :disabled="disabled"
+        @click="emit('share')"
+      >
         Share result
       </v-btn>
-      <v-btn color="primary" size="large" append-icon="mdi-refresh" @click="emit('next')">
+      <v-btn
+        color="primary"
+        size="large"
+        append-icon="mdi-refresh"
+        :loading="disabled"
+        :disabled="disabled"
+        @click="emit('next')"
+      >
         {{ nextLabel }}
       </v-btn>
     </div>

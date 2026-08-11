@@ -12,10 +12,10 @@ import {
   applyYearSelection,
   excludeOpposingTeam,
 } from '@/lib/answer-cascade'
-import type { PlayerAnswer, Question } from '@/types/question'
+import type { PlayerAnswer, QuestionPrompt } from '@/types/question'
 
 const props = defineProps<{
-  question: Question
+  question: QuestionPrompt
   modelValue: PlayerAnswer
   disabled: boolean
   complete: boolean

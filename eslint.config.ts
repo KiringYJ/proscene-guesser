@@ -20,5 +20,42 @@ export default defineConfigWithVueTs(
     files: ['src/**/__tests__/*'],
   },
 
+  {
+    name: 'app/public-game-boundary',
+    files: [
+      'src/App.vue',
+      'src/components/**/*.vue',
+      'src/composables/**/*.ts',
+      'src/game/*.ts',
+    ],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/data/questions',
+              message: 'UI code must receive gameplay state through ActiveGameSessionPort.',
+            },
+            {
+              name: '@/data/questions.ts',
+              message: 'UI code must receive gameplay state through ActiveGameSessionPort.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['@/game/authority/**', '@/game/local/**'],
+              message: 'UI and public game modules cannot import authority or local adapters.',
+            },
+            {
+              group: ['./*', './**', '../*', '../**'],
+              message: 'Use the @/ alias so restricted import boundaries cannot be bypassed.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
 )

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">Synthetic esports broadcast frame</title>
+  <desc id="description">A dark practice frame with two team panels, a timer, and a minimap.</desc>
+  <rect width="1600" height="900" fill="#0d1720"/>
+  <rect x="48" y="48" width="560" height="86" rx="14" fill="#183247"/>
+  <rect x="992" y="48" width="560" height="86" rx="14" fill="#4a2130"/>
+  <rect x="675" y="48" width="250" height="86" rx="14" fill="#111821" stroke="#c6ff3d" stroke-width="3"/>
+  <text x="328" y="102" fill="#e6f3ff" font-family="sans-serif" font-size="34" text-anchor="middle">BLUE SIDE</text>
+  <text x="1272" y="102" fill="#ffeaf0" font-family="sans-serif" font-size="34" text-anchor="middle">RED SIDE</text>
+  <text x="800" y="102" fill="#c6ff3d" font-family="monospace" font-size="34" text-anchor="middle">31:42</text>
+  <path d="M0 760 L390 520 L690 640 L965 390 L1600 680 L1600 900 L0 900 Z" fill="#152b27"/>
+  <circle cx="800" cy="470" r="135" fill="#223f38" stroke="#42d6ff" stroke-width="8"/>
+  <rect x="1230" y="560" width="300" height="300" rx="20" fill="#081016" stroke="#718291" stroke-width="5"/>
+  <path d="M1260 820 L1490 590 M1260 590 L1490 820" stroke="#526b60" stroke-width="16"/>
+  <circle cx="1360" cy="720" r="22" fill="#42d6ff"/>
+  <circle cx="1420" cy="665" r="22" fill="#ff5c6c"/>
+</svg>

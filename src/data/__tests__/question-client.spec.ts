@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import { internationalCatalog } from '@/data/catalog'
-import { createClientQuestionRecord } from '@/data/question-client'
+import { createGeneratedLocalQuestionBundle } from '@/data/question-client'
 import type { PublishedQuestionManifest } from '@/data/question-manifest'
+import { createLocalQuestionBundle } from '@/data/questions'
 
 const publishedManifest: PublishedQuestionManifest = {
   pool: 'classic',
@@ -29,22 +30,22 @@ const publishedManifest: PublishedQuestionManifest = {
   },
 }
 
-describe('client question records', () => {
+describe('local question bundle projection', () => {
   it('emits the selected edition and only editions in the configured year/event scope', () => {
-    const record = createClientQuestionRecord(
+    const bundle = createGeneratedLocalQuestionBundle(
       'q-7m4k2d9xrp6v',
       publishedManifest,
       internationalCatalog,
     )
 
-    expect(record.catalogEditionId).toBe('worlds-2024')
-    expect(record.catalogEditionIds).toEqual([
+    expect(bundle.disclosure.solution.catalogEditionId).toBe('worlds-2024')
+    expect(bundle.prompt.catalogEditionIds).toEqual([
       'msi-2023',
       'worlds-2023',
       'msi-2024',
       'worlds-2024',
     ])
-    expect(record.choices.stages).toEqual([
+    expect(bundle.prompt.choices.stages).toEqual([
       'Play-In Stage',
       'Swiss Stage',
       'Knockout Stage',
@@ -52,20 +53,26 @@ describe('client question records', () => {
       'Semifinal',
       'Final',
     ])
-    expect(record.choices.teams).toContain('Hanwha Life Esports')
-    expect(record.choices.teams).toContain('Bilibili Gaming')
+    expect(bundle.prompt.choices.teams).toContain('Hanwha Life Esports')
+    expect(bundle.prompt.choices.teams).toContain('Bilibili Gaming')
   })
 
-  it('derives runtime identity and the public image filename', () => {
-    const record = createClientQuestionRecord(
+  it('keeps solution and source fields out of the pre-reveal prompt', () => {
+    const generated = createGeneratedLocalQuestionBundle(
       'q-7m4k2d9xrp6v',
       publishedManifest,
       internationalCatalog,
     )
+    const runtime = createLocalQuestionBundle(generated, '/base/')
 
-    expect(record.id).toBe('q-7m4k2d9xrp6v')
-    expect(record.pool).toBe('classic')
-    expect(record.publicImage).toBe('q-7m4k2d9xrp6v.webp')
+    expect(runtime.prompt.id).toBe('q-7m4k2d9xrp6v')
+    expect(runtime.prompt.pool).toBe('classic')
+    expect(runtime.prompt.image).toBe('/base/questions/q-7m4k2d9xrp6v.webp')
+    expect(runtime.prompt).not.toHaveProperty('answer')
+    expect(runtime.prompt).not.toHaveProperty('solution')
+    expect(runtime.prompt).not.toHaveProperty('source')
+    expect(runtime.disclosure.solution.answer).toEqual(publishedManifest.answer)
+    expect(runtime.disclosure.source).toEqual(publishedManifest.source)
   })
 
   it('rejects a catalog-backed year with no allowed tournament edition', () => {
@@ -78,7 +85,11 @@ describe('client question records', () => {
     }
 
     expect(() =>
-      createClientQuestionRecord('q-7m4k2d9xrp6v', invalidScope, internationalCatalog),
+      createGeneratedLocalQuestionBundle(
+        'q-7m4k2d9xrp6v',
+        invalidScope,
+        internationalCatalog,
+      ),
     ).toThrow('catalog choice scope has no tournament for 2099')
   })
 })

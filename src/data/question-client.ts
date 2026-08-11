@@ -1,15 +1,15 @@
 import {
   getQuestionPublicImageFilename,
-  type ClientQuestionRecord,
   type PublishedQuestionManifest,
 } from './question-manifest.ts'
+import type { GeneratedLocalQuestionBundle } from '../game/authority/question-bundle.ts'
 import type { InternationalCatalog } from './catalog/types.ts'
 
-export function createClientQuestionRecord(
+export function createGeneratedLocalQuestionBundle(
   id: string,
   manifest: PublishedQuestionManifest,
   catalog: InternationalCatalog,
-): ClientQuestionRecord {
+): GeneratedLocalQuestionBundle {
   const tournaments = Array.isArray(manifest.choices.tournaments)
     ? manifest.choices.tournaments
     : catalog.series.map((series) => series.name)
@@ -66,26 +66,28 @@ export function createClientQuestionRecord(
   }
 
   return {
-    id,
-    pool: manifest.pool,
-    publicImage: getQuestionPublicImageFilename(id),
-    imageAlt: manifest.imageAlt,
-    archiveLabel: manifest.archiveLabel,
-    clue: manifest.clue,
-    answer: manifest.answer,
-    choices: {
-      years: manifest.choices.years,
-      tournaments,
-      stages,
-      teams,
-      games: manifest.choices.games,
+    prompt: {
+      id,
+      pool: manifest.pool,
+      publicImage: getQuestionPublicImageFilename(id),
+      imageAlt: manifest.imageAlt,
+      archiveLabel: manifest.archiveLabel,
+      clue: manifest.clue,
+      choices: {
+        years: manifest.choices.years,
+        tournaments,
+        stages,
+        teams,
+        games: manifest.choices.games,
+      },
+      ...(catalogEditionIds ? { catalogEditionIds } : {}),
     },
-    ...(manifest.catalogEditionId
-      ? {
-          catalogEditionId: manifest.catalogEditionId,
-          catalogEditionIds,
-        }
-      : {}),
-    ...(manifest.source ? { source: manifest.source } : {}),
+    disclosure: {
+      solution: {
+        answer: manifest.answer,
+        ...(manifest.catalogEditionId ? { catalogEditionId: manifest.catalogEditionId } : {}),
+      },
+      ...(manifest.source ? { source: manifest.source } : {}),
+    },
   }
 }

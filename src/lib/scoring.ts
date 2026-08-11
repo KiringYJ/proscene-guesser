@@ -1,10 +1,11 @@
 import type {
   PlayerAnswer,
-  QuestionAnswer,
+  QuestionSolution,
   ScoreLine,
   ScoreResult,
 } from '@/types/question'
 import { getInternationalEdition } from '@/data/catalog'
+import { evaluateAnswer } from '@/game/scoring'
 
 function selected(value: string | number | null): string {
   if (value === null) {
@@ -32,38 +33,39 @@ function teamLabel(blueTeam: string | null, redTeam: string | null): string {
 
 export function scoreAnswer(
   answer: PlayerAnswer,
-  expected: QuestionAnswer,
-  expectedCatalogEditionId?: string,
+  solution: QuestionSolution,
 ): ScoreResult {
-  const eventCorrect = expectedCatalogEditionId
-    ? answer.catalogEditionId === expectedCatalogEditionId && answer.stage === expected.stage
-    : answer.tournament === expected.tournament && answer.stage === expected.stage
+  const expected = solution.answer
+  const evaluation = evaluateAnswer(answer, solution)
+  const correctByCategory = new Map(
+    evaluation.lines.map((line) => [line.id, line.correct]),
+  )
   const lines: ScoreLine[] = [
     {
       id: 'year',
       label: 'Year',
-      correct: answer.year === expected.year,
+      correct: correctByCategory.get('year') ?? false,
       actual: selected(answer.year),
       expected: selected(expected.year),
     },
     {
       id: 'event',
       label: 'Event',
-      correct: eventCorrect,
+      correct: correctByCategory.get('event') ?? false,
       actual: eventLabel(answer.tournament, answer.stage, answer.catalogEditionId),
-      expected: eventLabel(expected.tournament, expected.stage, expectedCatalogEditionId),
+      expected: eventLabel(expected.tournament, expected.stage, solution.catalogEditionId),
     },
     {
       id: 'teams',
       label: 'Teams',
-      correct: answer.blueTeam === expected.blueTeam && answer.redTeam === expected.redTeam,
+      correct: correctByCategory.get('teams') ?? false,
       actual: teamLabel(answer.blueTeam, answer.redTeam),
       expected: teamLabel(expected.blueTeam, expected.redTeam),
     },
     {
       id: 'game',
       label: 'Game',
-      correct: answer.gameNumber === expected.gameNumber,
+      correct: correctByCategory.get('game') ?? false,
       actual: `Game ${selected(answer.gameNumber)}`,
       expected: `Game ${selected(expected.gameNumber)}`,
     },
@@ -71,26 +73,7 @@ export function scoreAnswer(
 
   return {
     lines,
-    points: lines.filter((line) => line.correct).length,
-    total: lines.length,
+    points: evaluation.points,
+    total: evaluation.total,
   }
-}
-
-export function isAnswerComplete(
-  answer: PlayerAnswer,
-  requireCatalogEditionId = false,
-): boolean {
-  const requiredValues = [
-    answer.year,
-    answer.tournament,
-    answer.stage,
-    answer.blueTeam,
-    answer.redTeam,
-    answer.gameNumber,
-  ]
-
-  return (
-    requiredValues.every((value) => value !== null && value !== '') &&
-    (!requireCatalogEditionId || answer.catalogEditionId !== null)
-  )
 }

@@ -1,9 +1,5 @@
-import 'vuetify/styles'
-import '@/assets/main.css'
+import { mountApp } from '@/bootstrap'
+import { localQuestionBundles } from '@/data/questions'
+import { LocalActiveGameSession } from '@/game/local/local-active-game-session'
 
-import { createApp } from 'vue'
-
-import App from './App.vue'
-import { vuetify } from './plugins/vuetify'
-
-createApp(App).use(vuetify).mount('#app')
+mountApp(new LocalActiveGameSession(localQuestionBundles))

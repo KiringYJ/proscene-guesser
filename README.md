@@ -41,10 +41,13 @@ The production build is written to `dist/`.
 ```text
 src/
   components/       Question, answer, and result panels
-  data/             Static question catalog
-  lib/              Scoring and share-result rules
+  composables/      Vue adapter for the active game session
+  data/             Static local question catalog
+  game/             Public game contracts, pure rules, and adapters
+  lib/              Score presentation and share-result formatting
   plugins/          Vuetify configuration
   types/            Question and score contracts
+docs/               Architecture and content-workflow decisions
 sources/
   questions/        Canonical question JSON and tracked original PNGs
 public/
@@ -53,6 +56,8 @@ public/
 ```
 
 Question answers are bundled into the browser. That is acceptable for a casual MVP, but it is not an anti-cheat design. A competitive daily challenge or trusted leaderboard would require server-side answer validation.
+
+The UI now consumes a narrow asynchronous game-session port, and pre-reveal prompts are structurally separate from reveal-only solutions. This keeps the static MVP straightforward while leaving a clean migration seam for synchronized rooms later. See [Multiplayer-ready architecture](docs/multiplayer-architecture.md) for the current boundary, future room state machine, authority model, timing/concurrency rules, and staged migration plan. Multiplayer is not implemented yet.
 
 ## Question IDs
 
@@ -74,7 +79,7 @@ Every question belongs to exactly one authored pool: `classic` for iconic matche
 
 For a catalog-backed question, selecting a year limits the tournament selector to editions from that year. Selecting an edition then limits stage and team choices to that edition, and changing either upstream value clears stale downstream selections. When one series has multiple editions in the same year, such as Rift Rivals, the form displays the full edition name and scores its stable edition ID. Stage and participant lists come from the edition catalog rather than being duplicated in each question manifest.
 
-The runtime adapter in `src/data/questions.ts` turns the generated records into Vite-aware image URLs. Because this remains a static client, answers for published questions are still inspectable in the built JavaScript.
+The runtime adapter in `src/data/questions.ts` turns generated prompt/disclosure bundles into Vite-aware local bundles. Components receive only the public prompt before reveal. Because this remains a static client, the local session still loads the disclosure and answers for published questions remain inspectable in the built JavaScript.
 
 ## Adding a question
 

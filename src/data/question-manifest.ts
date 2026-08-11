@@ -1,8 +1,8 @@
 import type { InternationalCatalog } from './catalog/types'
+import type { GeneratedLocalQuestionBundle } from '../game/authority/question-bundle.ts'
 import {
   QUESTION_POOLS,
   type QuestionAnswer,
-  type QuestionChoices,
   type QuestionPool,
   type QuestionSource,
 } from '../types/question.ts'
@@ -22,19 +22,7 @@ export interface QuestionManifestChoices {
   games: readonly number[]
 }
 
-export interface ClientQuestionRecord {
-  id: string
-  pool: QuestionPool
-  publicImage: string
-  imageAlt: string
-  archiveLabel: string
-  clue: string
-  answer: QuestionAnswer
-  choices: QuestionChoices
-  catalogEditionId?: string
-  catalogEditionIds?: readonly string[]
-  source?: QuestionSource
-}
+export type { GeneratedLocalQuestionBundle }
 
 interface QuestionManifestBase {
   pool: QuestionPool

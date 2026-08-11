@@ -34,17 +34,24 @@ export interface QuestionSource {
   url: string
 }
 
-export interface Question {
+export interface QuestionPrompt {
   id: string
   pool: QuestionPool
   image: string
   imageAlt: string
   archiveLabel: string
   clue: string
-  answer: QuestionAnswer
   choices: QuestionChoices
-  catalogEditionId?: string
   catalogEditionIds?: readonly string[]
+}
+
+export interface QuestionSolution {
+  answer: QuestionAnswer
+  catalogEditionId?: string
+}
+
+export interface RevealDisclosure {
+  solution: QuestionSolution
   source?: QuestionSource
 }
 

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:fixture": "vite --open /dev/round-fixture.html",
     "build": "run-s questions:check build:app",
     "build:app": "run-p type-check \"build-only {@}\" --",
     "build-only": "vite build",
@@ -15,11 +16,12 @@
     "data:sync": "node scripts/sync-liquipedia-catalog.ts",
     "questions:sync": "node scripts/sync-question-catalog.ts",
     "questions:check": "node scripts/sync-question-catalog.ts --check",
+    "fixture:check": "node scripts/check-dev-fixture-excluded.ts",
     "lint": "run-s lint:oxlint lint:eslint",
     "lint:oxlint": "oxlint .",
     "lint:eslint": "eslint . --cache",
     "lint:fix": "oxlint . --fix && eslint . --fix --cache",
-    "check": "run-s questions:check type-check lint test build-only"
+    "check": "run-s questions:check type-check lint test build-only fixture:check"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",

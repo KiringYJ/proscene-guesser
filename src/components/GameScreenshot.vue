@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Question } from '@/types/question'
+import type { QuestionPrompt } from '@/types/question'
 
 defineProps<{
-  question: Question
+  question: QuestionPrompt
   revealed: boolean
 }>()
 </script>

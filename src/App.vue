@@ -1,55 +1,96 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import AnswerForm from '@/components/AnswerForm.vue'
 import GameScreenshot from '@/components/GameScreenshot.vue'
 import ResultCard from '@/components/ResultCard.vue'
-import { questions } from '@/data/questions'
-import { isAnswerComplete, scoreAnswer } from '@/lib/scoring'
+import { useActiveGameSession } from '@/composables/use-active-game-session'
+import { isAnswerComplete } from '@/game/scoring'
 import { buildShareText } from '@/lib/share'
-import {
-  createEmptyAnswer,
-  type PlayerAnswer,
-  type ScoreResult,
-} from '@/types/question'
+import { createEmptyAnswer, type PlayerAnswer } from '@/types/question'
 
-const currentIndex = ref(0)
+const { session, snapshot } = useActiveGameSession()
 const answer = ref<PlayerAnswer>(createEmptyAnswer())
-const result = ref<ScoreResult | null>(null)
-const roundsPlayed = ref(0)
-const sessionBest = ref(0)
 const toast = ref('')
 const snackbarOpen = ref(false)
 
-const currentQuestion = computed(() => questions[currentIndex.value])
-
-const answerComplete = computed(() =>
-  isAnswerComplete(answer.value, currentQuestion.value?.catalogEditionIds !== undefined),
+const currentQuestion = computed(() =>
+  snapshot.value.phase === 'empty' ? undefined : snapshot.value.prompt,
 )
-const archiveStatus = computed(() => (currentQuestion.value ? 'Archive online' : 'Archive preparation'))
-const nextLabel = computed(() => (questions.length > 1 ? 'Next archive' : 'Replay archive'))
-
-function submitAnswer() {
+const result = computed(() =>
+  snapshot.value.phase === 'revealed' ? snapshot.value.result : null,
+)
+const answerComplete = computed(() => {
   const question = currentQuestion.value
 
-  if (!question || !answerComplete.value || result.value) {
-    return
+  return question ? isAnswerComplete(answer.value, question) : false
+})
+const answerDisabled = computed(() => {
+  const state = snapshot.value
+
+  if (state.phase !== 'answering') {
+    return true
   }
 
-  const scored = scoreAnswer(answer.value, question.answer, question.catalogEditionId)
-  result.value = scored
-  roundsPlayed.value += 1
-  sessionBest.value = Math.max(sessionBest.value, scored.points)
+  return !(
+    state.submission.status === 'editable' ||
+    (state.submission.status === 'rejected' && state.submission.retryable)
+  )
+})
+const advancePending = computed(() =>
+  snapshot.value.phase === 'revealed' && snapshot.value.advance.status === 'pending',
+)
+const archiveStatus = computed(() => (currentQuestion.value ? 'Archive online' : 'Archive preparation'))
+const nextLabel = computed(() =>
+  snapshot.value.phase === 'revealed' ? snapshot.value.nextLabel : 'Next archive',
+)
+
+watch(
+  () => (snapshot.value.phase === 'empty' ? null : snapshot.value.roundId),
+  (roundId, previousRoundId) => {
+    if (previousRoundId !== null && roundId !== previousRoundId) {
+      answer.value = createEmptyAnswer()
+    }
+  },
+)
+
+function notify(message: string): void {
+  toast.value = message
+  snackbarOpen.value = true
 }
 
-function nextQuestion() {
-  if (questions.length === 0) {
+async function submitAnswer(): Promise<void> {
+  const state = snapshot.value
+
+  if (state.phase !== 'answering' || !answerComplete.value || answerDisabled.value) {
     return
   }
 
-  currentIndex.value = (currentIndex.value + 1) % questions.length
-  answer.value = createEmptyAnswer()
-  result.value = null
+  try {
+    const outcome = await session.submitAnswer(answer.value)
+
+    if (!outcome.ok) {
+      notify(outcome.message)
+    }
+  } catch {
+    notify('The game session is temporarily unavailable.')
+  }
+}
+
+async function nextQuestion(): Promise<void> {
+  if (snapshot.value.phase !== 'revealed' || advancePending.value) {
+    return
+  }
+
+  try {
+    const outcome = await session.advanceRound()
+
+    if (!outcome.ok) {
+      notify(outcome.message)
+    }
+  } catch {
+    notify('The game session is temporarily unavailable.')
+  }
 }
 
 async function copyText(text: string): Promise<void> {
@@ -74,33 +115,30 @@ async function copyText(text: string): Promise<void> {
 }
 
 async function shareResult() {
-  const question = currentQuestion.value
+  const state = snapshot.value
 
-  if (!question || !result.value) {
+  if (state.phase !== 'revealed') {
     return
   }
 
   const siteUrl = `${window.location.origin}${import.meta.env.BASE_URL}`
-  const shareText = buildShareText(question.id, result.value, siteUrl)
+  const shareText = buildShareText(state.prompt.id, state.result, siteUrl)
 
   try {
     if (navigator.share) {
       await navigator.share({ text: shareText })
-      toast.value = 'Share sheet opened.'
-      snackbarOpen.value = true
+      notify('Share sheet opened.')
       return
     }
 
     await copyText(shareText)
-    toast.value = 'Result copied to the clipboard.'
-    snackbarOpen.value = true
+    notify('Result copied to the clipboard.')
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
       return
     }
 
-    toast.value = 'Sharing is unavailable in this browser.'
-    snackbarOpen.value = true
+    notify('Sharing is unavailable in this browser.')
   }
 }
 </script>
@@ -140,21 +178,21 @@ async function shareResult() {
             <dl class="session-stats" aria-label="Session statistics">
               <div>
                 <dt>Round</dt>
-                <dd>{{ String(currentQuestion ? currentIndex + 1 : 0).padStart(2, '0') }}/{{ String(questions.length).padStart(2, '0') }}</dd>
+                <dd>{{ String(snapshot.progress.roundNumber).padStart(2, '0') }}/{{ String(snapshot.progress.roundCount).padStart(2, '0') }}</dd>
               </div>
               <div>
                 <dt>Played</dt>
-                <dd>{{ String(roundsPlayed).padStart(2, '0') }}</dd>
+                <dd>{{ String(snapshot.progress.roundsPlayed).padStart(2, '0') }}</dd>
               </div>
               <div>
                 <dt>Best</dt>
-                <dd>{{ sessionBest }}/4</dd>
+                <dd>{{ snapshot.progress.bestPoints }}/4</dd>
               </div>
             </dl>
           </section>
 
           <section v-if="currentQuestion" class="game-layout" aria-label="Current question">
-            <GameScreenshot :question="currentQuestion" :revealed="Boolean(result)" />
+            <GameScreenshot :question="currentQuestion" :revealed="snapshot.phase === 'revealed'" />
 
             <Transition name="panel-swap" mode="out-in">
               <ResultCard
@@ -162,6 +200,7 @@ async function shareResult() {
                 key="result"
                 :result="result"
                 :next-label="nextLabel"
+                :disabled="advancePending"
                 @share="shareResult"
                 @next="nextQuestion"
               />
@@ -170,7 +209,7 @@ async function shareResult() {
                 key="answer"
                 v-model="answer"
                 :question="currentQuestion"
-                :disabled="Boolean(result)"
+                :disabled="answerDisabled"
                 :complete="answerComplete"
                 @submit="submitAnswer"
               />

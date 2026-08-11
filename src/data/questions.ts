@@ -1,26 +1,31 @@
-import type { Question } from '@/types/question'
+import type {
+  GeneratedLocalQuestionBundle,
+  LocalQuestionBundle,
+} from '@/game/authority/question-bundle'
 
-import { publishedQuestionRecords } from './questions.generated'
-import type { ClientQuestionRecord } from './question-manifest'
+import { publishedQuestionBundles } from './questions.generated'
 
-function createQuestion(record: ClientQuestionRecord): Question {
+export function createLocalQuestionBundle(
+  record: GeneratedLocalQuestionBundle,
+  baseUrl: string,
+): LocalQuestionBundle {
   return {
-    id: record.id,
-    pool: record.pool,
-    image: `${import.meta.env.BASE_URL}questions/${record.publicImage}`,
-    imageAlt: record.imageAlt,
-    archiveLabel: record.archiveLabel,
-    clue: record.clue,
-    answer: record.answer,
-    choices: record.choices,
-    ...(record.catalogEditionId
-      ? {
-          catalogEditionId: record.catalogEditionId,
-          catalogEditionIds: record.catalogEditionIds,
-        }
-      : {}),
-    ...(record.source ? { source: record.source } : {}),
+    prompt: {
+      id: record.prompt.id,
+      pool: record.prompt.pool,
+      image: `${baseUrl}questions/${record.prompt.publicImage}`,
+      imageAlt: record.prompt.imageAlt,
+      archiveLabel: record.prompt.archiveLabel,
+      clue: record.prompt.clue,
+      choices: record.prompt.choices,
+      ...(record.prompt.catalogEditionIds
+        ? { catalogEditionIds: record.prompt.catalogEditionIds }
+        : {}),
+    },
+    disclosure: record.disclosure,
   }
 }
 
-export const questions = publishedQuestionRecords.map(createQuestion)
+export const localQuestionBundles = publishedQuestionBundles.map((record) =>
+  createLocalQuestionBundle(record, import.meta.env.BASE_URL),
+)
