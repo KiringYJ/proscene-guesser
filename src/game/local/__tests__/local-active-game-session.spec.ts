@@ -20,7 +20,10 @@ const bundle: LocalQuestionBundle = {
       years: [2024],
       tournaments: ['World Championship'],
       stages: ['Final'],
-      teams: ['Blue Comets', 'Red Meteors'],
+      teams: [
+        { id: 'blue-comets', name: 'Blue Comets' },
+        { id: 'red-meteors', name: 'Red Meteors' },
+      ],
       games: [3],
     },
   },
@@ -30,8 +33,8 @@ const bundle: LocalQuestionBundle = {
         year: 2024,
         tournament: 'World Championship',
         stage: 'Final',
-        blueTeam: 'Blue Comets',
-        redTeam: 'Red Meteors',
+        blueTeamId: 'blue-comets',
+        redTeamId: 'red-meteors',
         gameNumber: 3,
       },
     },
@@ -57,7 +60,7 @@ describe('LocalActiveGameSession', () => {
 
     expect(session.getSnapshot()).toEqual({
       phase: 'empty',
-      reason: 'no-published-questions',
+      reason: 'no-playable-questions',
       progress: {
         roundNumber: 0,
         roundCount: 0,

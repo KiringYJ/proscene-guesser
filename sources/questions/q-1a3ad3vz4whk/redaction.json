@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "approved",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "6CB452C40FE2E9CB220F9F5AD2A608E57E7253F74D73230CDA38412BC7E53188"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-series",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "top-blue-team-series",
+        "top-red-team-series"
+      ]
+    },
+    {
+      "id": "roster-player-names",
+      "rule": "uniform-width",
+      "width": 110,
+      "rectangleIds": [
+        "blue-roster-mouse",
+        "blue-roster-clearlove7",
+        "blue-roster-scout",
+        "blue-roster-iboy",
+        "blue-roster-meiko",
+        "red-roster-huni",
+        "red-roster-peanut",
+        "red-roster-faker",
+        "red-roster-bang",
+        "red-roster-wolf"
+      ]
+    },
+    {
+      "id": "floating-player-names",
+      "rule": "uniform-width",
+      "width": 132,
+      "rectangleIds": [
+        "floating-red-huni",
+        "floating-blue-clearlove7",
+        "floating-blue-meiko",
+        "floating-blue-iboy",
+        "floating-blue-mouse",
+        "floating-blue-scout"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "asymmetric-player-camera-panels",
+      "rectangleIds": [
+        "blue-player-camera",
+        "red-player-camera"
+      ],
+      "reason": "The source camera frames have different fixed bounds; mirroring the blue rectangle would cover the center stats panel and miss the right edge of the red frame."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "top-blue-team-series",
+      "purpose": "team-and-series-identifier",
+      "x": 356,
+      "y": 0,
+      "width": 194,
+      "height": 51
+    },
+    {
+      "id": "top-red-team-series",
+      "purpose": "team-and-series-identifier",
+      "x": 1370,
+      "y": 0,
+      "width": 194,
+      "height": 51
+    },
+    {
+      "id": "blue-roster-mouse",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 117,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-clearlove7",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 229,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-scout",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 341,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "blue-roster-iboy",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 454,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-meiko",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 567,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "red-roster-huni",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 117,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "red-roster-peanut",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 229,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "red-roster-faker",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 341,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "red-roster-bang",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 454,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "red-roster-wolf",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 567,
+      "width": 110,
+      "height": 23
+    },
+    {
+      "id": "floating-red-huni",
+      "purpose": "player-name",
+      "x": 1689,
+      "y": 122,
+      "width": 132,
+      "height": 30
+    },
+    {
+      "id": "floating-blue-clearlove7",
+      "purpose": "player-name",
+      "x": 1298,
+      "y": 378,
+      "width": 132,
+      "height": 28
+    },
+    {
+      "id": "floating-blue-meiko",
+      "purpose": "player-name",
+      "x": 1342,
+      "y": 510,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "floating-blue-iboy",
+      "purpose": "player-name",
+      "x": 1422,
+      "y": 580,
+      "width": 132,
+      "height": 29
+    },
+    {
+      "id": "floating-blue-mouse",
+      "purpose": "player-name",
+      "x": 1305,
+      "y": 600,
+      "width": 132,
+      "height": 28
+    },
+    {
+      "id": "floating-blue-scout",
+      "purpose": "player-name",
+      "x": 1352,
+      "y": 692,
+      "width": 132,
+      "height": 28
+    },
+    {
+      "id": "blue-player-camera",
+      "purpose": "player-camera-panel",
+      "x": 305,
+      "y": 850,
+      "width": 262,
+      "height": 230
+    },
+    {
+      "id": "event-title",
+      "purpose": "event-identifier",
+      "x": 728,
+      "y": 820,
+      "width": 487,
+      "height": 54
+    },
+    {
+      "id": "red-player-camera",
+      "purpose": "player-camera-panel",
+      "x": 1369,
+      "y": 854,
+      "width": 252,
+      "height": 226
+    }
+  ]
+}

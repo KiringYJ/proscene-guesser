@@ -12,8 +12,8 @@ const selectedAnswer: PlayerAnswer = {
   catalogEditionId: 'worlds-2024',
   tournament: 'World Championship',
   stage: 'Quarterfinal',
-  blueTeam: 'Bilibili Gaming',
-  redTeam: 'Hanwha Life Esports',
+  blueTeamId: 'bilibili-gaming',
+  redTeamId: 'hanwha-life-esports',
   gameNumber: 4,
 }
 
@@ -24,8 +24,8 @@ describe('answer cascade', () => {
       catalogEditionId: null,
       tournament: null,
       stage: null,
-      blueTeam: null,
-      redTeam: null,
+      blueTeamId: null,
+      redTeamId: null,
       gameNumber: 4,
     })
   })
@@ -49,15 +49,25 @@ describe('answer cascade', () => {
       catalogEditionId: 'msi-2024',
       tournament: 'Mid-Season Invitational',
       stage: null,
-      blueTeam: null,
-      redTeam: null,
+      blueTeamId: null,
+      redTeamId: null,
       gameNumber: 4,
     })
   })
 
   it('removes the selected opposing team from the other side', () => {
     expect(
-      excludeOpposingTeam(['Bilibili Gaming', 'Hanwha Life Esports', 'T1'], 'T1'),
-    ).toEqual(['Bilibili Gaming', 'Hanwha Life Esports'])
+      excludeOpposingTeam(
+        [
+          { id: 'bilibili-gaming', name: 'Bilibili Gaming' },
+          { id: 'hanwha-life-esports', name: 'Hanwha Life Esports' },
+          { id: 't1', name: 'T1' },
+        ],
+        't1',
+      ),
+    ).toEqual([
+      { id: 'bilibili-gaming', name: 'Bilibili Gaming' },
+      { id: 'hanwha-life-esports', name: 'Hanwha Life Esports' },
+    ])
   })
 })

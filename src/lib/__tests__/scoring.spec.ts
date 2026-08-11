@@ -8,14 +8,20 @@ import type {
   QuestionAnswer,
   QuestionPrompt,
   QuestionSolution,
+  QuestionTeamChoice,
 } from '@/types/question'
+
+const teamChoices: readonly QuestionTeamChoice[] = [
+  { id: 'blue-comets', name: 'Blue Comets' },
+  { id: 'crimson-foxes', name: 'Crimson Foxes' },
+]
 
 const expected: QuestionAnswer = {
   year: 2024,
   tournament: 'World Championship',
   stage: 'Semifinal',
-  blueTeam: 'Blue Comets',
-  redTeam: 'Crimson Foxes',
+  blueTeamId: 'blue-comets',
+  redTeamId: 'crimson-foxes',
   gameNumber: 3,
 }
 
@@ -32,7 +38,7 @@ const prompt: QuestionPrompt = {
     years: [2024],
     tournaments: ['World Championship'],
     stages: ['Semifinal'],
-    teams: ['Blue Comets', 'Crimson Foxes'],
+    teams: teamChoices,
     games: [3],
   },
 }
@@ -40,12 +46,15 @@ const prompt: QuestionPrompt = {
 describe('scoreAnswer', () => {
   it('awards one point for each of the four game dimensions', () => {
     const evaluation = evaluateAnswer(perfectAnswer, solution)
-    const result = scoreAnswer(perfectAnswer, solution)
+    const result = scoreAnswer(perfectAnswer, solution, { teamChoices })
 
     expect(evaluation.points).toBe(4)
     expect(result.points).toBe(4)
     expect(result.total).toBe(4)
     expect(result.lines.every((line) => line.correct)).toBe(true)
+    expect(result.lines.find((line) => line.id === 'teams')?.expected).toBe(
+      'Blue Comets vs Crimson Foxes',
+    )
   })
 
   it('treats event and side-specific teams as grouped dimensions', () => {
@@ -53,10 +62,11 @@ describe('scoreAnswer', () => {
       {
         ...perfectAnswer,
         stage: 'Final',
-        blueTeam: expected.redTeam,
-        redTeam: expected.blueTeam,
+        blueTeamId: expected.redTeamId,
+        redTeamId: expected.blueTeamId,
       },
       solution,
+      { teamChoices },
     )
 
     expect(result.points).toBe(2)
@@ -80,6 +90,7 @@ describe('scoreAnswer', () => {
         },
         catalogEditionId: 'rift-rivals-lck-lpl-lms-2018',
       },
+      { teamChoices },
     )
 
     expect(result.lines.find((line) => line.id === 'event')?.correct).toBe(false)
@@ -114,10 +125,13 @@ describe('isAnswerComplete', () => {
 
 describe('buildShareText', () => {
   it('shares only the score pattern, not the hidden answer', () => {
-    const text = buildShareText('q-7m4k2d9xrp6v', scoreAnswer(perfectAnswer, solution))
+    const text = buildShareText(
+      'q-7m4k2d9xrp6v',
+      scoreAnswer(perfectAnswer, solution, { teamChoices }),
+    )
 
     expect(text).toContain('🟩🟩🟩🟩 4/4')
-    expect(text).not.toContain(expected.blueTeam)
+    expect(text).not.toContain('Blue Comets')
     expect(text).not.toContain(expected.tournament)
   })
 })

@@ -2,4 +2,454 @@
 
 import type { GeneratedLocalQuestionBundle } from './question-manifest'
 
-export const publishedQuestionBundles = [] as const satisfies readonly GeneratedLocalQuestionBundle[]
+export const playableQuestionBundles = [
+  {
+    "prompt": {
+      "id": "q-1a3ad3vz4whk",
+      "pool": "classic",
+      "imageAlt": "A redacted professional League of Legends broadcast frame.",
+      "archiveLabel": "Pro match archive",
+      "clue": "Infer the match from the remaining broadcast and game-state clues.",
+      "choices": {
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020,
+          2019,
+          2018,
+          2017,
+          2016,
+          2015,
+          2014,
+          2013,
+          2012,
+          2011,
+          2010
+        ],
+        "tournaments": [
+          "World Championship",
+          "Mid-Season Invitational",
+          "First Stand Tournament",
+          "Esports World Cup",
+          "Intel Extreme Masters World Championship",
+          "IGN Pro League",
+          "World Cyber Games",
+          "International Wildcard",
+          "Rift Rivals"
+        ],
+        "stages": [
+          "Play-In Stage",
+          "Group Stage",
+          "Knockout Stage",
+          "Playoffs",
+          "Quarterfinal",
+          "Semifinal",
+          "Final"
+        ],
+        "teams": [
+          {
+            "id": "longzhu-gaming",
+            "name": "Longzhu Gaming"
+          },
+          {
+            "id": "sk-telecom-t1",
+            "name": "SK Telecom T1"
+          },
+          {
+            "id": "samsung-galaxy",
+            "name": "Samsung Galaxy"
+          },
+          {
+            "id": "edward-gaming",
+            "name": "EDward Gaming"
+          },
+          {
+            "id": "royal-never-give-up",
+            "name": "Royal Never Give Up"
+          },
+          {
+            "id": "gigabyte-marines",
+            "name": "GIGABYTE Marines"
+          },
+          {
+            "id": "g2-esports",
+            "name": "G2 Esports"
+          },
+          {
+            "id": "misfits-gaming",
+            "name": "Misfits Gaming"
+          },
+          {
+            "id": "team-solomid",
+            "name": "Team SoloMid"
+          },
+          {
+            "id": "immortals",
+            "name": "Immortals"
+          },
+          {
+            "id": "flash-wolves",
+            "name": "Flash Wolves"
+          },
+          {
+            "id": "ahq-e-sports-club",
+            "name": "ahq e-Sports Club"
+          },
+          {
+            "id": "1907-fenerbahce-esports",
+            "name": "1907 Fenerbahçe Esports"
+          },
+          {
+            "id": "cloud9",
+            "name": "Cloud9"
+          },
+          {
+            "id": "dire-wolves",
+            "name": "Dire Wolves"
+          },
+          {
+            "id": "fnatic",
+            "name": "Fnatic"
+          },
+          {
+            "id": "gambit-esports",
+            "name": "Gambit Esports"
+          },
+          {
+            "id": "hong-kong-attitude",
+            "name": "Hong Kong Attitude"
+          },
+          {
+            "id": "kaos-latin-gamers",
+            "name": "Kaos Latin Gamers"
+          },
+          {
+            "id": "lyon-gaming",
+            "name": "Lyon Gaming"
+          },
+          {
+            "id": "rampage",
+            "name": "Rampage"
+          },
+          {
+            "id": "team-one-esports",
+            "name": "Team oNe eSports"
+          },
+          {
+            "id": "team-we",
+            "name": "Team WE"
+          },
+          {
+            "id": "young-generation",
+            "name": "Young Generation"
+          }
+        ],
+        "games": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "catalogEditionIds": [
+        "wcg-2010",
+        "worlds-2011",
+        "iem-world-championship-2012",
+        "ipl-5",
+        "worlds-2012",
+        "iem-world-championship-2013",
+        "iwcq-2013",
+        "worlds-2013",
+        "worlds-2014",
+        "iem-world-championship-2014",
+        "iwct-gamescom-2014",
+        "iwct-pax-2014",
+        "msi-2015",
+        "worlds-2015",
+        "iem-world-championship-2015",
+        "iwci-2015",
+        "iwct-chile-2015",
+        "iwct-turkey-2015",
+        "msi-2016",
+        "worlds-2016",
+        "iem-world-championship-2016",
+        "iwci-2016",
+        "iwcq-2016",
+        "msi-2017",
+        "worlds-2017",
+        "iem-world-championship-2017",
+        "rift-rivals-gpl-ljl-opl-2017",
+        "rift-rivals-lck-lpl-lms-2017",
+        "rift-rivals-lcl-tcl-2017",
+        "rift-rivals-lln-cls-cblol-2017",
+        "rift-rivals-na-eu-2017",
+        "msi-2018",
+        "worlds-2018",
+        "rift-rivals-lck-lpl-lms-2018",
+        "rift-rivals-lcl-tcl-vcs-2018",
+        "rift-rivals-lln-cls-cblol-2018",
+        "rift-rivals-na-eu-2018",
+        "rift-rivals-sea-ljl-opl-2018",
+        "msi-2019",
+        "worlds-2019",
+        "rift-rivals-lck-lpl-lms-vcs-2019",
+        "rift-rivals-na-eu-2019",
+        "worlds-2020",
+        "msi-2021",
+        "worlds-2021",
+        "msi-2022",
+        "worlds-2022",
+        "msi-2023",
+        "worlds-2023",
+        "msi-2024",
+        "worlds-2024",
+        "ewc-2024",
+        "first-stand-2025",
+        "msi-2025",
+        "worlds-2025",
+        "ewc-2025",
+        "first-stand-2026",
+        "msi-2026",
+        "ewc-2026"
+      ]
+    },
+    "disclosure": {
+      "solution": {
+        "answer": {
+          "year": 2017,
+          "tournament": "World Championship",
+          "stage": "Group Stage",
+          "blueTeamId": "edward-gaming",
+          "redTeamId": "sk-telecom-t1",
+          "gameNumber": 1
+        },
+        "catalogEditionId": "worlds-2017"
+      },
+      "source": {
+        "label": "Official LoL Esports broadcast VOD",
+        "url": "https://www.youtube.com/watch?v=Kuszgwi1Eno"
+      }
+    }
+  },
+  {
+    "prompt": {
+      "id": "q-pvdn2de95rpk",
+      "pool": "deep-cut",
+      "imageAlt": "A redacted professional League of Legends broadcast frame.",
+      "archiveLabel": "Pro match archive",
+      "clue": "Infer the match from the remaining broadcast and game-state clues.",
+      "choices": {
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020,
+          2019,
+          2018,
+          2017,
+          2016,
+          2015,
+          2014,
+          2013,
+          2012,
+          2011,
+          2010
+        ],
+        "tournaments": [
+          "World Championship",
+          "Mid-Season Invitational",
+          "First Stand Tournament",
+          "Esports World Cup",
+          "Intel Extreme Masters World Championship",
+          "IGN Pro League",
+          "World Cyber Games",
+          "International Wildcard",
+          "Rift Rivals"
+        ],
+        "stages": [
+          "Play-In Stage",
+          "Swiss Stage",
+          "Knockout Stage",
+          "Quarterfinal",
+          "Semifinal",
+          "Final"
+        ],
+        "teams": [
+          {
+            "id": "hanwha-life-esports",
+            "name": "Hanwha Life Esports"
+          },
+          {
+            "id": "gen-g-esports",
+            "name": "Gen.G Esports"
+          },
+          {
+            "id": "dplus",
+            "name": "Dplus"
+          },
+          {
+            "id": "t1",
+            "name": "T1"
+          },
+          {
+            "id": "bilibili-gaming",
+            "name": "Bilibili Gaming"
+          },
+          {
+            "id": "top-esports",
+            "name": "Top Esports"
+          },
+          {
+            "id": "lng-esports",
+            "name": "LNG Esports"
+          },
+          {
+            "id": "weibo-gaming",
+            "name": "Weibo Gaming"
+          },
+          {
+            "id": "g2-esports",
+            "name": "G2 Esports"
+          },
+          {
+            "id": "fnatic",
+            "name": "Fnatic"
+          },
+          {
+            "id": "flyquest",
+            "name": "FlyQuest"
+          },
+          {
+            "id": "team-liquid",
+            "name": "Team Liquid"
+          },
+          {
+            "id": "mad-lions-koi",
+            "name": "MAD Lions KOI"
+          },
+          {
+            "id": "100-thieves",
+            "name": "100 Thieves"
+          },
+          {
+            "id": "psg-talon",
+            "name": "PSG Talon"
+          },
+          {
+            "id": "fukuoka-hawks-gaming",
+            "name": "Fukuoka HAWKS gaming"
+          },
+          {
+            "id": "gam-esports",
+            "name": "GAM Esports"
+          },
+          {
+            "id": "vikings-esports",
+            "name": "Vikings Esports"
+          },
+          {
+            "id": "pain-gaming",
+            "name": "paiN Gaming"
+          },
+          {
+            "id": "rainbow7",
+            "name": "Rainbow7"
+          }
+        ],
+        "games": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "catalogEditionIds": [
+        "wcg-2010",
+        "worlds-2011",
+        "iem-world-championship-2012",
+        "ipl-5",
+        "worlds-2012",
+        "iem-world-championship-2013",
+        "iwcq-2013",
+        "worlds-2013",
+        "worlds-2014",
+        "iem-world-championship-2014",
+        "iwct-gamescom-2014",
+        "iwct-pax-2014",
+        "msi-2015",
+        "worlds-2015",
+        "iem-world-championship-2015",
+        "iwci-2015",
+        "iwct-chile-2015",
+        "iwct-turkey-2015",
+        "msi-2016",
+        "worlds-2016",
+        "iem-world-championship-2016",
+        "iwci-2016",
+        "iwcq-2016",
+        "msi-2017",
+        "worlds-2017",
+        "iem-world-championship-2017",
+        "rift-rivals-gpl-ljl-opl-2017",
+        "rift-rivals-lck-lpl-lms-2017",
+        "rift-rivals-lcl-tcl-2017",
+        "rift-rivals-lln-cls-cblol-2017",
+        "rift-rivals-na-eu-2017",
+        "msi-2018",
+        "worlds-2018",
+        "rift-rivals-lck-lpl-lms-2018",
+        "rift-rivals-lcl-tcl-vcs-2018",
+        "rift-rivals-lln-cls-cblol-2018",
+        "rift-rivals-na-eu-2018",
+        "rift-rivals-sea-ljl-opl-2018",
+        "msi-2019",
+        "worlds-2019",
+        "rift-rivals-lck-lpl-lms-vcs-2019",
+        "rift-rivals-na-eu-2019",
+        "worlds-2020",
+        "msi-2021",
+        "worlds-2021",
+        "msi-2022",
+        "worlds-2022",
+        "msi-2023",
+        "worlds-2023",
+        "msi-2024",
+        "worlds-2024",
+        "ewc-2024",
+        "first-stand-2025",
+        "msi-2025",
+        "worlds-2025",
+        "ewc-2025",
+        "first-stand-2026",
+        "msi-2026",
+        "ewc-2026"
+      ]
+    },
+    "disclosure": {
+      "solution": {
+        "answer": {
+          "year": 2024,
+          "tournament": "World Championship",
+          "stage": "Quarterfinal",
+          "blueTeamId": "hanwha-life-esports",
+          "redTeamId": "bilibili-gaming",
+          "gameNumber": 4
+        },
+        "catalogEditionId": "worlds-2024"
+      },
+      "source": {
+        "label": "Official LoL Esports broadcast VOD",
+        "url": "https://www.youtube.com/watch?v=Ja8iv1e0aLQ"
+      }
+    }
+  }
+] as const satisfies readonly GeneratedLocalQuestionBundle[]

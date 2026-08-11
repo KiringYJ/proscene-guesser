@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import {
   getInternationalEditionOptions,
   getInternationalStageNamesForEdition,
-  getInternationalTeamNamesForEdition,
+  getInternationalTeamChoicesForEdition,
   getInternationalTournamentNameForEdition,
 } from '@/data/catalog'
 import {
@@ -80,15 +80,15 @@ const teamItems = computed(() => {
   }
 
   return selectedCatalogEditionId.value
-    ? getInternationalTeamNamesForEdition(selectedCatalogEditionId.value)
+    ? getInternationalTeamChoicesForEdition(selectedCatalogEditionId.value)
     : []
 })
 
 const blueTeamItems = computed(() =>
-  excludeOpposingTeam(teamItems.value, props.modelValue.redTeam),
+  excludeOpposingTeam(teamItems.value, props.modelValue.redTeamId),
 )
 const redTeamItems = computed(() =>
-  excludeOpposingTeam(teamItems.value, props.modelValue.blueTeam),
+  excludeOpposingTeam(teamItems.value, props.modelValue.blueTeamId),
 )
 
 const year = computed({
@@ -127,14 +127,14 @@ const stage = computed({
   set: (value: string | null) => updateAnswer('stage', value),
 })
 
-const blueTeam = computed({
-  get: () => props.modelValue.blueTeam,
-  set: (value: string | null) => updateAnswer('blueTeam', value),
+const blueTeamId = computed({
+  get: () => props.modelValue.blueTeamId,
+  set: (value: string | null) => updateAnswer('blueTeamId', value),
 })
 
-const redTeam = computed({
-  get: () => props.modelValue.redTeam,
-  set: (value: string | null) => updateAnswer('redTeam', value),
+const redTeamId = computed({
+  get: () => props.modelValue.redTeamId,
+  set: (value: string | null) => updateAnswer('redTeamId', value),
 })
 
 const gameNumber = computed({
@@ -199,16 +199,20 @@ const gameNumber = computed({
 
       <div class="field-grid field-grid--teams">
         <v-select
-          v-model="blueTeam"
+          v-model="blueTeamId"
           :items="blueTeamItems"
+          item-title="name"
+          item-value="id"
           :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
           label="Blue team"
           aria-label="Blue-side team"
           hide-details
         />
         <v-select
-          v-model="redTeam"
+          v-model="redTeamId"
           :items="redTeamItems"
+          item-title="name"
+          item-value="id"
           :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
           label="Red team"
           aria-label="Red-side team"

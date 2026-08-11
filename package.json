@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "npm run questions:sync",
     "dev": "vite",
     "dev:fixture": "vite --open /dev/round-fixture.html",
     "build": "run-s questions:check build:app",

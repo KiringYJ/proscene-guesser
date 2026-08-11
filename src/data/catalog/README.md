@@ -48,13 +48,13 @@ Choose stages and teams from the exact event edition so historical names stay in
 ```ts
 import {
   getInternationalStageNamesForEdition,
-  getInternationalTeamNamesForEdition,
+  getInternationalTeamChoicesForEdition,
 } from '@/data/catalog'
 
-const ewc2024Teams = getInternationalTeamNamesForEdition('ewc-2024')
+const ewc2024Teams = getInternationalTeamChoicesForEdition('ewc-2024')
 const ewc2024Stages = getInternationalStageNamesForEdition('ewc-2024')
 ```
 
-Avoid using every historical team name as one global answer list. A question should normally use its edition's participants, plus separately reviewed decoys if the game design calls for them.
+Each team choice contains its stable `id` and edition-specific `name`. Store and score the ID; display the historical name. Avoid using every historical team name as one global answer list. A question should normally use its edition's participants, plus separately reviewed decoys if the game design calls for them.
 
 Team IDs merge only spelling variants that the importer explicitly reviews. Organization acquisitions, slot transfers, and broader predecessor/successor relationships are not inferred automatically.

@@ -40,7 +40,6 @@ const answerDisabled = computed(() => {
 const advancePending = computed(() =>
   snapshot.value.phase === 'revealed' && snapshot.value.advance.status === 'pending',
 )
-const archiveStatus = computed(() => (currentQuestion.value ? 'Archive online' : 'Archive preparation'))
 const nextLabel = computed(() =>
   snapshot.value.phase === 'revealed' ? snapshot.value.nextLabel : 'Next archive',
 )
@@ -114,7 +113,7 @@ async function copyText(text: string): Promise<void> {
   }
 }
 
-async function shareResult() {
+async function shareResult(): Promise<void> {
   const state = snapshot.value
 
   if (state.phase !== 'revealed') {
@@ -157,11 +156,6 @@ async function shareResult() {
               <small>Guesser</small>
             </span>
           </a>
-
-          <div class="topbar__status">
-            <span class="topbar__status-dot" aria-hidden="true"></span>
-            {{ archiveStatus }}
-          </div>
         </header>
 
         <div id="top">
@@ -217,17 +211,17 @@ async function shareResult() {
           </section>
 
           <section v-else class="empty-catalog" aria-labelledby="empty-catalog-title">
-            <p class="panel-kicker">Archive maintenance</p>
-            <h2 id="empty-catalog-title">New questions are being prepared.</h2>
+            <p class="panel-kicker">Question archive</p>
+            <h2 id="empty-catalog-title">No questions available.</h2>
             <p>
-              No playable frame is published yet. Source images stay outside the app until their
-              redactions and release checks are complete.
+              Add a validated question manifest and its flattened redacted image, then regenerate
+              the question catalog.
             </p>
           </section>
         </div>
 
         <footer class="footer">
-          <p>Published questions use flattened redactions; originals stay outside the build.</p>
+          <p>Playable questions use flattened redactions; originals stay outside the build.</p>
           <p>
             Event data from
             <a

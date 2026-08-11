@@ -31,10 +31,10 @@ The generated static catalog follows the same split:
 ```text
 authoring manifest
   -> GeneratedLocalQuestionBundle
-      prompt(publicImage, choices, public metadata)
+      prompt(question ID, choices, public metadata)
       disclosure(solution, source)
   -> runtime LocalQuestionBundle
-      prompt(image URL, choices, public metadata)
+      prompt(Vite-bundled redacted image URL, choices, public metadata)
       disclosure(solution, source)
 ```
 
@@ -49,7 +49,7 @@ The UI-facing `ActiveGameSessionPort` is intentionally narrower than a future ro
 
 Snapshots are one of:
 
-- `empty`: no published question is available;
+- `empty`: no playable question is available;
 - `answering`: public prompt, round progress, and submission state; or
 - `revealed`: public prompt, reveal disclosure, score result, progress, and advance state.
 

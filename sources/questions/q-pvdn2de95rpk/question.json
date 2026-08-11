@@ -2,11 +2,17 @@
   "pool": "deep-cut",
   "catalogEditionId": "worlds-2024",
   "answer": {
-    "year": 2024,
-    "tournament": "World Championship",
     "stage": "Quarterfinal",
-    "blueTeam": "Hanwha Life Esports",
-    "redTeam": "Bilibili Gaming",
+    "blueTeamId": "hanwha-life-esports",
+    "redTeamId": "bilibili-gaming",
     "gameNumber": 4
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast VOD",
+    "url": "https://www.youtube.com/watch?v=Ja8iv1e0aLQ"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
   }
 }

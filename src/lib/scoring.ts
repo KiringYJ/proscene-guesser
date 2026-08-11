@@ -1,11 +1,12 @@
+import { getInternationalEdition } from '@/data/catalog'
+import { evaluateAnswer } from '@/game/scoring'
 import type {
   PlayerAnswer,
   QuestionSolution,
+  QuestionTeamChoice,
   ScoreLine,
   ScoreResult,
 } from '@/types/question'
-import { getInternationalEdition } from '@/data/catalog'
-import { evaluateAnswer } from '@/game/scoring'
 
 function selected(value: string | number | null): string {
   if (value === null) {
@@ -27,13 +28,44 @@ function eventLabel(
   return `${eventName} · ${selected(stage)}`
 }
 
-function teamLabel(blueTeam: string | null, redTeam: string | null): string {
-  return `${selected(blueTeam)} vs ${selected(redTeam)}`
+export interface ScoreAnswerOptions {
+  teamChoices?: readonly QuestionTeamChoice[]
+}
+
+function teamName(
+  teamId: string | null,
+  catalogEditionId: string | null | undefined,
+  teamChoices: readonly QuestionTeamChoice[] | undefined,
+): string {
+  if (teamId === null) {
+    return 'No answer'
+  }
+
+  if (catalogEditionId) {
+    return getInternationalEdition(catalogEditionId).participants.find(
+      (participant) => participant.teamId === teamId,
+    )?.nameAtEvent ?? teamId
+  }
+
+  return teamChoices?.find((team) => team.id === teamId)?.name ?? teamId
+}
+
+function teamLabel(
+  blueTeamId: string | null,
+  redTeamId: string | null,
+  catalogEditionId: string | null | undefined,
+  teamChoices: readonly QuestionTeamChoice[] | undefined,
+): string {
+  const blueTeam = teamName(blueTeamId, catalogEditionId, teamChoices)
+  const redTeam = teamName(redTeamId, catalogEditionId, teamChoices)
+
+  return `${blueTeam} vs ${redTeam}`
 }
 
 export function scoreAnswer(
   answer: PlayerAnswer,
   solution: QuestionSolution,
+  options: ScoreAnswerOptions = {},
 ): ScoreResult {
   const expected = solution.answer
   const evaluation = evaluateAnswer(answer, solution)
@@ -59,8 +91,18 @@ export function scoreAnswer(
       id: 'teams',
       label: 'Teams',
       correct: correctByCategory.get('teams') ?? false,
-      actual: teamLabel(answer.blueTeam, answer.redTeam),
-      expected: teamLabel(expected.blueTeam, expected.redTeam),
+      actual: teamLabel(
+        answer.blueTeamId,
+        answer.redTeamId,
+        answer.catalogEditionId,
+        options.teamChoices,
+      ),
+      expected: teamLabel(
+        expected.blueTeamId,
+        expected.redTeamId,
+        solution.catalogEditionId,
+        options.teamChoices,
+      ),
     },
     {
       id: 'game',

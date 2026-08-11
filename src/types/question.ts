@@ -2,12 +2,17 @@ export const QUESTION_POOLS = ['classic', 'deep-cut'] as const
 
 export type QuestionPool = (typeof QUESTION_POOLS)[number]
 
+export interface QuestionTeamChoice {
+  id: string
+  name: string
+}
+
 export interface QuestionAnswer {
   year: number
   tournament: string
   stage: string
-  blueTeam: string
-  redTeam: string
+  blueTeamId: string
+  redTeamId: string
   gameNumber: number
 }
 
@@ -16,8 +21,8 @@ export interface PlayerAnswer {
   catalogEditionId: string | null
   tournament: string | null
   stage: string | null
-  blueTeam: string | null
-  redTeam: string | null
+  blueTeamId: string | null
+  redTeamId: string | null
   gameNumber: number | null
 }
 
@@ -25,7 +30,7 @@ export interface QuestionChoices {
   years: readonly number[]
   tournaments: readonly string[]
   stages: readonly string[]
-  teams: readonly string[]
+  teams: readonly QuestionTeamChoice[]
   games: readonly number[]
 }
 
@@ -77,8 +82,8 @@ export function createEmptyAnswer(): PlayerAnswer {
     catalogEditionId: null,
     tournament: null,
     stage: null,
-    blueTeam: null,
-    redTeam: null,
+    blueTeamId: null,
+    redTeamId: null,
     gameNumber: null,
   }
 }

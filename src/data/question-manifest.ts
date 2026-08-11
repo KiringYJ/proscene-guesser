@@ -1,54 +1,106 @@
-import type { InternationalCatalog } from './catalog/types'
+import type { InternationalCatalog } from './catalog/types.ts'
 import type { GeneratedLocalQuestionBundle } from '../game/authority/question-bundle.ts'
 import {
   QUESTION_POOLS,
-  type QuestionAnswer,
   type QuestionPool,
   type QuestionSource,
+  type QuestionTeamChoice,
 } from '../types/question.ts'
 
 export const QUESTION_ID_PATTERN = /^q-[0-9a-hj-km-np-tv-z]{12}$/
-export const QUESTION_PUBLIC_IMAGE_PATTERN = /^(q-[0-9a-hj-km-np-tv-z]{12})\.webp$/
 
 export interface InternationalTournamentChoiceSource {
   source: 'international-series'
 }
 
-export interface QuestionManifestChoices {
+interface QuestionManifestChoiceScope {
   years: readonly number[]
   tournaments: readonly string[] | InternationalTournamentChoiceSource
-  stages?: readonly string[]
-  teams?: readonly string[]
   games: readonly number[]
+}
+
+export interface CatalogQuestionManifestChoices extends QuestionManifestChoiceScope {
+  stages?: never
+  teams?: never
+}
+
+export interface StaticQuestionManifestChoices extends QuestionManifestChoiceScope {
+  stages: readonly string[]
+  teams: readonly QuestionTeamChoice[]
+}
+
+export type QuestionManifestChoices =
+  | CatalogQuestionManifestChoices
+  | StaticQuestionManifestChoices
+
+export interface CatalogQuestionManifestAnswer {
+  stage: string
+  blueTeamId: string
+  redTeamId: string
+  gameNumber: number
+}
+
+export interface StaticQuestionManifestAnswer extends CatalogQuestionManifestAnswer {
+  year: number
+  tournament: string
+}
+
+export interface QuestionRightsReview {
+  reviewedAt: string
+  evidence: string
 }
 
 export type { GeneratedLocalQuestionBundle }
 
 interface QuestionManifestBase {
   pool: QuestionPool
-  catalogEditionId?: string
-  answer: QuestionAnswer
   source?: QuestionSource
+  rights?: QuestionRightsReview
 }
 
-export interface QuestionManifest extends QuestionManifestBase {
+interface CatalogQuestionManifestFields {
+  catalogEditionId: string
+  answer: CatalogQuestionManifestAnswer
+  choices?: CatalogQuestionManifestChoices
+}
+
+interface StaticQuestionManifestFields {
+  catalogEditionId?: never
+  answer: StaticQuestionManifestAnswer
+  choices?: StaticQuestionManifestChoices
+}
+
+interface QuestionManifestPresentationFields {
   imageAlt?: string
   archiveLabel?: string
   clue?: string
-  choices?: QuestionManifestChoices
 }
 
-export interface PublishedQuestionManifest extends QuestionManifestBase {
+interface PlayableQuestionManifestFields {
   imageAlt: string
   archiveLabel: string
   clue: string
-  choices: QuestionManifestChoices
+}
+
+export type QuestionManifest = QuestionManifestBase &
+  QuestionManifestPresentationFields &
+  (CatalogQuestionManifestFields | StaticQuestionManifestFields)
+
+export type PlayableQuestionManifest = QuestionManifestBase &
+  PlayableQuestionManifestFields &
+  (
+    | (CatalogQuestionManifestFields & { choices: CatalogQuestionManifestChoices })
+    | (StaticQuestionManifestFields & { choices: StaticQuestionManifestChoices })
+  )
+
+export type ReadyQuestionManifest = PlayableQuestionManifest & {
   source: QuestionSource
+  rights: QuestionRightsReview
 }
 
 export interface QuestionManifestValidationContext {
   catalog?: InternationalCatalog
-  published?: boolean
+  ready?: boolean
 }
 
 type UnknownRecord = Record<string, unknown>
@@ -62,17 +114,19 @@ const manifestKeys = new Set([
   'answer',
   'choices',
   'source',
+  'rights',
 ])
-const answerKeys = new Set([
-  'year',
-  'tournament',
+const catalogAnswerKeys = new Set([
   'stage',
-  'blueTeam',
-  'redTeam',
+  'blueTeamId',
+  'redTeamId',
   'gameNumber',
 ])
+const staticAnswerKeys = new Set([...catalogAnswerKeys, 'year', 'tournament'])
 const choiceKeys = new Set(['years', 'tournaments', 'stages', 'teams', 'games'])
+const teamChoiceKeys = new Set(['id', 'name'])
 const sourceKeys = new Set(['label', 'url'])
+const rightsKeys = new Set(['reviewedAt', 'evidence'])
 
 function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -95,6 +149,26 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0
 }
 
+function isValidIsoDate(value: string): boolean {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
+
+  if (!match) {
+    return false
+  }
+
+  const [, yearText, monthText, dayText] = match
+  const year = Number(yearText)
+  const month = Number(monthText)
+  const day = Number(dayText)
+  const date = new Date(Date.UTC(year, month - 1, day))
+
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  )
+}
+
 function validateStringArray(value: unknown, path: string, issues: string[]): readonly string[] {
   if (!Array.isArray(value) || value.length === 0) {
     issues.push(`${path} must be a non-empty array`)
@@ -112,6 +186,52 @@ function validateStringArray(value: unknown, path: string, issues: string[]): re
   }
 
   return strings
+}
+
+function validateTeamChoices(
+  value: unknown,
+  path: string,
+  issues: string[],
+): readonly QuestionTeamChoice[] {
+  if (!Array.isArray(value) || value.length === 0) {
+    issues.push(`${path} must be a non-empty array`)
+    return []
+  }
+
+  const teams: QuestionTeamChoice[] = []
+
+  for (const [index, item] of value.entries()) {
+    const itemPath = `${path}[${index}]`
+
+    if (!isRecord(item)) {
+      issues.push(`${itemPath} must be an object`)
+      continue
+    }
+
+    reportUnknownKeys(item, teamChoiceKeys, itemPath, issues)
+
+    if (!isNonEmptyString(item.id)) {
+      issues.push(`${itemPath}.id must be a non-empty string`)
+    }
+
+    if (!isNonEmptyString(item.name)) {
+      issues.push(`${itemPath}.name must be a non-empty string`)
+    }
+
+    if (isNonEmptyString(item.id) && isNonEmptyString(item.name)) {
+      teams.push({ id: item.id, name: item.name })
+    }
+  }
+
+  if (new Set(teams.map((team) => team.id)).size !== teams.length) {
+    issues.push(`${path} must not contain duplicate IDs`)
+  }
+
+  if (new Set(teams.map((team) => team.name)).size !== teams.length) {
+    issues.push(`${path} must not contain duplicate names`)
+  }
+
+  return teams
 }
 
 function validateIntegerArray(value: unknown, path: string, issues: string[]): readonly number[] {
@@ -135,24 +255,39 @@ function validateIntegerArray(value: unknown, path: string, issues: string[]): r
   return integers
 }
 
-function validateAnswer(value: unknown, issues: string[]): UnknownRecord | null {
+function validateAnswer(
+  value: unknown,
+  catalogBacked: boolean,
+  issues: string[],
+): UnknownRecord | null {
   if (!isRecord(value)) {
     issues.push('answer must be an object')
     return null
   }
 
-  reportUnknownKeys(value, answerKeys, 'answer', issues)
+  reportUnknownKeys(
+    value,
+    catalogBacked ? catalogAnswerKeys : staticAnswerKeys,
+    'answer',
+    issues,
+  )
 
-  if (
-    typeof value.year !== 'number' ||
-    !Number.isInteger(value.year) ||
-    value.year < 2010 ||
-    value.year > 2100
-  ) {
-    issues.push('answer.year must be an integer from 2010 through 2100')
+  if (!catalogBacked) {
+    if (
+      typeof value.year !== 'number' ||
+      !Number.isInteger(value.year) ||
+      value.year < 2010 ||
+      value.year > 2100
+    ) {
+      issues.push('answer.year must be an integer from 2010 through 2100')
+    }
+
+    if (!isNonEmptyString(value.tournament)) {
+      issues.push('answer.tournament must be a non-empty string')
+    }
   }
 
-  for (const field of ['tournament', 'stage', 'blueTeam', 'redTeam'] as const) {
+  for (const field of ['stage', 'blueTeamId', 'redTeamId'] as const) {
     if (!isNonEmptyString(value[field])) {
       issues.push(`answer.${field} must be a non-empty string`)
     }
@@ -167,11 +302,11 @@ function validateAnswer(value: unknown, issues: string[]): UnknownRecord | null 
   }
 
   if (
-    isNonEmptyString(value.blueTeam) &&
-    isNonEmptyString(value.redTeam) &&
-    value.blueTeam === value.redTeam
+    isNonEmptyString(value.blueTeamId) &&
+    isNonEmptyString(value.redTeamId) &&
+    value.blueTeamId === value.redTeamId
   ) {
-    issues.push('answer.blueTeam and answer.redTeam must be different')
+    issues.push('answer.blueTeamId and answer.redTeamId must be different')
   }
 
   return value
@@ -205,6 +340,26 @@ function validateSource(value: unknown, issues: string[]): void {
   }
 }
 
+function validateRights(value: unknown, issues: string[]): void {
+  if (!isRecord(value)) {
+    issues.push('rights must be an object')
+    return
+  }
+
+  reportUnknownKeys(value, rightsKeys, 'rights', issues)
+
+  if (
+    !isNonEmptyString(value.reviewedAt) ||
+    !isValidIsoDate(value.reviewedAt)
+  ) {
+    issues.push('rights.reviewedAt must be a valid YYYY-MM-DD date')
+  }
+
+  if (!isNonEmptyString(value.evidence)) {
+    issues.push('rights.evidence must be a non-empty review reference')
+  }
+}
+
 function validateChoices(
   value: unknown,
   answer: UnknownRecord | null,
@@ -221,20 +376,26 @@ function validateChoices(
 
   const years = validateIntegerArray(value.years, 'choices.years', issues)
   const games = validateIntegerArray(value.games, 'choices.games', issues)
-  const catalogBacked = isNonEmptyString(catalogEditionId)
-  const catalogEdition = catalogBacked
+  const catalogBacked = catalogEditionId !== undefined
+  const catalogEdition = isNonEmptyString(catalogEditionId)
     ? catalog?.editions.find((edition) => edition.id === catalogEditionId)
     : undefined
-  const stages = value.stages === undefined && catalogBacked
-    ? (catalogEdition?.stages ?? [])
+  const stages = catalogBacked
+    ? []
     : validateStringArray(value.stages, 'choices.stages', issues)
-  const teams = value.teams === undefined && catalogBacked
-    ? (catalogEdition?.participants.map((participant) => participant.nameAtEvent) ?? [])
-    : validateStringArray(value.teams, 'choices.teams', issues)
-  const stagesResolved = value.stages !== undefined || catalogEdition !== undefined
-  const teamsResolved = value.teams !== undefined || catalogEdition !== undefined
+  const teams = catalogBacked
+    ? []
+    : validateTeamChoices(value.teams, 'choices.teams', issues)
   let tournaments: readonly string[] = []
   let tournamentsResolved = true
+
+  if (catalogBacked && value.stages !== undefined) {
+    issues.push('choices.stages must be omitted for a catalog-backed question')
+  }
+
+  if (catalogBacked && value.teams !== undefined) {
+    issues.push('choices.teams must be omitted for a catalog-backed question')
+  }
 
   if (Array.isArray(value.tournaments)) {
     tournaments = validateStringArray(value.tournaments, 'choices.tournaments', issues)
@@ -267,18 +428,27 @@ function validateChoices(
   }
 
   const inclusions: [unknown, readonly unknown[], string][] = [
-    [answer.year, years, 'choices.years'],
     [answer.gameNumber, games, 'choices.games'],
   ]
 
-  if (stagesResolved) {
-    inclusions.push([answer.stage, stages, 'choices.stages'])
-  }
+  if (catalogBacked) {
+    if (catalogEdition && !years.includes(catalogEdition.year)) {
+      issues.push(`choices.years does not include catalog edition year ${catalogEdition.year}`)
+    }
 
-  if (teamsResolved) {
+    const series = catalogEdition
+      ? catalog?.series.find((candidate) => candidate.id === catalogEdition.seriesId)
+      : undefined
+
+    if (series && tournamentsResolved && !tournaments.includes(series.name)) {
+      issues.push(`choices.tournaments does not include catalog series ${series.name}`)
+    }
+  } else {
     inclusions.push(
-      [answer.blueTeam, teams, 'choices.teams'],
-      [answer.redTeam, teams, 'choices.teams'],
+      [answer.year, years, 'choices.years'],
+      [answer.stage, stages, 'choices.stages'],
+      [answer.blueTeamId, teams.map((team) => team.id), 'choices.teams'],
+      [answer.redTeamId, teams.map((team) => team.id), 'choices.teams'],
     )
   }
 
@@ -289,6 +459,7 @@ function validateChoices(
   }
 
   if (
+    !catalogBacked &&
     tournamentsResolved &&
     isNonEmptyString(answer.tournament) &&
     !tournaments.includes(answer.tournament)
@@ -323,26 +494,19 @@ function validateCatalogReference(
     return
   }
 
-  const series = catalog.series.find((candidate) => candidate.id === edition.seriesId)
-  const participantNames = edition.participants.map((participant) => participant.nameAtEvent)
-
-  if (answer.year !== edition.year) {
-    issues.push(`answer.year does not match catalog edition ${manifest.catalogEditionId}`)
-  }
-
-  if (series && answer.tournament !== series.name) {
-    issues.push(`answer.tournament does not match catalog edition ${manifest.catalogEditionId}`)
-  }
+  const participantIds = new Set(edition.participants.map((participant) => participant.teamId))
 
   if (isNonEmptyString(answer.stage) && !edition.stages.includes(answer.stage)) {
     issues.push(`answer.stage is not a stage in ${manifest.catalogEditionId}`)
   }
 
-  for (const side of ['blueTeam', 'redTeam'] as const) {
-    const teamName = answer[side]
+  for (const side of ['blueTeamId', 'redTeamId'] as const) {
+    const teamId = answer[side]
 
-    if (isNonEmptyString(teamName) && !participantNames.includes(teamName)) {
-      issues.push(`answer.${side} is not a participant in ${manifest.catalogEditionId}`)
+    if (isNonEmptyString(teamId) && !participantIds.has(teamId)) {
+      issues.push(
+        `answer.${side} references a team outside catalog edition ${manifest.catalogEditionId}`,
+      )
     }
   }
 }
@@ -363,25 +527,33 @@ export function validateQuestionManifest(
     issues.push('pool must be classic or deep-cut')
   }
 
-  const answer = validateAnswer(value.answer, issues)
+  const answer = validateAnswer(value.answer, value.catalogEditionId !== undefined, issues)
 
   if (value.source !== undefined) {
     validateSource(value.source, issues)
   }
 
+  if (value.rights !== undefined) {
+    validateRights(value.rights, issues)
+  }
+
   validateCatalogReference(value, answer, context.catalog, issues)
 
-  if (context.published) {
+  if (context.ready) {
     for (const field of ['imageAlt', 'archiveLabel', 'clue'] as const) {
       if (!isNonEmptyString(value[field])) {
-        issues.push(`${field} is required for a published question`)
+        issues.push(`${field} is required for a ready question`)
       }
     }
 
     validateChoices(value.choices, answer, context.catalog, value.catalogEditionId, issues)
 
     if (value.source === undefined) {
-      issues.push('source is required for a published question')
+      issues.push('source is required for a ready question')
+    }
+
+    if (value.rights === undefined) {
+      issues.push('rights review is required for a ready question')
     }
   } else {
     for (const field of ['imageAlt', 'archiveLabel', 'clue'] as const) {
@@ -392,33 +564,6 @@ export function validateQuestionManifest(
 
     if (value.choices !== undefined) {
       validateChoices(value.choices, answer, context.catalog, value.catalogEditionId, issues)
-    }
-  }
-
-  return issues
-}
-
-export function getQuestionPublicImageFilename(id: string): string {
-  return `${id}.webp`
-}
-
-export function validatePublicQuestionImageInventory(
-  filenames: readonly string[],
-  questionIds: ReadonlySet<string>,
-): readonly string[] {
-  const issues: string[] = []
-
-  for (const filename of filenames) {
-    if (filename === 'README.md') {
-      continue
-    }
-
-    const match = QUESTION_PUBLIC_IMAGE_PATTERN.exec(filename)
-
-    if (!match) {
-      issues.push(`public question file must be an opaque question ID followed by .webp: ${filename}`)
-    } else if (!questionIds.has(filename.slice(0, -'.webp'.length))) {
-      issues.push(`public question image has no source directory: ${filename}`)
     }
   }
 

@@ -3,17 +3,36 @@ import type {
   LocalQuestionBundle,
 } from '@/game/authority/question-bundle'
 
-import { publishedQuestionBundles } from './questions.generated'
+import { playableQuestionBundles } from './questions.generated'
+
+const redactedQuestionImages = import.meta.glob<string>(
+  '../../sources/questions/*/redacted.webp',
+  {
+    eager: true,
+    import: 'default',
+    query: '?url',
+  },
+)
+
+function getRedactedQuestionImage(id: string): string {
+  const image = redactedQuestionImages[`../../sources/questions/${id}/redacted.webp`]
+
+  if (!image) {
+    throw new Error(`${id}: generated question is missing redacted.webp`)
+  }
+
+  return image
+}
 
 export function createLocalQuestionBundle(
   record: GeneratedLocalQuestionBundle,
-  baseUrl: string,
+  image: string,
 ): LocalQuestionBundle {
   return {
     prompt: {
       id: record.prompt.id,
       pool: record.prompt.pool,
-      image: `${baseUrl}questions/${record.prompt.publicImage}`,
+      image,
       imageAlt: record.prompt.imageAlt,
       archiveLabel: record.prompt.archiveLabel,
       clue: record.prompt.clue,
@@ -26,6 +45,7 @@ export function createLocalQuestionBundle(
   }
 }
 
-export const localQuestionBundles = publishedQuestionBundles.map((record) =>
-  createLocalQuestionBundle(record, import.meta.env.BASE_URL),
+export const localQuestionBundles = playableQuestionBundles.map(
+  (record: GeneratedLocalQuestionBundle) =>
+    createLocalQuestionBundle(record, getRedactedQuestionImage(record.prompt.id)),
 )

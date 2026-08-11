@@ -22,6 +22,11 @@ export interface InternationalEditionOption {
   value: string
 }
 
+export interface InternationalTeamChoice {
+  id: string
+  name: string
+}
+
 export const internationalTournamentNames = Object.freeze(
   internationalCatalog.series.map((series) => series.name),
 )
@@ -89,8 +94,17 @@ export function getInternationalStageNamesForEdition(editionId: string): readonl
   return getInternationalEdition(editionId).stages
 }
 
-export function getInternationalTeamNamesForEdition(editionId: string): readonly string[] {
+export function getInternationalTeamChoicesForEdition(
+  editionId: string,
+): readonly InternationalTeamChoice[] {
   return getInternationalEdition(editionId)
-    .participants.map((participant) => participant.nameAtEvent)
-    .sort((left, right) => left.localeCompare(right))
+    .participants.map((participant) => ({
+      id: participant.teamId,
+      name: participant.nameAtEvent,
+    }))
+    .sort((left, right) => left.name.localeCompare(right.name))
+}
+
+export function getInternationalTeamNamesForEdition(editionId: string): readonly string[] {
+  return getInternationalTeamChoicesForEdition(editionId).map((team) => team.name)
 }

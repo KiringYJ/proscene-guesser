@@ -47,7 +47,7 @@ export type AdvanceState =
 export type ActiveGameSnapshot =
   | {
       phase: 'empty'
-      reason: 'no-published-questions'
+      reason: 'no-playable-questions'
       progress: SessionProgress & { roundNumber: 0; roundCount: 0 }
     }
   | {

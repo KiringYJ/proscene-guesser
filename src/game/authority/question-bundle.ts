@@ -3,9 +3,7 @@ import type {
   RevealDisclosure,
 } from '../../types/question.ts'
 
-export type GeneratedQuestionPromptRecord = Omit<QuestionPrompt, 'image'> & {
-  publicImage: string
-}
+export type GeneratedQuestionPromptRecord = Omit<QuestionPrompt, 'image'>
 
 export interface GeneratedLocalQuestionBundle {
   prompt: GeneratedQuestionPromptRecord

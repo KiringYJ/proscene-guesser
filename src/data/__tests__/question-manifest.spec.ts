@@ -2,10 +2,9 @@ import { describe, expect, it } from 'vitest'
 
 import type { InternationalCatalog } from '@/data/catalog/types'
 import {
-  validatePublicQuestionImageInventory,
   validateQuestionManifest,
-  type PublishedQuestionManifest,
   type QuestionManifest,
+  type ReadyQuestionManifest,
 } from '@/data/question-manifest'
 
 const catalog: InternationalCatalog = {
@@ -53,51 +52,51 @@ const catalog: InternationalCatalog = {
   ],
 }
 
-const publishedManifest: PublishedQuestionManifest = {
+const readyManifest: ReadyQuestionManifest = {
   pool: 'classic',
   catalogEditionId: 'worlds-2024',
   imageAlt: 'A redacted broadcast frame.',
   archiveLabel: 'Archive',
   clue: 'Use the visible game state.',
   answer: {
-    year: 2024,
-    tournament: 'World Championship',
     stage: 'Final',
-    blueTeam: 'Blue Team',
-    redTeam: 'Red Team',
+    blueTeamId: 'blue-team',
+    redTeamId: 'red-team',
     gameNumber: 3,
   },
   choices: {
     years: [2023, 2024],
     tournaments: { source: 'international-series' },
-    stages: ['Semifinal', 'Final'],
-    teams: ['Blue Team', 'Red Team'],
     games: [1, 2, 3],
   },
   source: {
     label: 'Broadcast archive',
     url: 'https://example.com/match',
   },
+  rights: {
+    reviewedAt: '2026-01-01',
+    evidence: 'Permission record RIGHTS-001',
+  },
 }
 
 describe('question manifest validation', () => {
-  it('accepts a complete published manifest', () => {
+  it('accepts a complete ready manifest', () => {
     expect(
-      validateQuestionManifest(publishedManifest, {
+      validateQuestionManifest(readyManifest, {
         catalog,
-        published: true,
+        ready: true,
       }),
     ).toEqual([])
-    expect(validateQuestionManifest(publishedManifest, { published: true })).toEqual([])
+    expect(validateQuestionManifest(readyManifest, { ready: true })).toEqual([])
   })
 
   it('derives stage and team choices for a catalog-backed manifest', () => {
     const catalogBacked = {
-      ...publishedManifest,
+      ...readyManifest,
       choices: {
-        years: publishedManifest.choices.years,
-        tournaments: publishedManifest.choices.tournaments,
-        games: publishedManifest.choices.games,
+        years: readyManifest.choices.years,
+        tournaments: readyManifest.choices.tournaments,
+        games: readyManifest.choices.games,
       },
     }
 
@@ -109,57 +108,67 @@ describe('question manifest validation', () => {
     const draft: QuestionManifest = {
       pool: 'deep-cut',
       catalogEditionId: 'worlds-2024',
-      answer: publishedManifest.answer,
+      answer: readyManifest.answer,
     }
 
     expect(validateQuestionManifest(draft, { catalog })).toEqual([])
   })
 
-  it('rejects catalog facts and missing answer choices', () => {
+  it('rejects catalog references and missing answer choices', () => {
     const invalid = {
-      ...publishedManifest,
+      ...readyManifest,
       answer: {
-        ...publishedManifest.answer,
-        year: 2023,
-        blueTeam: 'Unknown Team',
+        ...readyManifest.answer,
+        blueTeamId: 'unknown-team',
       },
       choices: {
-        ...publishedManifest.choices,
-        years: [2024],
-        teams: ['Blue Team', 'Red Team'],
+        ...readyManifest.choices,
+        years: [2023],
       },
     }
-    const issues = validateQuestionManifest(invalid, { catalog, published: true })
+    const issues = validateQuestionManifest(invalid, { catalog, ready: true })
 
     expect(issues).toEqual(
       expect.arrayContaining([
-        'answer.year does not match catalog edition worlds-2024',
-        'answer.blueTeam is not a participant in worlds-2024',
-        'choices.years does not include answer value 2023',
-        'choices.teams does not include answer value Unknown Team',
+        'answer.blueTeamId references a team outside catalog edition worlds-2024',
+        'choices.years does not include catalog edition year 2024',
       ]),
     )
   })
 
-  it('requires attribution before a production question can be published', () => {
-    const { source: _source, ...withoutSource } = publishedManifest
+  it('rejects legacy names and duplicated catalog facts in a normalized answer', () => {
+    const legacyAnswer = {
+      ...readyManifest,
+      answer: {
+        ...readyManifest.answer,
+        year: 2024,
+        tournament: 'World Championship',
+        blueTeam: 'Blue Team',
+        redTeam: 'Red Team',
+      },
+    }
 
-    expect(validateQuestionManifest(withoutSource, { catalog, published: true })).toContain(
-      'source is required for a published question',
+    expect(validateQuestionManifest(legacyAnswer, { catalog })).toEqual(
+      expect.arrayContaining([
+        'answer has unknown field year',
+        'answer has unknown field tournament',
+        'answer has unknown field blueTeam',
+        'answer has unknown field redTeam',
+      ]),
     )
   })
 
   it('rejects legacy control fields instead of maintaining duplicate state', () => {
     const legacy = {
-      ...publishedManifest,
-      schemaVersion: 1,
+      ...readyManifest,
+      schemaVersion: 2,
       id: 'q-7m4k2d9xrp6v',
       kind: 'production',
       status: 'published',
       publicImage: 'q-7m4k2d9xrp6v.webp',
     }
 
-    expect(validateQuestionManifest(legacy, { catalog, published: true })).toEqual(
+    expect(validateQuestionManifest(legacy, { catalog, ready: true })).toEqual(
       expect.arrayContaining([
         'manifest has unknown field schemaVersion',
         'manifest has unknown field id',
@@ -171,25 +180,74 @@ describe('question manifest validation', () => {
   })
 
   it('requires membership in one of the two question pools', () => {
-    const { pool: _pool, ...missingPool } = publishedManifest
+    const { pool: _pool, ...missingPool } = readyManifest
 
     expect(validateQuestionManifest(missingPool, { catalog })).toContain(
       'pool must be classic or deep-cut',
     )
     expect(
-      validateQuestionManifest({ ...publishedManifest, pool: 'featured' }, { catalog }),
+      validateQuestionManifest({ ...readyManifest, pool: 'featured' }, { catalog }),
     ).toContain('pool must be classic or deep-cut')
+  })
+
+  it('keeps non-catalog questions self-contained with explicit local team IDs', () => {
+    const staticQuestion: ReadyQuestionManifest = {
+      pool: 'deep-cut',
+      imageAlt: 'A synthetic broadcast frame.',
+      archiveLabel: 'Synthetic archive',
+      clue: 'Use the visible game state.',
+      answer: {
+        year: 2024,
+        tournament: 'Example Invitational',
+        stage: 'Final',
+        blueTeamId: 'blue-comets',
+        redTeamId: 'crimson-foxes',
+        gameNumber: 3,
+      },
+      choices: {
+        years: [2023, 2024],
+        tournaments: ['Example Invitational'],
+        stages: ['Semifinal', 'Final'],
+        teams: [
+          { id: 'blue-comets', name: 'Blue Comets' },
+          { id: 'crimson-foxes', name: 'Crimson Foxes' },
+        ],
+        games: [1, 2, 3],
+      },
+      source: {
+        label: 'Synthetic test fixture',
+        url: 'https://example.com/fixture',
+      },
+      rights: {
+        reviewedAt: '2026-01-01',
+        evidence: 'Test-only fixture',
+      },
+    }
+
+    expect(validateQuestionManifest(staticQuestion, { ready: true })).toEqual([])
+  })
+
+  it('requires attribution and a rights review before playability', () => {
+    const withoutSource = { ...readyManifest, source: undefined }
+    const withoutRights = { ...readyManifest, rights: undefined }
+
+    expect(validateQuestionManifest(withoutSource, { catalog, ready: true })).toContain(
+      'source is required for a ready question',
+    )
+    expect(validateQuestionManifest(withoutRights, { catalog, ready: true })).toContain(
+      'rights review is required for a ready question',
+    )
   })
 
   it('rejects an answer stage outside the catalog edition', () => {
     const invalidStage = {
-      ...publishedManifest,
+      ...readyManifest,
       answer: {
-        ...publishedManifest.answer,
+        ...readyManifest.answer,
         stage: 'Swiss Stage',
       },
       choices: {
-        ...publishedManifest.choices,
+        ...readyManifest.choices,
         stages: ['Swiss Stage', 'Final'],
       },
     }
@@ -201,9 +259,9 @@ describe('question manifest validation', () => {
 
   it('rejects unknown tournament decoys for a catalog-backed question', () => {
     const invalidTournament = {
-      ...publishedManifest,
+      ...readyManifest,
       choices: {
-        ...publishedManifest.choices,
+        ...readyManifest.choices,
         tournaments: ['World Championship', 'Imaginary Cup'],
       },
     }
@@ -212,18 +270,19 @@ describe('question manifest validation', () => {
       'choices.tournaments includes unknown catalog series Imaginary Cup',
     )
   })
-})
 
-describe('public question image inventory', () => {
-  it('accepts derived WebP names and rejects orphaned or unsupported files', () => {
-    expect(
-      validatePublicQuestionImageInventory(
-        ['README.md', 'q-7m4k2d9xrp6v.webp', 'q-1a3ad3vz4whk.webp', 'preview.png'],
-        new Set(['q-7m4k2d9xrp6v']),
-      ),
-    ).toEqual([
-      'public question image has no source directory: q-1a3ad3vz4whk.webp',
-      'public question file must be an opaque question ID followed by .webp: preview.png',
-    ])
+  it('rejects a normalized but nonexistent rights-review date', () => {
+    const invalidDate = {
+      ...readyManifest,
+      rights: {
+        ...readyManifest.rights,
+        reviewedAt: '2026-02-31',
+      },
+    }
+
+    expect(validateQuestionManifest(invalidDate, { catalog })).toContain(
+      'rights.reviewedAt must be a valid YYYY-MM-DD date',
+    )
   })
+
 })

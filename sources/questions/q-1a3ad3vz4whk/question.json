@@ -2,11 +2,17 @@
   "pool": "classic",
   "catalogEditionId": "worlds-2017",
   "answer": {
-    "year": 2017,
-    "tournament": "World Championship",
     "stage": "Group Stage",
-    "blueTeam": "EDward Gaming",
-    "redTeam": "SK Telecom T1",
+    "blueTeamId": "edward-gaming",
+    "redTeamId": "sk-telecom-t1",
     "gameNumber": 1
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast VOD",
+    "url": "https://www.youtube.com/watch?v=Kuszgwi1Eno"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
   }
 }

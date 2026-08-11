@@ -1,4 +1,4 @@
-import type { PlayerAnswer } from '@/types/question'
+import type { PlayerAnswer, QuestionTeamChoice } from '@/types/question'
 
 export function applyYearSelection(
   answer: PlayerAnswer,
@@ -15,8 +15,8 @@ export function applyYearSelection(
     catalogEditionId: null,
     tournament: null,
     stage: null,
-    blueTeam: null,
-    redTeam: null,
+    blueTeamId: null,
+    redTeamId: null,
   }
 }
 
@@ -34,16 +34,16 @@ export function applyCatalogEditionSelection(
     catalogEditionId,
     tournament,
     stage: null,
-    blueTeam: null,
-    redTeam: null,
+    blueTeamId: null,
+    redTeamId: null,
   }
 }
 
 export function excludeOpposingTeam(
-  teamNames: readonly string[],
-  opposingTeam: string | null,
-): readonly string[] {
-  return opposingTeam === null
-    ? teamNames
-    : teamNames.filter((teamName) => teamName !== opposingTeam)
+  teams: readonly QuestionTeamChoice[],
+  opposingTeamId: string | null,
+): readonly QuestionTeamChoice[] {
+  return opposingTeamId === null
+    ? teams
+    : teams.filter((team) => team.id !== opposingTeamId)
 }

@@ -1,4 +1,4 @@
-import type { InternationalCatalog } from './types'
+import type { InternationalCatalog } from './types.ts'
 
 function findDuplicates(values: readonly string[]): readonly string[] {
   const seen = new Set<string>()

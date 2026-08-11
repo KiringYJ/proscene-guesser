@@ -8,6 +8,7 @@ import {
 } from '@/data/catalog/liquipedia'
 import {
   getInternationalEditionOptions,
+  getInternationalTeamChoicesForEdition,
   getInternationalTeamNamesForEdition,
   internationalCatalog,
 } from '@/data/catalog'
@@ -223,6 +224,10 @@ describe('bundled international catalog', () => {
       'Team Liquid',
       'Top Esports',
     ])
+    expect(getInternationalTeamChoicesForEdition('ewc-2024')).toContainEqual({
+      id: 'gen-g-esports',
+      name: 'Gen.G Esports',
+    })
   })
 
   it('uses edition names only when one year has multiple editions from a series', () => {

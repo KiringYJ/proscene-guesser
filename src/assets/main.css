@@ -111,18 +111,6 @@ a {
   text-transform: uppercase;
 }
 
-.topbar__status {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  color: rgb(255 255 255 / 52%);
-  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.topbar__status-dot,
 .signal-state__dot {
   width: 7px;
   height: 7px;
@@ -688,12 +676,6 @@ a {
 
   .topbar {
     min-height: 74px;
-  }
-
-  .topbar__status {
-    max-width: 118px;
-    justify-content: flex-end;
-    text-align: right;
   }
 
   .hero {

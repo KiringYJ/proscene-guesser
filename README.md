@@ -7,7 +7,7 @@ Identify a competitive League match from one redacted broadcast frame. Each roun
 3. blue-side and red-side teams; and
 4. game number.
 
-This repository is bootstrapped as a static, client-only MVP. Production source frames remain unpublished drafts until a flattened redaction and the required release checks are complete; the browser catalog may therefore be empty during question preparation.
+This repository is bootstrapped as a static, client-only MVP. A validated question enters the browser catalog as soon as its flattened `redacted.webp` exists beside the manifest.
 
 ## Stack
 
@@ -27,6 +27,10 @@ Use Node `24.16.0` (recorded in `.node-version`) or another version allowed by `
 npm install
 npm run dev
 ```
+
+Ordinary development and production builds use the same generated playable-question catalog.
+`npm run dev` regenerates that catalog before Vite starts, so any question directory with a valid
+manifest and `redacted.webp` appears without a separate publication command.
 
 Run the full local verification suite with:
 
@@ -49,9 +53,7 @@ src/
   types/            Question and score contracts
 docs/               Architecture and content-workflow decisions
 sources/
-  questions/        Canonical question JSON and tracked original PNGs
-public/
-  questions/        Pre-redacted public question images only
+  questions/        Canonical manifests, originals, and flattened redactions
 .github/workflows/  GitHub Pages deployment
 ```
 
@@ -73,25 +75,25 @@ Generate each ID once, confirm that it is unused, and keep it unchanged. Do not 
 
 ## Question data
 
-Each question's canonical answer and authoring metadata live beside its source image in `sources/questions/<question-id>/question.json`. The directory name owns the question ID, and the public image name is derived as `<question-id>.webp`. A manifest remains a draft while that image is absent from `public/questions/`; placing the image there makes it a publication candidate. `npm run questions:sync` validates every manifest, resolves catalog-backed choices, and generates `src/data/questions.generated.ts` from only complete publication candidates; do not edit that generated module by hand. Stable edition IDs and the permitted edition scope are included because the answer form uses them for cascading choices.
+Each question's canonical answer and authoring metadata live beside its source image in `sources/questions/<question-id>/question.json`. The directory name owns the question ID. The presence of `redacted.webp` is the only readiness signal: there is no lifecycle field and no second public-image copy. `npm run questions:sync` validates every manifest, materializes safe presentation and catalog-backed choice defaults, and generates `src/data/questions.generated.ts` from questions that have a redacted derivative; do not edit that generated module by hand. An invalid ready question fails synchronization instead of silently becoming another status. Rights-review evidence is deliberately omitted from the client catalog. Stable edition and team IDs are retained for cascading choices and scoring, while historical display names come from the catalog.
 
 Every question belongs to exactly one authored pool: `classic` for iconic matches and `deep-cut` for less-famous material aimed at dedicated fans. The runtime retains the stable pool value; presentation code may display them as “Classics” and “Deep Cuts.”
 
-For a catalog-backed question, selecting a year limits the tournament selector to editions from that year. Selecting an edition then limits stage and team choices to that edition, and changing either upstream value clears stale downstream selections. When one series has multiple editions in the same year, such as Rift Rivals, the form displays the full edition name and scores its stable edition ID. Stage and participant lists come from the edition catalog rather than being duplicated in each question manifest.
+For a catalog-backed question, `catalogEditionId` determines the year and tournament, and the answer records only the stage, side-specific team IDs, and game number. Selecting a year limits the tournament selector to editions from that year. Selecting an edition then limits stage and team choices to that edition, and changing either upstream value clears stale downstream selections. When one series has multiple editions in the same year, such as Rift Rivals, the form displays the full edition name and scores its stable edition ID. Stage and participant lists come from the edition catalog rather than being duplicated in each question manifest.
 
-The runtime adapter in `src/data/questions.ts` turns generated prompt/disclosure bundles into Vite-aware local bundles. Components receive only the public prompt before reveal. Because this remains a static client, the local session still loads the disclosure and answers for published questions remain inspectable in the built JavaScript.
+The runtime adapter in `src/data/questions.ts` turns generated prompt/disclosure bundles into Vite-aware local bundles. A literal Vite glob imports only `sources/questions/*/redacted.webp`, so flattened derivatives enter the build while `original.png` files do not. Components receive only the public prompt before reveal. Because this remains a static client, the local session still loads the disclosure and answers for playable questions remain inspectable in the built JavaScript.
 
 ## Adding a question
 
 1. Generate a new opaque question ID.
 2. Create `sources/questions/<question-id>/question.json`, choose its `pool`, and record the exact answer. Do not repeat the ID or lifecycle state inside the manifest.
 3. Add the original PNG beside it as `original.png` so it is tracked by Git without entering the Vite build.
-4. Redact the source image offline and export a flattened WebP to `public/questions/<question-id>.webp`.
-5. Complete the presentation fields, answer choices, and source attribution in `question.json`. Moving the WebP into `public/questions/` is the single publication action.
-6. Run `npm run questions:sync` to validate the manifests and regenerate the client catalog.
+4. Complete source attribution and structured rights-review evidence in `question.json`. Presentation and choice scopes may be supplied explicitly; safe defaults are derived for catalog-backed questions when omitted.
+5. Redact the source image offline and write the flattened derivative to `sources/questions/<question-id>/redacted.webp`. Its presence makes the question playable.
+6. Run `npm run questions:sync` to validate every ready question and regenerate the client catalog.
 7. Run `npm run check` and manually play the round at narrow and wide viewport sizes.
 
-The `sources/` directory is not copied into `dist/` or deployed by Vite. It is still part of the Git history, so originals are downloadable from the Git host whenever the repository is public. Confirm source rights and publication permission before adding an original.
+Vite includes only referenced `redacted.webp` derivatives in `dist/`; it does not copy `original.png` or `redaction.json`. The complete `sources/` tree is still part of Git history, so originals are downloadable from the Git host whenever the repository is public. Confirm source rights and publication permission before adding an original.
 
 The scorer intentionally awards four points. Tournament plus stage form one event point, and both side-specific team selections form one teams point.
 

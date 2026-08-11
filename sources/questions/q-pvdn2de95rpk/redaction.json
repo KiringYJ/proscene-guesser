@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "approved",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "B10E5A355EDE9001B4B7D63B585D4943141BA71F42DFBA09AECC319D12CBA835"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "top-blue-team-identity",
+        "top-red-team-identity"
+      ]
+    },
+    {
+      "id": "top-series-indicators",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "top-blue-series-indicator",
+        "top-red-series-indicator"
+      ]
+    },
+    {
+      "id": "roster-player-names",
+      "rule": "uniform-width",
+      "width": 110,
+      "rectangleIds": [
+        "blue-roster-doran",
+        "blue-roster-peanut",
+        "blue-roster-zeka",
+        "blue-roster-viper",
+        "blue-roster-delight",
+        "red-roster-bin",
+        "red-roster-xun",
+        "red-roster-knight",
+        "red-roster-elk",
+        "red-roster-on"
+      ]
+    },
+    {
+      "id": "floating-player-names",
+      "rule": "uniform-width",
+      "width": 132,
+      "rectangleIds": [
+        "floating-red-elk",
+        "floating-red-xun",
+        "floating-red-bin",
+        "floating-red-knight",
+        "floating-blue-peanut",
+        "floating-blue-doran",
+        "floating-blue-viper"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "top-left-team-label",
+      "purpose": "team-identifier",
+      "x": 210,
+      "y": 0,
+      "width": 82,
+      "height": 67
+    },
+    {
+      "id": "top-blue-team-identity",
+      "purpose": "team-identifier",
+      "x": 500,
+      "y": 0,
+      "width": 174,
+      "height": 66
+    },
+    {
+      "id": "top-red-team-identity",
+      "purpose": "team-identifier",
+      "x": 1246,
+      "y": 0,
+      "width": 174,
+      "height": 66
+    },
+    {
+      "id": "top-blue-series-indicator",
+      "purpose": "series-score",
+      "x": 512,
+      "y": 66,
+      "width": 74,
+      "height": 22
+    },
+    {
+      "id": "top-red-series-indicator",
+      "purpose": "series-score",
+      "x": 1334,
+      "y": 66,
+      "width": 74,
+      "height": 22
+    },
+    {
+      "id": "top-event-year-mark",
+      "purpose": "event-and-year-identifier",
+      "x": 936,
+      "y": 12,
+      "width": 56,
+      "height": 42
+    },
+    {
+      "id": "blue-roster-doran",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 130,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "blue-roster-peanut",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 234,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "blue-roster-zeka",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 338,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "blue-roster-viper",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 442,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "blue-roster-delight",
+      "purpose": "player-name",
+      "x": 0,
+      "y": 546,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "red-roster-bin",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 130,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "red-roster-xun",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 234,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "red-roster-knight",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 338,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "red-roster-elk",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 442,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "red-roster-on",
+      "purpose": "player-name",
+      "x": 1810,
+      "y": 546,
+      "width": 110,
+      "height": 24
+    },
+    {
+      "id": "floating-red-elk",
+      "purpose": "player-name",
+      "x": 834,
+      "y": 323,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "floating-red-xun",
+      "purpose": "player-name",
+      "x": 722,
+      "y": 456,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "floating-red-bin",
+      "purpose": "player-name",
+      "x": 962,
+      "y": 609,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "floating-red-knight",
+      "purpose": "player-name",
+      "x": 978,
+      "y": 645,
+      "width": 132,
+      "height": 28
+    },
+    {
+      "id": "floating-blue-peanut",
+      "purpose": "player-name",
+      "x": 672,
+      "y": 741,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "floating-blue-doran",
+      "purpose": "player-name",
+      "x": 710,
+      "y": 774,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "floating-blue-viper",
+      "purpose": "player-name",
+      "x": 945,
+      "y": 742,
+      "width": 132,
+      "height": 27
+    },
+    {
+      "id": "event-banner-upper-river",
+      "purpose": "event-and-year-identifier",
+      "x": 738,
+      "y": 151,
+      "width": 50,
+      "height": 126
+    },
+    {
+      "id": "event-banner-center-river",
+      "purpose": "event-and-year-identifier",
+      "x": 904,
+      "y": 250,
+      "width": 58,
+      "height": 105
+    },
+    {
+      "id": "event-banner-pit-upper",
+      "purpose": "event-and-year-identifier",
+      "x": 320,
+      "y": 332,
+      "width": 82,
+      "height": 115
+    },
+    {
+      "id": "event-banner-pit-left",
+      "purpose": "event-and-year-identifier",
+      "x": 190,
+      "y": 340,
+      "width": 100,
+      "height": 180
+    },
+    {
+      "id": "event-banner-upper-right",
+      "purpose": "event-and-year-identifier",
+      "x": 1763,
+      "y": 90,
+      "width": 82,
+      "height": 137
+    },
+    {
+      "id": "event-banner-bottom-right",
+      "purpose": "event-and-year-identifier",
+      "x": 1406,
+      "y": 790,
+      "width": 201,
+      "height": 160
+    }
+  ]
+}

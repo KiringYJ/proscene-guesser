@@ -1,13 +1,11 @@
-import {
-  getQuestionPublicImageFilename,
-  type PublishedQuestionManifest,
-} from './question-manifest.ts'
-import type { GeneratedLocalQuestionBundle } from '../game/authority/question-bundle.ts'
+import type { PlayableQuestionManifest } from './question-manifest.ts'
 import type { InternationalCatalog } from './catalog/types.ts'
+import type { GeneratedLocalQuestionBundle } from '../game/authority/question-bundle.ts'
+import type { QuestionAnswer, QuestionTeamChoice } from '../types/question.ts'
 
 export function createGeneratedLocalQuestionBundle(
   id: string,
-  manifest: PublishedQuestionManifest,
+  manifest: PlayableQuestionManifest,
   catalog: InternationalCatalog,
 ): GeneratedLocalQuestionBundle {
   const tournaments = Array.isArray(manifest.choices.tournaments)
@@ -43,11 +41,40 @@ export function createGeneratedLocalQuestionBundle(
   }
 
   const stages = answerEdition?.stages ?? manifest.choices.stages
-  const teams = answerEdition?.participants.map((participant) => participant.nameAtEvent) ??
-    manifest.choices.teams
+  const teams: readonly QuestionTeamChoice[] | undefined = answerEdition
+    ? answerEdition.participants.map((participant) => ({
+        id: participant.teamId,
+        name: participant.nameAtEvent,
+      }))
+    : manifest.choices.teams
 
   if (!stages || !teams) {
     throw new Error(`${id}: static questions must define stage and team choices`)
+  }
+
+  let answer: QuestionAnswer
+
+  if (answerEdition) {
+    const tournament = seriesNameById.get(answerEdition.seriesId)
+
+    if (!tournament) {
+      throw new Error(`${id}: catalog edition has no known series ${answerEdition.seriesId}`)
+    }
+
+    answer = {
+      year: answerEdition.year,
+      tournament,
+      stage: manifest.answer.stage,
+      blueTeamId: manifest.answer.blueTeamId,
+      redTeamId: manifest.answer.redTeamId,
+      gameNumber: manifest.answer.gameNumber,
+    }
+  } else {
+    if (!('year' in manifest.answer) || !('tournament' in manifest.answer)) {
+      throw new Error(`${id}: catalog-backed answer cannot be resolved without an edition`)
+    }
+
+    answer = manifest.answer
   }
 
   if (catalogEditionIds) {
@@ -69,7 +96,6 @@ export function createGeneratedLocalQuestionBundle(
     prompt: {
       id,
       pool: manifest.pool,
-      publicImage: getQuestionPublicImageFilename(id),
       imageAlt: manifest.imageAlt,
       archiveLabel: manifest.archiveLabel,
       clue: manifest.clue,
@@ -84,7 +110,7 @@ export function createGeneratedLocalQuestionBundle(
     },
     disclosure: {
       solution: {
-        answer: manifest.answer,
+        answer,
         ...(manifest.catalogEditionId ? { catalogEditionId: manifest.catalogEditionId } : {}),
       },
       ...(manifest.source ? { source: manifest.source } : {}),

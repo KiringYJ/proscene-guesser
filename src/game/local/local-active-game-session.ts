@@ -120,7 +120,9 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
     try {
       await this.#commandBoundary('submit')
       const bundle = this.#requireCurrentBundle()
-      const result = scoreAnswer(submittedAnswer, bundle.disclosure.solution)
+      const result = scoreAnswer(submittedAnswer, bundle.disclosure.solution, {
+        teamChoices: bundle.prompt.choices.teams,
+      })
       this.#roundsPlayed += 1
       this.#bestPoints = Math.max(this.#bestPoints, result.points)
       const progress = this.#createProgress()
@@ -230,7 +232,7 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
     if (this.#bundles.length === 0) {
       return {
         phase: 'empty',
-        reason: 'no-published-questions',
+        reason: 'no-playable-questions',
         progress: {
           roundNumber: 0,
           roundCount: 0,

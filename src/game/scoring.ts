@@ -35,7 +35,8 @@ export function evaluateAnswer(
     },
     {
       id: 'teams',
-      correct: answer.blueTeam === expected.blueTeam && answer.redTeam === expected.redTeam,
+      correct:
+        answer.blueTeamId === expected.blueTeamId && answer.redTeamId === expected.redTeamId,
     },
     {
       id: 'game',
@@ -55,8 +56,8 @@ export function isAnswerComplete(answer: PlayerAnswer, prompt: QuestionPrompt): 
     answer.year,
     answer.tournament,
     answer.stage,
-    answer.blueTeam,
-    answer.redTeam,
+    answer.blueTeamId,
+    answer.redTeamId,
     answer.gameNumber,
   ]
 

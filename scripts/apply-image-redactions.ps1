@@ -80,8 +80,8 @@ try {
         else {
             $reviewStatus = ([string] $reviewStatusProperty.Value).ToLowerInvariant()
         }
-        if ($reviewStatus -notin @('proposed', 'approved')) {
-            throw 'redaction.json reviewStatus must be proposed or approved.'
+        if ($reviewStatus -notin @('proposed', 'auto-applied', 'approved')) {
+            throw 'redaction.json reviewStatus must be proposed, auto-applied, or approved.'
         }
 
         $coordinateSpace = $manifest.PSObject.Properties['coordinateSpace'].Value
@@ -293,8 +293,8 @@ try {
         }
     }
 
-    if (-not $Preview -and $null -ne $resolvedManifest -and $reviewStatus -ne 'approved') {
-        throw 'redaction.json is not approved. Audit a labeled preview, then set reviewStatus to approved.'
+    if (-not $Preview -and $null -ne $resolvedManifest -and $reviewStatus -eq 'proposed') {
+        throw 'redaction.json is proposed. Use auto-applied for immediate output or approved after explicit approval.'
     }
 
     $scaleX = $source.Width / [double] $referenceWidth
