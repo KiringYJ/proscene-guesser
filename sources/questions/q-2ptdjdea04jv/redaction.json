@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "EE1BAA6A347AC19056337562A2E61EA4EE0A5898AD3CDFD275D48FBCB833BA56"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-identity",
+        "scoreboard-red-identity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 112,
+      "rectangleIds": [
+        "blue-roster-name-1",
+        "blue-roster-name-2",
+        "blue-roster-name-3",
+        "blue-roster-name-4",
+        "blue-roster-name-5",
+        "red-roster-name-1",
+        "red-roster-name-2",
+        "red-roster-name-3",
+        "red-roster-name-4",
+        "red-roster-name-5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 150,
+      "rectangleIds": [
+        "floating-blue-1",
+        "floating-blue-2",
+        "floating-blue-3",
+        "floating-red-1",
+        "floating-red-2"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-year-banners",
+      "rectangleIds": [
+        "year-banner-upper-left",
+        "year-banner-center",
+        "year-banner-lower-left",
+        "year-banner-lower-right",
+        "year-banner-bottom-edge-left"
+      ],
+      "reason": "Four environmental banners have irregular visible bounds caused by scale and perspective."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-identity",
+      "purpose": "blue team name/logo/seed",
+      "x": 658,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "scoreboard-red-identity",
+      "purpose": "red team name/logo/seed",
+      "x": 1656,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "scoreboard-event-mark",
+      "purpose": "Worlds 2024 event/year mark",
+      "x": 1215,
+      "y": 0,
+      "width": 130,
+      "height": 101
+    },
+    {
+      "id": "blue-roster-name-1",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 168,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-2",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 307,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-3",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 446,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-4",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 585,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-5",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 724,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-1",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 168,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-2",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 307,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-3",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 446,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-4",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 585,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-5",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 724,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "kill-banner-text",
+      "purpose": "team/player names in kill announcement",
+      "x": 996,
+      "y": 286,
+      "width": 612,
+      "height": 69
+    },
+    {
+      "id": "floating-blue-1",
+      "purpose": "floating player name",
+      "x": 1267,
+      "y": 425,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-blue-2",
+      "purpose": "floating player name",
+      "x": 879,
+      "y": 626,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-blue-3",
+      "purpose": "floating player name",
+      "x": 1383,
+      "y": 864,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-red-1",
+      "purpose": "floating player name",
+      "x": 1039,
+      "y": 572,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-red-2",
+      "purpose": "floating player name",
+      "x": 430,
+      "y": 804,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "year-banner-upper-left",
+      "purpose": "visible 2024 event banner",
+      "x": 73,
+      "y": 682,
+      "width": 65,
+      "height": 177
+    },
+    {
+      "id": "year-banner-center",
+      "purpose": "visible 2024 event banner",
+      "x": 1345,
+      "y": 740,
+      "width": 105,
+      "height": 210
+    },
+    {
+      "id": "year-banner-lower-left",
+      "purpose": "visible 2024 event banner",
+      "x": 650,
+      "y": 1180,
+      "width": 115,
+      "height": 260
+    },
+    {
+      "id": "year-banner-lower-right",
+      "purpose": "visible 2024 event banner",
+      "x": 1655,
+      "y": 980,
+      "width": 120,
+      "height": 210
+    },
+    {
+      "id": "year-banner-bottom-edge-left",
+      "purpose": "visible 2024 environment banner fragment",
+      "x": 430,
+      "y": 1360,
+      "width": 220,
+      "height": 80
+    },
+    {
+      "id": "audience-camera",
+      "purpose": "camera panel with audience signage/team text",
+      "x": 1769,
+      "y": 995,
+      "width": 791,
+      "height": 445
+    }
+  ]
+}

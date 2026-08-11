@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "6AF71C5E9ABA12491E1324263991B2A3AAA5853965FFC121E489D7F62D100264"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-identity",
+        "scoreboard-red-identity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 112,
+      "rectangleIds": [
+        "blue-roster-name-1",
+        "blue-roster-name-2",
+        "blue-roster-name-3",
+        "blue-roster-name-4",
+        "blue-roster-name-5",
+        "red-roster-name-1",
+        "red-roster-name-2",
+        "red-roster-name-3",
+        "red-roster-name-4",
+        "red-roster-name-5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 126,
+      "rectangleIds": [
+        "floating-blue-1",
+        "floating-blue-2",
+        "floating-blue-3",
+        "floating-blue-4",
+        "floating-red-1"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-year-banners",
+      "rectangleIds": [
+        "year-banner-upper",
+        "year-banner-lower"
+      ],
+      "reason": "Map banners differ in scale and perspective."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-identity",
+      "purpose": "blue team name/logo/seed",
+      "x": 658,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "scoreboard-red-identity",
+      "purpose": "red team name/logo/seed",
+      "x": 1656,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "blue-roster-name-1",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 168,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-2",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 307,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-3",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 446,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-4",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 585,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-5",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 724,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-1",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 168,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-2",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 307,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-3",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 446,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-4",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 585,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-5",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 724,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "baron-overlay-team",
+      "purpose": "team name in Baron power-play overlay",
+      "x": 119,
+      "y": 0,
+      "width": 270,
+      "height": 122
+    },
+    {
+      "id": "floating-blue-1",
+      "purpose": "floating player name",
+      "x": 994,
+      "y": 366,
+      "width": 126,
+      "height": 22
+    },
+    {
+      "id": "floating-blue-2",
+      "purpose": "floating player name",
+      "x": 1149,
+      "y": 594,
+      "width": 126,
+      "height": 22
+    },
+    {
+      "id": "floating-blue-3",
+      "purpose": "floating player name",
+      "x": 1017,
+      "y": 758,
+      "width": 126,
+      "height": 22
+    },
+    {
+      "id": "floating-blue-4",
+      "purpose": "floating player name",
+      "x": 1457,
+      "y": 496,
+      "width": 126,
+      "height": 22
+    },
+    {
+      "id": "floating-red-1",
+      "purpose": "floating player name",
+      "x": 1736,
+      "y": 762,
+      "width": 126,
+      "height": 24
+    },
+    {
+      "id": "year-banner-upper",
+      "purpose": "visible 2024 event banner",
+      "x": 1420,
+      "y": 110,
+      "width": 57,
+      "height": 168
+    },
+    {
+      "id": "year-banner-lower",
+      "purpose": "visible 2024 event banner",
+      "x": 1574,
+      "y": 1083,
+      "width": 73,
+      "height": 208
+    }
+  ]
+}

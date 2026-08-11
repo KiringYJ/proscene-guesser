@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "A73AD124F5F79905EEAA090E636E6D487F5991E9D3A956CF3FAECC0FE5C88E9B"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 200,
+      "rectangleIds": [
+        "floating-01",
+        "floating-02",
+        "floating-03"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "team-name-logo-seed",
+      "x": 682,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "team-name-logo-seed",
+      "x": 1582,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "event-year-mark",
+      "purpose": "event-year",
+      "x": 0,
+      "y": 1090,
+      "width": 122,
+      "height": 58
+    },
+    {
+      "id": "patch-version-label",
+      "purpose": "patch/version text that permits year inference",
+      "x": 180,
+      "y": 1092,
+      "width": 165,
+      "height": 56
+    },
+    {
+      "id": "camera-left",
+      "purpose": "player-face-jersey-name",
+      "x": 379,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "floating-01",
+      "purpose": "player-nameplate",
+      "x": 1080,
+      "y": 161,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-02",
+      "purpose": "player-nameplate",
+      "x": 1684,
+      "y": 478,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-03",
+      "purpose": "player-nameplate",
+      "x": 1071,
+      "y": 649,
+      "width": 200,
+      "height": 29
+    }
+  ]
+}

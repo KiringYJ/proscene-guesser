@@ -1,0 +1,18 @@
+{
+  "pool": "deep-cut",
+  "catalogEditionId": "worlds-2025",
+  "answer": {
+    "stage": "Swiss Stage",
+    "blueTeamId": "ctbc-flying-oyster",
+    "redTeamId": "t1",
+    "gameNumber": 1
+  },
+  "source": {
+    "label": "LoL Esports broadcast mirror on YouTube",
+    "url": "https://www.youtube.com/watch?v=cD6PMBbzE9g"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

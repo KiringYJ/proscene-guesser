@@ -1,0 +1,18 @@
+{
+  "pool": "deep-cut",
+  "catalogEditionId": "worlds-2025",
+  "answer": {
+    "stage": "Quarterfinal",
+    "blueTeamId": "gen-g-esports",
+    "redTeamId": "hanwha-life-esports",
+    "gameNumber": 4
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast video",
+    "url": "https://www.youtube.com/watch?v=zFNKtfzkZVA"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "pool": "classic",
+  "catalogEditionId": "msi-2025",
+  "answer": {
+    "stage": "Final",
+    "blueTeamId": "t1",
+    "redTeamId": "gen-g-esports",
+    "gameNumber": 5
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast video",
+    "url": "https://www.youtube.com/watch?v=NJRNuPoMdUA"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

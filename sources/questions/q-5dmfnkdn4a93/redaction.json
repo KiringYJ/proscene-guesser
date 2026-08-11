@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "2B99C54F68C191BACB258F622F2D99D6981D74AE78989001D2AB81FEC59A7C5D"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left",
+        "camera-right"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 200,
+      "rectangleIds": [
+        "floating-01",
+        "floating-02",
+        "floating-03",
+        "floating-04",
+        "floating-05",
+        "floating-06",
+        "floating-07"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "team-name-logo-seed",
+      "x": 682,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "team-name-logo-seed",
+      "x": 1582,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "event-year-mark",
+      "purpose": "event-year",
+      "x": 0,
+      "y": 1090,
+      "width": 122,
+      "height": 58
+    },
+    {
+      "id": "patch-version-label",
+      "purpose": "patch/version text that permits year inference",
+      "x": 180,
+      "y": 1092,
+      "width": 165,
+      "height": 56
+    },
+    {
+      "id": "camera-left",
+      "purpose": "player-face-jersey-name",
+      "x": 379,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "camera-right",
+      "purpose": "player-face-jersey-name",
+      "x": 1939,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "floating-01",
+      "purpose": "player-nameplate",
+      "x": 1360,
+      "y": 132,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-02",
+      "purpose": "player-nameplate",
+      "x": 1018,
+      "y": 374,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-03",
+      "purpose": "player-nameplate",
+      "x": 1155,
+      "y": 370,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-04",
+      "purpose": "player-nameplate",
+      "x": 1028,
+      "y": 518,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-05",
+      "purpose": "player-nameplate",
+      "x": 1312,
+      "y": 686,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-06",
+      "purpose": "player-nameplate",
+      "x": 1427,
+      "y": 739,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-07",
+      "purpose": "player-nameplate",
+      "x": 995,
+      "y": 807,
+      "width": 200,
+      "height": 29
+    }
+  ]
+}

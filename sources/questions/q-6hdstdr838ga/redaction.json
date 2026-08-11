@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "FB04C6EE38734F2F775DD383A74848107B6DEF3DDEB81A80BB9B227DD0E1E45A"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left",
+        "camera-right"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 200,
+      "rectangleIds": [
+        "floating-01",
+        "floating-02",
+        "floating-03",
+        "floating-04",
+        "floating-05",
+        "floating-06"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "overlapping-nameplates",
+      "rectangleIds": [
+        "floating-03",
+        "floating-04"
+      ],
+      "reason": "Two overlapping player nameplates require independent centered rectangles."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "team-name-logo-seed",
+      "x": 682,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "team-name-logo-seed",
+      "x": 1582,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "event-stage-banner",
+      "purpose": "event-year-stage",
+      "x": 0,
+      "y": 1090,
+      "width": 381,
+      "height": 59
+    },
+    {
+      "id": "camera-left",
+      "purpose": "player-face-jersey-name",
+      "x": 379,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "camera-right",
+      "purpose": "player-face-jersey-name",
+      "x": 1939,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "floating-01",
+      "purpose": "player-nameplate",
+      "x": 780,
+      "y": 124,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-02",
+      "purpose": "player-nameplate",
+      "x": 1229,
+      "y": 359,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-03",
+      "purpose": "player-nameplate",
+      "x": 785,
+      "y": 627,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-04",
+      "purpose": "player-nameplate",
+      "x": 845,
+      "y": 618,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-05",
+      "purpose": "player-nameplate",
+      "x": 1309,
+      "y": 604,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-06",
+      "purpose": "cropped T1 Faker player-nameplate",
+      "x": 1580,
+      "y": 0,
+      "width": 200,
+      "height": 29
+    }
+  ]
+}

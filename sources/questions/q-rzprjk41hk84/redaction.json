@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "A342576B1273E795FCCC7D299B180783BD82C01E8D5B26E8EFF842FEA11CE0F2"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left-full",
+        "camera-right-full"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "Blue team logo, name, seed, and series ticks",
+      "x": 684,
+      "y": 10,
+      "width": 264,
+      "height": 80
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "Red team logo, name, seed, and series ticks",
+      "x": 1612,
+      "y": 10,
+      "width": 264,
+      "height": 80
+    },
+    {
+      "id": "lower-event-stage",
+      "purpose": "Worlds 25 emblem and WORLDS SEMIFINALS text",
+      "x": 0,
+      "y": 1087,
+      "width": 382,
+      "height": 59
+    },
+    {
+      "id": "camera-left-full",
+      "purpose": "Full left player camera including face, jersey, background, and name",
+      "x": 382,
+      "y": 1093,
+      "width": 238,
+      "height": 347
+    },
+    {
+      "id": "camera-right-full",
+      "purpose": "Full right player camera including face, jersey, background, and name",
+      "x": 1940,
+      "y": 1093,
+      "width": 238,
+      "height": 347
+    }
+  ]
+}

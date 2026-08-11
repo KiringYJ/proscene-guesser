@@ -1,0 +1,18 @@
+{
+  "pool": "classic",
+  "catalogEditionId": "worlds-2025",
+  "answer": {
+    "stage": "Semifinal",
+    "blueTeamId": "top-esports",
+    "redTeamId": "t1",
+    "gameNumber": 3
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast video",
+    "url": "https://www.youtube.com/watch?v=1Z_bBZsLhyg"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

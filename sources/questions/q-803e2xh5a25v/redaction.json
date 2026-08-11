@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "3CCEE4387E783D57493AF2E7F1B0764973343D55A3750EA1A1230E10E8FAC304"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard.blueIdentity",
+        "scoreboard.redIdentity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 83,
+      "rectangleIds": [
+        "roster.blue.p1",
+        "roster.red.p1",
+        "roster.blue.p2",
+        "roster.red.p2",
+        "roster.blue.p3",
+        "roster.red.p3",
+        "roster.blue.p4",
+        "roster.red.p4",
+        "roster.blue.p5",
+        "roster.red.p5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 120,
+      "rectangleIds": [
+        "float.drxDeft",
+        "float.edgFlandre"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "camera-asymmetry",
+      "rectangleIds": [
+        "camera.bluePlayer",
+        "camera.redPlayer"
+      ],
+      "reason": "Broadcast camera panels have genuine unequal widths and are retained at full inspected bounds."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard.blueIdentity",
+      "purpose": "blue-side team logo/name, seed, and series score",
+      "x": 491,
+      "y": 0,
+      "width": 200,
+      "height": 89
+    },
+    {
+      "id": "scoreboard.redIdentity",
+      "purpose": "red-side team logo/name, seed, and series score",
+      "x": 1229,
+      "y": 0,
+      "width": 200,
+      "height": 89
+    },
+    {
+      "id": "roster.blue.p1",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 130,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p1",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 130,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p2",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 234,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p2",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 234,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p3",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 338,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p3",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 338,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p4",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 442,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p4",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 442,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p5",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 546,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p5",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 546,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "camera.bluePlayer",
+      "purpose": "blue-side player camera panel",
+      "x": 305,
+      "y": 842,
+      "width": 292,
+      "height": 238
+    },
+    {
+      "id": "camera.redPlayer",
+      "purpose": "red-side player camera panel",
+      "x": 1331,
+      "y": 842,
+      "width": 299,
+      "height": 238
+    },
+    {
+      "id": "baronWidget.teamName",
+      "purpose": "team identity in Baron power-play widget",
+      "x": 1741,
+      "y": 0,
+      "width": 91,
+      "height": 48
+    },
+    {
+      "id": "float.drxDeft",
+      "purpose": "visible floating player nameplate",
+      "x": 765,
+      "y": 416,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.edgFlandre",
+      "purpose": "visible floating player nameplate",
+      "x": 1165,
+      "y": 342,
+      "width": 120,
+      "height": 22
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "pool": "classic",
+  "catalogEditionId": "worlds-2023",
+  "answer": {
+    "stage": "Quarterfinal",
+    "blueTeamId": "lng-esports",
+    "redTeamId": "t1",
+    "gameNumber": 1
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast video",
+    "url": "https://www.youtube.com/watch?v=d7DijllJr-s"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

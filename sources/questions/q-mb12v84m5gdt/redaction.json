@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "3C78025C0EFBCF96812B68D7C9E5D9F68D2AD9AC0F950BF7FA73062DBE79DDCC"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "team-blue-top",
+        "team-red-top"
+      ]
+    },
+    {
+      "id": "bottom-player-cameras",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-blue",
+        "camera-red"
+      ]
+    },
+    {
+      "id": "roster-names",
+      "rule": "uniform-width",
+      "width": 142,
+      "rectangleIds": [
+        "roster-blue-01",
+        "roster-blue-02",
+        "roster-blue-03",
+        "roster-blue-04",
+        "roster-blue-05",
+        "roster-red-01",
+        "roster-red-02",
+        "roster-red-03",
+        "roster-red-04",
+        "roster-red-05"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 140,
+      "rectangleIds": [
+        "float-blue-01",
+        "float-blue-02",
+        "float-red-01",
+        "float-red-02"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "clipped-right-edge-nameplates",
+      "rectangleIds": [
+        "float-red-edge-01",
+        "float-red-edge-02",
+        "float-red-edge-03"
+      ],
+      "reason": "The source labels are clipped at the 1920px image boundary, so 105px rectangles cover only visible pixels and cannot use the ordinary 140px width."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "team-blue-top",
+      "purpose": "blue team logo/name/seed",
+      "x": 520,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "team-red-top",
+      "purpose": "red team logo/name/seed",
+      "x": 1210,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "event-year-badge",
+      "purpose": "Worlds 25 badge and Patch 25.20 text",
+      "x": 0,
+      "y": 820,
+      "width": 288,
+      "height": 45
+    },
+    {
+      "id": "float-blue-01",
+      "purpose": "BLG Elk floating nameplate",
+      "x": 1046,
+      "y": 269,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-02",
+      "purpose": "BLG Knight floating nameplate",
+      "x": 1014,
+      "y": 435,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-01",
+      "purpose": "G2 BrokenBlade floating nameplate",
+      "x": 1419,
+      "y": 184,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-02",
+      "purpose": "G2 Caps floating nameplate",
+      "x": 1490,
+      "y": 455,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-edge-01",
+      "purpose": "partially clipped G2 floating nameplate at right edge",
+      "x": 1815,
+      "y": 388,
+      "width": 105,
+      "height": 32
+    },
+    {
+      "id": "float-red-edge-02",
+      "purpose": "partially clipped G2 floating nameplate at right edge",
+      "x": 1815,
+      "y": 456,
+      "width": 105,
+      "height": 20
+    },
+    {
+      "id": "float-red-edge-03",
+      "purpose": "partially clipped G2 floating nameplate at right edge",
+      "x": 1815,
+      "y": 522,
+      "width": 105,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-01",
+      "purpose": "Bin roster name",
+      "x": 750,
+      "y": 824,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-02",
+      "purpose": "Shad0w roster name",
+      "x": 750,
+      "y": 876,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-03",
+      "purpose": "Knight roster name",
+      "x": 750,
+      "y": 928,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-04",
+      "purpose": "Elk roster name",
+      "x": 750,
+      "y": 980,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-05",
+      "purpose": "ON roster name",
+      "x": 750,
+      "y": 1032,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-red-01",
+      "purpose": "BrokenBlade roster name",
+      "x": 1028,
+      "y": 824,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-red-02",
+      "purpose": "SkewMond roster name",
+      "x": 1028,
+      "y": 876,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-red-03",
+      "purpose": "Caps roster name",
+      "x": 1028,
+      "y": 928,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-red-04",
+      "purpose": "Hans Sama roster name",
+      "x": 1028,
+      "y": 980,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "roster-red-05",
+      "purpose": "Labrov roster name",
+      "x": 1028,
+      "y": 1032,
+      "width": 142,
+      "height": 20
+    },
+    {
+      "id": "camera-blue",
+      "purpose": "Bin player camera and caption",
+      "x": 288,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    },
+    {
+      "id": "camera-red",
+      "purpose": "BrokenBlade player camera and caption",
+      "x": 1456,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    }
+  ]
+}

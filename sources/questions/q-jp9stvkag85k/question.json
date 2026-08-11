@@ -1,0 +1,18 @@
+{
+  "pool": "classic",
+  "catalogEditionId": "worlds-2024",
+  "answer": {
+    "stage": "Final",
+    "blueTeamId": "t1",
+    "redTeamId": "bilibili-gaming",
+    "gameNumber": 1
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast video",
+    "url": "https://www.youtube.com/watch?v=0TMreK9k1KI"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

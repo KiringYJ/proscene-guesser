@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "F167F74A6E9EF16222230B487971D6EA759CEDDCA6DBDDB0CB568B5379508DFE"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left-full",
+        "camera-right-full"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 180,
+      "rectangleIds": [
+        "nameplate-red-01",
+        "nameplate-blue-01",
+        "nameplate-blue-02",
+        "nameplate-blue-03",
+        "nameplate-blue-04",
+        "nameplate-blue-05",
+        "nameplate-red-02"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "lower-compound-overlays",
+      "rectangleIds": [
+        "lower-event-stage-year",
+        "lower-team-identity"
+      ],
+      "reason": "Distinct compound event and team panels must retain their inspected bounds."
+    },
+    {
+      "id": "stat-name-columns",
+      "rectangleIds": [
+        "stats-blue-names",
+        "stats-red-names"
+      ],
+      "reason": "Asymmetric table columns preserve adjacent champions, items, CS, KDA, gold, levels, and resource bars."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "Blue team logo, name, seed, and series ticks",
+      "x": 684,
+      "y": 10,
+      "width": 264,
+      "height": 80
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "Red team logo, name, seed, and series ticks",
+      "x": 1612,
+      "y": 10,
+      "width": 264,
+      "height": 80
+    },
+    {
+      "id": "nameplate-red-01",
+      "purpose": "Floating player name T1 Faker",
+      "x": 1646,
+      "y": 315,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "nameplate-blue-01",
+      "purpose": "Floating player name KT deokdam",
+      "x": 565,
+      "y": 405,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "nameplate-blue-02",
+      "purpose": "Floating player name KT Peter",
+      "x": 645,
+      "y": 389,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "nameplate-blue-03",
+      "purpose": "Floating player name KT Bdd",
+      "x": 705,
+      "y": 422,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "nameplate-blue-04",
+      "purpose": "Floating player name KT Cuzz",
+      "x": 780,
+      "y": 386,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "nameplate-blue-05",
+      "purpose": "Floating player name KT PerfecT",
+      "x": 1094,
+      "y": 600,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "nameplate-red-02",
+      "purpose": "Floating player name T1 Doran",
+      "x": 1398,
+      "y": 590,
+      "width": 180,
+      "height": 28
+    },
+    {
+      "id": "lower-event-stage-year",
+      "purpose": "Worlds 25 emblem and WORLDS 2025 FINAL text",
+      "x": 0,
+      "y": 1087,
+      "width": 382,
+      "height": 59
+    },
+    {
+      "id": "lower-team-identity",
+      "purpose": "KT logo, team name, and LCK seed",
+      "x": 18,
+      "y": 1152,
+      "width": 350,
+      "height": 105
+    },
+    {
+      "id": "stats-blue-names",
+      "purpose": "All five KT player names in the bottom statistics table",
+      "x": 1012,
+      "y": 1094,
+      "width": 161,
+      "height": 343
+    },
+    {
+      "id": "stats-red-names",
+      "purpose": "All five T1 player names in the bottom statistics table",
+      "x": 1395,
+      "y": 1094,
+      "width": 184,
+      "height": 343
+    },
+    {
+      "id": "camera-left-full",
+      "purpose": "Full left player camera including face, jersey, background, and name",
+      "x": 382,
+      "y": 1093,
+      "width": 238,
+      "height": 347
+    },
+    {
+      "id": "camera-right-full",
+      "purpose": "Full right player camera including face, jersey, background, and name",
+      "x": 1940,
+      "y": 1093,
+      "width": 238,
+      "height": 347
+    }
+  ]
+}

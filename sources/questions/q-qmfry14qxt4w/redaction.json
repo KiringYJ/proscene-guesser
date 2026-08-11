@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "32545F1F948D629BF8CA7AAB86E53F3EB2DBE04E5D31E2D859A421E64AE5E2EB"
+  },
+  "geometryGroups": [
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 150,
+      "rectangleIds": [
+        "floating-01",
+        "floating-02"
+      ]
+    },
+    {
+      "id": "roster-name-slots",
+      "rule": "uniform-width",
+      "width": 150,
+      "rectangleIds": [
+        "roster-blue-01",
+        "roster-blue-02",
+        "roster-blue-03",
+        "roster-blue-04",
+        "roster-blue-05",
+        "roster-red-01",
+        "roster-red-02",
+        "roster-red-03",
+        "roster-red-04",
+        "roster-red-05"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "event-logo",
+      "purpose": "event-identifier",
+      "x": 15,
+      "y": 0,
+      "width": 60,
+      "height": 52
+    },
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "team-name-logo",
+      "x": 19,
+      "y": 50,
+      "width": 137,
+      "height": 43
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "team-name-logo",
+      "x": 19,
+      "y": 96,
+      "width": 137,
+      "height": 42
+    },
+    {
+      "id": "camera-left",
+      "purpose": "player-faces-jerseys-names",
+      "x": 0,
+      "y": 806,
+      "width": 309,
+      "height": 274
+    },
+    {
+      "id": "floating-01",
+      "purpose": "player-nameplate",
+      "x": 875,
+      "y": 253,
+      "width": 150,
+      "height": 22
+    },
+    {
+      "id": "floating-02",
+      "purpose": "player-nameplate",
+      "x": 1017,
+      "y": 514,
+      "width": 150,
+      "height": 22
+    },
+    {
+      "id": "roster-blue-01",
+      "purpose": "player-roster-name",
+      "x": 775,
+      "y": 827,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-blue-02",
+      "purpose": "player-roster-name",
+      "x": 775,
+      "y": 877,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-blue-03",
+      "purpose": "player-roster-name",
+      "x": 775,
+      "y": 926,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-blue-04",
+      "purpose": "player-roster-name",
+      "x": 775,
+      "y": 976,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-blue-05",
+      "purpose": "player-roster-name",
+      "x": 775,
+      "y": 1025,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-red-01",
+      "purpose": "player-roster-name",
+      "x": 1022,
+      "y": 827,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-red-02",
+      "purpose": "player-roster-name",
+      "x": 1022,
+      "y": 877,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-red-03",
+      "purpose": "player-roster-name",
+      "x": 1022,
+      "y": 926,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-red-04",
+      "purpose": "player-roster-name",
+      "x": 1022,
+      "y": 976,
+      "width": 150,
+      "height": 19
+    },
+    {
+      "id": "roster-red-05",
+      "purpose": "player-roster-name",
+      "x": 1022,
+      "y": 1025,
+      "width": 150,
+      "height": 19
+    }
+  ]
+}

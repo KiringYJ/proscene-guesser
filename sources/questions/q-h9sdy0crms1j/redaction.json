@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "38D36C76932468E6B06827E963CEFEC2340A63D84A138454F7D8A5E925915204"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left",
+        "camera-right"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 200,
+      "rectangleIds": [
+        "floating-01",
+        "floating-02",
+        "floating-03",
+        "floating-04",
+        "floating-05",
+        "floating-06",
+        "floating-07",
+        "floating-08",
+        "floating-09",
+        "floating-10"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "team-name-logo-seed",
+      "x": 682,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "team-name-logo-seed",
+      "x": 1582,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "event-stage-banner",
+      "purpose": "event-year-stage",
+      "x": 0,
+      "y": 1091,
+      "width": 381,
+      "height": 59
+    },
+    {
+      "id": "camera-left",
+      "purpose": "player-face-jersey-name",
+      "x": 379,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "camera-right",
+      "purpose": "player-face-jersey-name",
+      "x": 1939,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "floating-01",
+      "purpose": "player-nameplate",
+      "x": 1195,
+      "y": 160,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-02",
+      "purpose": "player-nameplate",
+      "x": 1010,
+      "y": 273,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-03",
+      "purpose": "player-nameplate",
+      "x": 925,
+      "y": 346,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-04",
+      "purpose": "player-nameplate",
+      "x": 1579,
+      "y": 456,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-05",
+      "purpose": "player-nameplate",
+      "x": 1007,
+      "y": 515,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-06",
+      "purpose": "player-nameplate",
+      "x": 1124,
+      "y": 584,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-07",
+      "purpose": "player-nameplate",
+      "x": 780,
+      "y": 722,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-08",
+      "purpose": "player-nameplate",
+      "x": 1396,
+      "y": 818,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-09",
+      "purpose": "player-nameplate",
+      "x": 958,
+      "y": 888,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-10",
+      "purpose": "player-nameplate",
+      "x": 1035,
+      "y": 1041,
+      "width": 200,
+      "height": 29
+    }
+  ]
+}

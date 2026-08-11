@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "2341BE0E0EC6639C9C8456ADD380952B9554453C08746496810C80BD28E30EF5"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-identity",
+        "scoreboard-red-identity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 136,
+      "rectangleIds": [
+        "blue-roster-name-1",
+        "blue-roster-name-2",
+        "blue-roster-name-3",
+        "blue-roster-name-4",
+        "blue-roster-name-5",
+        "red-roster-name-1",
+        "red-roster-name-2",
+        "red-roster-name-3",
+        "red-roster-name-4",
+        "red-roster-name-5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 150,
+      "rectangleIds": [
+        "floating-blue-1",
+        "floating-blue-2",
+        "floating-blue-3",
+        "floating-red-1",
+        "floating-red-2",
+        "floating-red-3",
+        "floating-red-4",
+        "floating-red-5"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-year-banners",
+      "rectangleIds": [
+        "year-banner-upper-left",
+        "year-banner-upper-center",
+        "year-banner-right",
+        "year-banner-lower-left",
+        "year-banner-bottom-left",
+        "year-banner-bottom-edge-left"
+      ],
+      "reason": "Four map banners have irregular visible bounds caused by scale and perspective."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-identity",
+      "purpose": "blue team name/logo/seed",
+      "x": 658,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "scoreboard-red-identity",
+      "purpose": "red team name/logo/seed",
+      "x": 1656,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "blue-roster-name-1",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 168,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-2",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 307,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-3",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 446,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-4",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 585,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-5",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 724,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-1",
+      "purpose": "red player/team label",
+      "x": 2424,
+      "y": 168,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-2",
+      "purpose": "red player/team label",
+      "x": 2424,
+      "y": 307,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-3",
+      "purpose": "red player/team label",
+      "x": 2424,
+      "y": 446,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-4",
+      "purpose": "red player/team label",
+      "x": 2424,
+      "y": 585,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-5",
+      "purpose": "red player/team label",
+      "x": 2424,
+      "y": 724,
+      "width": 136,
+      "height": 29
+    },
+    {
+      "id": "floating-blue-1",
+      "purpose": "floating player name",
+      "x": 875,
+      "y": 364,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-blue-2",
+      "purpose": "floating player name",
+      "x": 816,
+      "y": 402,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-blue-3",
+      "purpose": "floating player name",
+      "x": 1132,
+      "y": 470,
+      "width": 150,
+      "height": 22
+    },
+    {
+      "id": "floating-red-1",
+      "purpose": "floating player name",
+      "x": 1608,
+      "y": 516,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-red-2",
+      "purpose": "floating player name",
+      "x": 1328,
+      "y": 571,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "floating-red-3",
+      "purpose": "floating player name",
+      "x": 1433,
+      "y": 685,
+      "width": 150,
+      "height": 22
+    },
+    {
+      "id": "floating-red-4",
+      "purpose": "floating player name",
+      "x": 1789,
+      "y": 834,
+      "width": 150,
+      "height": 22
+    },
+    {
+      "id": "floating-red-5",
+      "purpose": "T1 Oner floating player name",
+      "x": 930,
+      "y": 700,
+      "width": 150,
+      "height": 24
+    },
+    {
+      "id": "year-banner-upper-left",
+      "purpose": "visible 2024 event banner",
+      "x": 205,
+      "y": 275,
+      "width": 205,
+      "height": 185
+    },
+    {
+      "id": "year-banner-upper-center",
+      "purpose": "visible 2024 event banner",
+      "x": 1308,
+      "y": 105,
+      "width": 59,
+      "height": 181
+    },
+    {
+      "id": "year-banner-right",
+      "purpose": "visible 2024 event banner",
+      "x": 2220,
+      "y": 330,
+      "width": 155,
+      "height": 210
+    },
+    {
+      "id": "year-banner-lower-left",
+      "purpose": "visible 2024 event banner",
+      "x": 650,
+      "y": 910,
+      "width": 120,
+      "height": 210
+    },
+    {
+      "id": "year-banner-bottom-left",
+      "purpose": "visible 2024 environment banner fragment",
+      "x": 25,
+      "y": 1025,
+      "width": 125,
+      "height": 100
+    },
+    {
+      "id": "year-banner-bottom-edge-left",
+      "purpose": "visible 2024 environment banner fragment",
+      "x": 430,
+      "y": 1360,
+      "width": 220,
+      "height": 80
+    }
+  ]
+}

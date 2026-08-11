@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "6242847510140085EE6E24CF5B8801712ACBB23114F02554710BA5D055BD8E36"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-identity",
+        "scoreboard-red-identity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 112,
+      "rectangleIds": [
+        "blue-roster-name-1",
+        "blue-roster-name-2",
+        "blue-roster-name-3",
+        "blue-roster-name-4",
+        "blue-roster-name-5",
+        "red-roster-name-1",
+        "red-roster-name-2",
+        "red-roster-name-3",
+        "red-roster-name-4",
+        "red-roster-name-5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 140,
+      "rectangleIds": [
+        "floating-blue-1",
+        "floating-red-1",
+        "floating-red-2",
+        "floating-red-3"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "asymmetric-player-cameras",
+      "rectangleIds": [
+        "blue-player-camera",
+        "red-player-camera"
+      ],
+      "reason": "Camera panels have different native widths around the central item table and minimap."
+    },
+    {
+      "id": "perspective-year-banners",
+      "rectangleIds": [
+        "year-banner-river-upper",
+        "year-banner-river-lower",
+        "year-banner-upper-right"
+      ],
+      "reason": "Environmental year banners have distinct perspective and visible extents."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-identity",
+      "purpose": "blue team name/logo/seed",
+      "x": 658,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "scoreboard-red-identity",
+      "purpose": "red team name/logo/seed",
+      "x": 1656,
+      "y": 0,
+      "width": 246,
+      "height": 116
+    },
+    {
+      "id": "blue-roster-name-1",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 168,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-2",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 307,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-3",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 446,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-4",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 585,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "blue-roster-name-5",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 724,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-1",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 168,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-2",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 307,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-3",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 446,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-4",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 585,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "red-roster-name-5",
+      "purpose": "red player/team label",
+      "x": 2448,
+      "y": 724,
+      "width": 112,
+      "height": 29
+    },
+    {
+      "id": "xp-overlay-player-list",
+      "purpose": "ten team/player names in XP+LVL overlay",
+      "x": 0,
+      "y": 274,
+      "width": 416,
+      "height": 626
+    },
+    {
+      "id": "floating-blue-1",
+      "purpose": "floating player name",
+      "x": 1000,
+      "y": 516,
+      "width": 140,
+      "height": 25
+    },
+    {
+      "id": "floating-red-1",
+      "purpose": "floating player name",
+      "x": 1287,
+      "y": 260,
+      "width": 140,
+      "height": 24
+    },
+    {
+      "id": "floating-red-2",
+      "purpose": "floating player name",
+      "x": 1198,
+      "y": 458,
+      "width": 140,
+      "height": 24
+    },
+    {
+      "id": "floating-red-3",
+      "purpose": "floating player name",
+      "x": 1242,
+      "y": 603,
+      "width": 140,
+      "height": 22
+    },
+    {
+      "id": "blue-player-camera",
+      "purpose": "player face/camera and lower-third identity",
+      "x": 402,
+      "y": 1121,
+      "width": 406,
+      "height": 319
+    },
+    {
+      "id": "red-player-camera",
+      "purpose": "player face/camera and lower-third identity",
+      "x": 1779,
+      "y": 1121,
+      "width": 396,
+      "height": 319
+    },
+    {
+      "id": "year-banner-river-upper",
+      "purpose": "visible 2024 environment banner",
+      "x": 1505,
+      "y": 405,
+      "width": 72,
+      "height": 205
+    },
+    {
+      "id": "year-banner-river-lower",
+      "purpose": "visible 2024 environment banner",
+      "x": 1888,
+      "y": 610,
+      "width": 115,
+      "height": 220
+    },
+    {
+      "id": "year-banner-upper-right",
+      "purpose": "visible 2024 environment banner",
+      "x": 1810,
+      "y": 215,
+      "width": 95,
+      "height": 195
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "BB405ABF197FEFE5DFCBDB3BF9584469068B454F37F6304FA701562B25F3DB46"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "team-blue-top",
+        "team-red-top"
+      ]
+    },
+    {
+      "id": "bottom-player-cameras",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-blue",
+        "camera-red"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 140,
+      "rectangleIds": [
+        "float-red-01",
+        "float-red-02",
+        "float-red-04",
+        "float-blue-01",
+        "float-blue-02",
+        "float-blue-03",
+        "float-blue-04"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "team-blue-top",
+      "purpose": "blue team logo/name/seed",
+      "x": 520,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "team-red-top",
+      "purpose": "red team logo/name/seed",
+      "x": 1210,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "event-stage-strap",
+      "purpose": "Worlds 25 / Worlds Swiss Stage / Day 2 text",
+      "x": 0,
+      "y": 820,
+      "width": 288,
+      "height": 45
+    },
+    {
+      "id": "float-red-01",
+      "purpose": "AL Hope floating nameplate",
+      "x": 927,
+      "y": 175,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-02",
+      "purpose": "AL Shanks floating nameplate",
+      "x": 770,
+      "y": 218,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-cluster-01",
+      "purpose": "overlapping AL Flandre and AL Tarzan labels",
+      "x": 850,
+      "y": 270,
+      "width": 205,
+      "height": 38
+    },
+    {
+      "id": "float-red-04",
+      "purpose": "AL Kael floating nameplate",
+      "x": 855,
+      "y": 389,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-01",
+      "purpose": "GEN Duro floating nameplate",
+      "x": 1022,
+      "y": 358,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-02",
+      "purpose": "GEN Chovy floating nameplate",
+      "x": 909,
+      "y": 477,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-03",
+      "purpose": "GEN Kiin floating nameplate",
+      "x": 356,
+      "y": 657,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-04",
+      "purpose": "GEN Canyon floating nameplate",
+      "x": 877,
+      "y": 672,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "camera-blue",
+      "purpose": "Canyon player camera and caption",
+      "x": 288,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    },
+    {
+      "id": "camera-red",
+      "purpose": "Tarzan player camera and caption",
+      "x": 1456,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    }
+  ]
+}

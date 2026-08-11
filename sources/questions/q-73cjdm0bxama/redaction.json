@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "40E922EF6F595AF3FED933681EB385E4CF5FAFFCFAC9FD3FB2AB97C40A181A85"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "team-blue-top",
+        "team-red-top"
+      ]
+    },
+    {
+      "id": "bottom-player-cameras",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-blue",
+        "camera-red"
+      ]
+    },
+    {
+      "id": "roster-names",
+      "rule": "uniform-width",
+      "width": 120,
+      "rectangleIds": [
+        "roster-blue-01",
+        "roster-blue-02",
+        "roster-blue-03",
+        "roster-blue-04",
+        "roster-blue-05",
+        "roster-red-01",
+        "roster-red-02",
+        "roster-red-03",
+        "roster-red-04",
+        "roster-red-05"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 140,
+      "rectangleIds": [
+        "float-blue-01",
+        "float-blue-02",
+        "float-blue-03",
+        "float-blue-04",
+        "float-blue-05"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "team-blue-top",
+      "purpose": "blue team logo/name/seed",
+      "x": 520,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "team-red-top",
+      "purpose": "red team logo/name/seed",
+      "x": 1210,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "event-year-badge",
+      "purpose": "Worlds 25 badge and Patch 25.20 text",
+      "x": 0,
+      "y": 820,
+      "width": 288,
+      "height": 45
+    },
+    {
+      "id": "float-blue-01",
+      "purpose": "AL Flandre floating nameplate",
+      "x": 515,
+      "y": 414,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-02",
+      "purpose": "AL Hope floating nameplate",
+      "x": 814,
+      "y": 651,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-03",
+      "purpose": "AL Tarzan floating nameplate",
+      "x": 1138,
+      "y": 385,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-04",
+      "purpose": "AL Kael floating nameplate",
+      "x": 1158,
+      "y": 495,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-05",
+      "purpose": "AL Shanks floating nameplate",
+      "x": 1246,
+      "y": 544,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-01",
+      "purpose": "Flandre roster name",
+      "x": 750,
+      "y": 824,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-02",
+      "purpose": "Tarzan roster name",
+      "x": 750,
+      "y": 876,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-03",
+      "purpose": "Shanks roster name",
+      "x": 750,
+      "y": 928,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-04",
+      "purpose": "Hope roster name",
+      "x": 750,
+      "y": 980,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-blue-05",
+      "purpose": "Kael roster name",
+      "x": 750,
+      "y": 1032,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-red-01",
+      "purpose": "Doran roster name",
+      "x": 1050,
+      "y": 824,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-red-02",
+      "purpose": "Oner roster name",
+      "x": 1050,
+      "y": 876,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-red-03",
+      "purpose": "Faker roster name",
+      "x": 1050,
+      "y": 928,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-red-04",
+      "purpose": "Gumayusi roster name",
+      "x": 1050,
+      "y": 980,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "roster-red-05",
+      "purpose": "Keria roster name",
+      "x": 1050,
+      "y": 1032,
+      "width": 120,
+      "height": 20
+    },
+    {
+      "id": "camera-blue",
+      "purpose": "Tarzan player camera and caption",
+      "x": 288,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    },
+    {
+      "id": "camera-red",
+      "purpose": "Oner player camera and caption",
+      "x": 1456,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    }
+  ]
+}

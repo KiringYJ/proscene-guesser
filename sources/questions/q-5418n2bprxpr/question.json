@@ -1,0 +1,18 @@
+{
+  "pool": "deep-cut",
+  "catalogEditionId": "worlds-2024",
+  "answer": {
+    "stage": "Swiss Stage",
+    "blueTeamId": "hanwha-life-esports",
+    "redTeamId": "gen-g-esports",
+    "gameNumber": 1
+  },
+  "source": {
+    "label": "Official LoL Esports broadcast video",
+    "url": "https://www.youtube.com/watch?v=HRUh2ceh8VM"
+  },
+  "rights": {
+    "reviewedAt": "2026-08-11",
+    "evidence": "Project owner publication decision recorded 2026-08-11; Riot policy reviewed at https://www.riotgames.com/en/legal"
+  }
+}

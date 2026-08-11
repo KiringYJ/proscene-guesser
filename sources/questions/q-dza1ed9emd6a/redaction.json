@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "B22BFB0EF6078C2B556EE47196B0AF80309C2879E9694ADA27F9D6FBEE12A3B0"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "team-blue-top",
+        "team-red-top"
+      ]
+    },
+    {
+      "id": "bottom-player-cameras",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-blue",
+        "camera-red"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 140,
+      "rectangleIds": [
+        "float-blue-01",
+        "float-red-01",
+        "float-red-02",
+        "float-red-03",
+        "float-red-04"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "team-blue-top",
+      "purpose": "blue team logo/name/seed",
+      "x": 520,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "team-red-top",
+      "purpose": "red team logo/name/seed",
+      "x": 1210,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "event-stage-strap",
+      "purpose": "Worlds 25 / Worlds Swiss Stage / Day 9 text",
+      "x": 0,
+      "y": 820,
+      "width": 288,
+      "height": 45
+    },
+    {
+      "id": "team-red-objective-panel",
+      "purpose": "BLG logo/name/seed in bottom-left objective panel; preserve timer",
+      "x": 15,
+      "y": 855,
+      "width": 190,
+      "height": 110
+    },
+    {
+      "id": "float-blue-01",
+      "purpose": "TES Kanavi floating nameplate",
+      "x": 448,
+      "y": 449,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-01",
+      "purpose": "central BLG floating nameplate",
+      "x": 944,
+      "y": 515,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-02",
+      "purpose": "central BLG floating nameplate",
+      "x": 1078,
+      "y": 554,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-03",
+      "purpose": "BLG Elk floating nameplate",
+      "x": 1268,
+      "y": 558,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-red-04",
+      "purpose": "BLG Bin floating nameplate",
+      "x": 934,
+      "y": 744,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "camera-blue",
+      "purpose": "Hang player camera and caption",
+      "x": 288,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    },
+    {
+      "id": "camera-red",
+      "purpose": "ON player camera and caption",
+      "x": 1456,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    }
+  ]
+}

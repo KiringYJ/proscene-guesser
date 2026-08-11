@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "3B70A87EC9B346213A8E3DD925CA0FE7D0597517D5D1CD731FD6C1346F07B0BA"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard.blueIdentity",
+        "scoreboard.redIdentity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 83,
+      "rectangleIds": [
+        "roster.blue.p1",
+        "roster.red.p1",
+        "roster.blue.p2",
+        "roster.red.p2",
+        "roster.blue.p3",
+        "roster.red.p3",
+        "roster.blue.p4",
+        "roster.red.p4",
+        "roster.blue.p5",
+        "roster.red.p5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 120,
+      "rectangleIds": [
+        "float.drxBeryL",
+        "float.drxZeka",
+        "float.drxPyosik",
+        "float.drxOverlap1",
+        "float.drxOverlap2",
+        "float.t1Gumayusi",
+        "float.t1Zeus"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "overlapping-baron-nameplates",
+      "rectangleIds": [
+        "float.drxOverlap1",
+        "float.drxOverlap2"
+      ],
+      "reason": "Two DRX nameplates are mutually occluded; padded fixed-width rectangles cover all visible identity text."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard.blueIdentity",
+      "purpose": "blue-side team logo/name, seed, and series score",
+      "x": 491,
+      "y": 0,
+      "width": 200,
+      "height": 89
+    },
+    {
+      "id": "scoreboard.redIdentity",
+      "purpose": "red-side team logo/name, seed, and series score",
+      "x": 1229,
+      "y": 0,
+      "width": 200,
+      "height": 89
+    },
+    {
+      "id": "roster.blue.p1",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 130,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p1",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 130,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p2",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 234,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p2",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 234,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p3",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 338,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p3",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 338,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p4",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 442,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p4",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 442,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p5",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 546,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p5",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 546,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "event.worlds22",
+      "purpose": "event and year branding",
+      "x": 0,
+      "y": 832,
+      "width": 304,
+      "height": 130
+    },
+    {
+      "id": "float.drxBeryL",
+      "purpose": "visible floating player nameplate",
+      "x": 675,
+      "y": 199,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.drxZeka",
+      "purpose": "visible floating player nameplate",
+      "x": 635,
+      "y": 268,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.drxPyosik",
+      "purpose": "visible floating player nameplate",
+      "x": 720,
+      "y": 266,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.drxOverlap1",
+      "purpose": "visible floating player nameplate",
+      "x": 610,
+      "y": 302,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.drxOverlap2",
+      "purpose": "visible floating player nameplate",
+      "x": 645,
+      "y": 318,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.t1Gumayusi",
+      "purpose": "visible floating player nameplate",
+      "x": 985,
+      "y": 593,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.t1Zeus",
+      "purpose": "visible floating player nameplate",
+      "x": 1080,
+      "y": 774,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "mapBanner.worlds",
+      "purpose": "event-name text on terrain banner",
+      "x": 920,
+      "y": 914,
+      "width": 102,
+      "height": 82
+    }
+  ]
+}

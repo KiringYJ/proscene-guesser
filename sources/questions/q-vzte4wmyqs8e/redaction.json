@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "57EB57CFF19CC7D32586819EF07D5CFA6DF14B370BE961C3AC7F050A2DC105CD"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left",
+        "camera-right"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 200,
+      "rectangleIds": [
+        "floating-01",
+        "floating-02",
+        "floating-03",
+        "floating-04",
+        "floating-05",
+        "floating-06",
+        "floating-07"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "overlapping-nameplates",
+      "rectangleIds": [
+        "floating-04",
+        "floating-05"
+      ],
+      "reason": "Two overlapping player nameplates require independent centered rectangles."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "team-name-logo-seed",
+      "x": 682,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "team-name-logo-seed",
+      "x": 1582,
+      "y": 10,
+      "width": 296,
+      "height": 86
+    },
+    {
+      "id": "event-year-mark",
+      "purpose": "event-year",
+      "x": 0,
+      "y": 1090,
+      "width": 122,
+      "height": 58
+    },
+    {
+      "id": "patch-version-label",
+      "purpose": "patch/version text that permits year inference",
+      "x": 180,
+      "y": 1092,
+      "width": 165,
+      "height": 56
+    },
+    {
+      "id": "camera-left",
+      "purpose": "player-face-jersey-name",
+      "x": 379,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "camera-right",
+      "purpose": "player-face-jersey-name",
+      "x": 1939,
+      "y": 1092,
+      "width": 242,
+      "height": 348
+    },
+    {
+      "id": "floating-01",
+      "purpose": "player-nameplate",
+      "x": 887,
+      "y": 139,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-02",
+      "purpose": "player-nameplate",
+      "x": 1336,
+      "y": 268,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-03",
+      "purpose": "player-nameplate",
+      "x": 1153,
+      "y": 471,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-04",
+      "purpose": "player-nameplate",
+      "x": 730,
+      "y": 578,
+      "width": 200,
+      "height": 36
+    },
+    {
+      "id": "floating-05",
+      "purpose": "player-nameplate",
+      "x": 855,
+      "y": 559,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-06",
+      "purpose": "player-nameplate",
+      "x": 1515,
+      "y": 836,
+      "width": 200,
+      "height": 29
+    },
+    {
+      "id": "floating-07",
+      "purpose": "player-nameplate",
+      "x": 1438,
+      "y": 1053,
+      "width": 200,
+      "height": 29
+    }
+  ]
+}

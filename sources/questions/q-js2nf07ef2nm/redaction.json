@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 2560,
+    "height": 1440
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "9E3DB348B8628D6821D307CE74A0FDAEC903E51FB0E5D210E110AE5FC9B54A6F"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-team-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-team",
+        "scoreboard-red-team"
+      ]
+    },
+    {
+      "id": "camera-panel-mirror",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-left-full",
+        "camera-right-full"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 180,
+      "rectangleIds": [
+        "nameplate-red-01",
+        "nameplate-red-02",
+        "nameplate-blue-01",
+        "nameplate-red-03"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-team",
+      "purpose": "Blue team logo, name, seed, and series ticks",
+      "x": 684,
+      "y": 10,
+      "width": 264,
+      "height": 80
+    },
+    {
+      "id": "scoreboard-red-team",
+      "purpose": "Red team logo, name, seed, and series ticks",
+      "x": 1612,
+      "y": 10,
+      "width": 264,
+      "height": 80
+    },
+    {
+      "id": "nameplate-red-01",
+      "purpose": "Floating player name KT PerfecT",
+      "x": 1687,
+      "y": 219,
+      "width": 180,
+      "height": 25
+    },
+    {
+      "id": "nameplate-red-02",
+      "purpose": "Floating player name KT Peter",
+      "x": 1140,
+      "y": 405,
+      "width": 180,
+      "height": 24
+    },
+    {
+      "id": "nameplate-blue-01",
+      "purpose": "Floating player name GEN Duro",
+      "x": 946,
+      "y": 993,
+      "width": 180,
+      "height": 25
+    },
+    {
+      "id": "nameplate-red-03",
+      "purpose": "Floating player name KT deokdam",
+      "x": 1608,
+      "y": 1047,
+      "width": 180,
+      "height": 25
+    },
+    {
+      "id": "lower-worlds-year-mark",
+      "purpose": "Worlds 25 emblem and Patch 25.20 text",
+      "x": 0,
+      "y": 1087,
+      "width": 382,
+      "height": 59
+    },
+    {
+      "id": "camera-left-full",
+      "purpose": "Full left player camera including face, jersey, background, and name",
+      "x": 382,
+      "y": 1093,
+      "width": 238,
+      "height": 347
+    },
+    {
+      "id": "camera-right-full",
+      "purpose": "Full right player camera including face, jersey, background, and name",
+      "x": 1940,
+      "y": 1093,
+      "width": 238,
+      "height": 347
+    }
+  ]
+}

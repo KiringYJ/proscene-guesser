@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "EA31B7989807E81F148AEB462BEB333FAC44A9F3EF72035DB8FBD25117BB1B4D"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard-blue-identity",
+        "scoreboard-red-identity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 80,
+      "rectangleIds": [
+        "blue-roster-name-1",
+        "blue-roster-name-2",
+        "blue-roster-name-3",
+        "blue-roster-name-4",
+        "blue-roster-name-5",
+        "red-roster-name-1",
+        "red-roster-name-2",
+        "red-roster-name-3",
+        "red-roster-name-4",
+        "red-roster-name-5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 105,
+      "rectangleIds": [
+        "floating-blue-1",
+        "floating-blue-2",
+        "floating-blue-3",
+        "floating-blue-4",
+        "floating-red-1"
+      ]
+    }
+  ],
+  "geometryExceptions": [
+    {
+      "id": "asymmetric-player-cameras",
+      "rectangleIds": [
+        "blue-player-camera",
+        "red-player-camera"
+      ],
+      "reason": "Broadcast camera panels have different native widths at the minimap boundary."
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard-blue-identity",
+      "purpose": "blue team name/logo/seed",
+      "x": 494,
+      "y": 0,
+      "width": 190,
+      "height": 88
+    },
+    {
+      "id": "scoreboard-red-identity",
+      "purpose": "red team name/logo/seed",
+      "x": 1236,
+      "y": 0,
+      "width": 190,
+      "height": 88
+    },
+    {
+      "id": "blue-roster-name-1",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 126,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-name-2",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 229,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-name-3",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 333,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-name-4",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 437,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "blue-roster-name-5",
+      "purpose": "blue player/team label",
+      "x": 0,
+      "y": 541,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "red-roster-name-1",
+      "purpose": "red player/team label",
+      "x": 1840,
+      "y": 126,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "red-roster-name-2",
+      "purpose": "red player/team label",
+      "x": 1840,
+      "y": 229,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "red-roster-name-3",
+      "purpose": "red player/team label",
+      "x": 1840,
+      "y": 333,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "red-roster-name-4",
+      "purpose": "red player/team label",
+      "x": 1840,
+      "y": 437,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "red-roster-name-5",
+      "purpose": "red player/team label",
+      "x": 1840,
+      "y": 541,
+      "width": 80,
+      "height": 23
+    },
+    {
+      "id": "floating-blue-1",
+      "purpose": "floating player name",
+      "x": 800,
+      "y": 429,
+      "width": 105,
+      "height": 18
+    },
+    {
+      "id": "floating-blue-2",
+      "purpose": "floating player name",
+      "x": 902,
+      "y": 400,
+      "width": 105,
+      "height": 18
+    },
+    {
+      "id": "floating-blue-3",
+      "purpose": "floating player name",
+      "x": 930,
+      "y": 337,
+      "width": 105,
+      "height": 18
+    },
+    {
+      "id": "floating-blue-4",
+      "purpose": "floating player name",
+      "x": 430,
+      "y": 711,
+      "width": 105,
+      "height": 18
+    },
+    {
+      "id": "floating-red-1",
+      "purpose": "floating player name",
+      "x": 1104,
+      "y": 326,
+      "width": 105,
+      "height": 18
+    },
+    {
+      "id": "blue-player-camera",
+      "purpose": "player face/camera and lower-third identity",
+      "x": 307,
+      "y": 843,
+      "width": 300,
+      "height": 237
+    },
+    {
+      "id": "red-player-camera",
+      "purpose": "player face/camera and lower-third identity",
+      "x": 1335,
+      "y": 843,
+      "width": 309,
+      "height": 237
+    },
+    {
+      "id": "patch-version-top-right",
+      "purpose": "patch/version text that permits year inference",
+      "x": 1758,
+      "y": 8,
+      "width": 80,
+      "height": 46
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "1CADD6BC7AB5863ACBDD41854E6B1D0EA328C7AF88A6A6FCD4F8035BA937FDFB"
+  },
+  "geometryGroups": [
+    {
+      "id": "scoreboard-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "scoreboard.blueIdentity",
+        "scoreboard.redIdentity"
+      ]
+    },
+    {
+      "id": "side-roster-labels",
+      "rule": "uniform-width",
+      "width": 83,
+      "rectangleIds": [
+        "roster.blue.p1",
+        "roster.red.p1",
+        "roster.blue.p2",
+        "roster.red.p2",
+        "roster.blue.p3",
+        "roster.red.p3",
+        "roster.blue.p4",
+        "roster.red.p4",
+        "roster.blue.p5",
+        "roster.red.p5"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 120,
+      "rectangleIds": [
+        "float.t1Oner",
+        "float.t1Zeus"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "scoreboard.blueIdentity",
+      "purpose": "blue-side team logo/name, seed, and series score",
+      "x": 491,
+      "y": 0,
+      "width": 200,
+      "height": 89
+    },
+    {
+      "id": "scoreboard.redIdentity",
+      "purpose": "red-side team logo/name, seed, and series score",
+      "x": 1229,
+      "y": 0,
+      "width": 200,
+      "height": 89
+    },
+    {
+      "id": "roster.blue.p1",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 128,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p1",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 128,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p2",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 232,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p2",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 232,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p3",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 336,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p3",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 336,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p4",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 440,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p4",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 440,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.blue.p5",
+      "purpose": "blue-side roster player name",
+      "x": 0,
+      "y": 544,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "roster.red.p5",
+      "purpose": "red-side roster player name",
+      "x": 1837,
+      "y": 544,
+      "width": 83,
+      "height": 22
+    },
+    {
+      "id": "event.worlds23",
+      "purpose": "event and year branding",
+      "x": 0,
+      "y": 833,
+      "width": 305,
+      "height": 129
+    },
+    {
+      "id": "compound.centralUpperLeft",
+      "purpose": "overlapping floating identities",
+      "x": 630,
+      "y": 307,
+      "width": 155,
+      "height": 48
+    },
+    {
+      "id": "compound.centralLowerLeft",
+      "purpose": "overlapping floating identities",
+      "x": 730,
+      "y": 370,
+      "width": 185,
+      "height": 48
+    },
+    {
+      "id": "compound.centralRight",
+      "purpose": "overlapping floating identities",
+      "x": 995,
+      "y": 337,
+      "width": 160,
+      "height": 60
+    },
+    {
+      "id": "float.t1Oner",
+      "purpose": "visible floating player nameplate",
+      "x": 1100,
+      "y": 552,
+      "width": 120,
+      "height": 22
+    },
+    {
+      "id": "float.t1Zeus",
+      "purpose": "visible floating player nameplate",
+      "x": 562,
+      "y": 731,
+      "width": 120,
+      "height": 22
+    }
+  ]
+}

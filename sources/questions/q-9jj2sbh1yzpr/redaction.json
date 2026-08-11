@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "auto-applied",
+  "coordinateSpace": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source": {
+    "file": "original.png",
+    "sha256": "ADEA9CDF03049603BE22C50D890E90E29A5176A402E0F10040222DF30C85D8EF"
+  },
+  "geometryGroups": [
+    {
+      "id": "top-team-identities",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "team-blue-top",
+        "team-red-top"
+      ]
+    },
+    {
+      "id": "bottom-player-cameras",
+      "rule": "horizontal-mirror",
+      "rectangleIds": [
+        "camera-blue",
+        "camera-red"
+      ]
+    },
+    {
+      "id": "floating-nameplates",
+      "rule": "uniform-width",
+      "width": 140,
+      "rectangleIds": [
+        "float-red-01",
+        "float-blue-01"
+      ]
+    }
+  ],
+  "rectangles": [
+    {
+      "id": "team-blue-top",
+      "purpose": "blue team logo/name/seed",
+      "x": 520,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "team-red-top",
+      "purpose": "red team logo/name/seed",
+      "x": 1210,
+      "y": 12,
+      "width": 190,
+      "height": 58
+    },
+    {
+      "id": "event-year-badge",
+      "purpose": "Worlds 25 badge and Patch 25.20 text",
+      "x": 0,
+      "y": 820,
+      "width": 288,
+      "height": 45
+    },
+    {
+      "id": "float-red-01",
+      "purpose": "100T Dhokla floating nameplate",
+      "x": 735,
+      "y": 202,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "float-blue-01",
+      "purpose": "BLG Bin floating nameplate",
+      "x": 884,
+      "y": 439,
+      "width": 140,
+      "height": 20
+    },
+    {
+      "id": "camera-blue",
+      "purpose": "Bin player camera and caption",
+      "x": 288,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    },
+    {
+      "id": "camera-red",
+      "purpose": "Dhokla player camera and caption",
+      "x": 1456,
+      "y": 821,
+      "width": 176,
+      "height": 259
+    }
+  ]
+}
