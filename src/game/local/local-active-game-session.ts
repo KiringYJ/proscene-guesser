@@ -133,7 +133,7 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
       const start = {
         status: 'rejected',
         code: 'invalid-config',
-        message: 'Choose a valid pool, round count, and timer.',
+        message: 'Choose a valid round count and timer.',
         retryable: false,
       } as const
       this.#publish(this.#withStartState(snapshot, start))
@@ -146,8 +146,8 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
     if (selection.bundles.length === 0) {
       const start = {
         status: 'rejected',
-        code: 'no-questions-in-pool',
-        message: 'That pool has no playable archives yet.',
+        code: 'no-questions',
+        message: 'No playable archives are available yet.',
         retryable: false,
       } as const
       this.#publish(this.#withStartState(snapshot, start))
@@ -365,7 +365,6 @@ export class LocalActiveGameSession implements ActiveGameSessionPort {
         roundId: snapshot.roundId,
         questionId: bundle.prompt.id,
         archiveLabel: bundle.prompt.archiveLabel,
-        pool: bundle.prompt.pool,
         result,
         completionReason,
       }

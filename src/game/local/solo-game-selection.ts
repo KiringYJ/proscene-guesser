@@ -13,15 +13,8 @@ export interface SoloGameSelection {
 export function getSoloGameAvailability(
   catalog: readonly LocalQuestionBundle[],
 ): SoloGameAvailability {
-  const classic = catalog.filter((bundle) => bundle.prompt.pool === 'classic').length
-  const deepCut = catalog.length - classic
-
   return {
     total: catalog.length,
-    byPool: {
-      classic,
-      'deep-cut': deepCut,
-    },
   }
 }
 
@@ -49,15 +42,16 @@ export function createSoloGameSelection(
   config: SoloGameConfig,
   random: () => number = Math.random,
 ): SoloGameSelection {
-  const eligible = config.pool === 'mixed'
-    ? catalog
-    : catalog.filter((bundle) => bundle.prompt.pool === config.pool)
+  const eligible = catalog
   const requestedRoundCount = config.rounds === 'all' ? eligible.length : config.rounds
   const roundCount = Math.min(requestedRoundCount, eligible.length)
 
   return {
     plan: {
-      config: { ...config },
+      config: {
+        rounds: config.rounds,
+        timerSeconds: config.timerSeconds,
+      },
       eligibleQuestionCount: eligible.length,
       roundCount,
       constrainedByAvailability:

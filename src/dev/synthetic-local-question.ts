@@ -3,7 +3,6 @@ import type { LocalQuestionBundle } from '@/game/authority/question-bundle'
 export const syntheticLocalQuestion: LocalQuestionBundle = {
   prompt: {
     id: 'q-7y4t2r8m6w3k',
-    pool: 'classic',
     image: '/dev/round-fixture.svg',
     imageAlt: 'A synthetic esports broadcast frame used for local interface testing.',
     archiveLabel: 'Interface test archive',

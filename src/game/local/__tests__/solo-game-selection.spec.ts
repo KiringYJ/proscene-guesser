@@ -7,11 +7,10 @@ import {
 } from '@/game/local/solo-game-selection'
 import { QUICK_PLAY_CONFIG, type SoloGameConfig } from '@/game/solo'
 
-function makeBundle(id: string, pool: 'classic' | 'deep-cut'): LocalQuestionBundle {
+function makeBundle(id: string): LocalQuestionBundle {
   return {
     prompt: {
       id,
-      pool,
       image: `/questions/${id}.webp`,
       imageAlt: 'A redacted broadcast frame.',
       archiveLabel: id,
@@ -43,36 +42,30 @@ function makeBundle(id: string, pool: 'classic' | 'deep-cut'): LocalQuestionBund
 }
 
 const catalog = [
-  makeBundle('q-000000000001', 'classic'),
-  makeBundle('q-000000000002', 'deep-cut'),
-  makeBundle('q-000000000003', 'classic'),
-  makeBundle('q-000000000004', 'deep-cut'),
-  makeBundle('q-000000000005', 'classic'),
-  makeBundle('q-000000000006', 'deep-cut'),
+  makeBundle('q-000000000001'),
+  makeBundle('q-000000000002'),
+  makeBundle('q-000000000003'),
+  makeBundle('q-000000000004'),
+  makeBundle('q-000000000005'),
+  makeBundle('q-000000000006'),
 ]
 
 describe('solo game selection', () => {
-  it('uses Mixed, five requested rounds, and 90 seconds for Quick Play', () => {
+  it('uses five requested rounds and 90 seconds for Quick Play', () => {
     expect(QUICK_PLAY_CONFIG).toEqual({
-      pool: 'mixed',
       rounds: 5,
       timerSeconds: 90,
     })
   })
 
-  it('reports availability for the complete catalog and each authored pool', () => {
+  it('reports availability for the complete catalog without exposing curation groups', () => {
     expect(getSoloGameAvailability(catalog)).toEqual({
       total: 6,
-      byPool: {
-        classic: 3,
-        'deep-cut': 3,
-      },
     })
   })
 
-  it('filters by pool and selects unique questions with an injected random source', () => {
+  it('selects unique questions from the complete catalog with an injected random source', () => {
     const config: SoloGameConfig = {
-      pool: 'classic',
       rounds: 5,
       timerSeconds: 60,
     }
@@ -80,36 +73,51 @@ describe('solo game selection', () => {
     const ids = selection.bundles.map((bundle) => bundle.prompt.id)
 
     expect(ids).toEqual([
+      'q-000000000002',
       'q-000000000003',
+      'q-000000000004',
       'q-000000000005',
-      'q-000000000001',
+      'q-000000000006',
     ])
     expect(new Set(ids).size).toBe(ids.length)
     expect(selection.plan).toMatchObject({
       config,
-      eligibleQuestionCount: 3,
-      roundCount: 3,
-      constrainedByAvailability: true,
+      eligibleQuestionCount: 6,
+      roundCount: 5,
+      constrainedByAvailability: false,
     })
   })
 
-  it('uses every eligible question exactly once for All', () => {
+  it('uses every question exactly once for All', () => {
     const selection = createSoloGameSelection(
       catalog,
-      { pool: 'deep-cut', rounds: 'all', timerSeconds: 'none' },
+      { rounds: 'all', timerSeconds: 'none' },
       () => 0.5,
     )
 
-    expect(selection.bundles).toHaveLength(3)
-    expect(selection.bundles.every((bundle) => bundle.prompt.pool === 'deep-cut')).toBe(true)
-    expect(new Set(selection.bundles.map((bundle) => bundle.prompt.id)).size).toBe(3)
+    expect(selection.bundles).toHaveLength(6)
+    expect(new Set(selection.bundles.map((bundle) => bundle.prompt.id)).size).toBe(6)
     expect(selection.plan.constrainedByAvailability).toBe(false)
   })
 
-  it('returns an empty selection when the chosen pool has no playable questions', () => {
+  it('ignores an injected legacy pool value and still uses the complete catalog', () => {
+    const config = {
+      pool: 'classic',
+      rounds: 'all',
+      timerSeconds: 'none',
+    } as const satisfies SoloGameConfig & { pool: string }
+    const selection = createSoloGameSelection(catalog, config, () => 0.5)
+
+    expect(selection.bundles).toHaveLength(catalog.length)
+    expect(new Set(selection.bundles.map((bundle) => bundle.prompt.id)).size).toBe(catalog.length)
+    expect(selection.plan.config).toEqual({ rounds: 'all', timerSeconds: 'none' })
+    expect(selection.plan.config).not.toHaveProperty('pool')
+  })
+
+  it('returns an empty selection when there are no playable questions', () => {
     const selection = createSoloGameSelection(
-      [makeBundle('q-000000000001', 'classic')],
-      { pool: 'deep-cut', rounds: 5, timerSeconds: 90 },
+      [],
+      { rounds: 5, timerSeconds: 90 },
       () => 0,
     )
 

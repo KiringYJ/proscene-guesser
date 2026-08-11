@@ -109,7 +109,7 @@ describe('local question bundle projection', () => {
     })
   })
 
-  it('keeps solution, source, and rights fields out of the pre-reveal prompt', () => {
+  it('keeps curation, solution, source, and rights fields out of the pre-reveal prompt', () => {
     const generated = createGeneratedLocalQuestionBundle(
       'q-7m4k2d9xrp6v',
       readyManifest,
@@ -117,13 +117,14 @@ describe('local question bundle projection', () => {
     )
 
     expect(generated.prompt.id).toBe('q-7m4k2d9xrp6v')
-    expect(generated.prompt.pool).toBe('classic')
+    expect(generated.prompt).not.toHaveProperty('pool')
     expect(generated.prompt).not.toHaveProperty('publicImage')
     expect(generated.prompt).not.toHaveProperty('answer')
     expect(generated.prompt).not.toHaveProperty('solution')
     expect(generated.prompt).not.toHaveProperty('source')
     expect(generated.disclosure.source).toEqual(readyManifest.source)
     expect(generated).not.toHaveProperty('rights')
+    expect(JSON.stringify(generated)).not.toContain('"pool"')
     expect(JSON.stringify(generated)).not.toContain('Permission record RIGHTS-001')
   })
 

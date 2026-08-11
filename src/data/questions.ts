@@ -31,7 +31,6 @@ export function createLocalQuestionBundle(
   return {
     prompt: {
       id: record.prompt.id,
-      pool: record.prompt.pool,
       image,
       imageAlt: record.prompt.imageAlt,
       archiveLabel: record.prompt.archiveLabel,

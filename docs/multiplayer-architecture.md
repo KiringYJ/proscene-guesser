@@ -21,7 +21,7 @@ Home
 
 The host would:
 
-1. choose the question pool, round count, and round timer;
+1. choose the round count and round timer;
 2. create a room and receive a short invitation code;
 3. wait in a lobby while players join;
 4. review the participant list and selected settings; and

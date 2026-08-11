@@ -2,11 +2,9 @@
 import { computed, ref } from 'vue'
 
 import {
-  getEligibleQuestionCount,
   QUICK_PLAY_CONFIG,
   type SoloGameAvailability,
   type SoloGameConfig,
-  type SoloGamePool,
   type SoloGameRoundOption,
   type SoloGameTimerSeconds,
 } from '@/game/solo'
@@ -24,11 +22,6 @@ const emit = defineEmits<{
 
 const customConfig = ref<SoloGameConfig>({ ...props.initialConfig })
 
-const poolItems: readonly { title: string; value: SoloGamePool }[] = [
-  { title: 'Mixed', value: 'mixed' },
-  { title: 'Classics', value: 'classic' },
-  { title: 'Deep Cuts', value: 'deep-cut' },
-]
 const roundItems: readonly { title: string; value: SoloGameRoundOption }[] = [
   { title: '5 rounds', value: 5 },
   { title: '10 rounds', value: 10 },
@@ -42,9 +35,7 @@ const timerItems: readonly { title: string; value: SoloGameTimerSeconds }[] = [
 ]
 
 const starting = computed(() => props.startState.status === 'pending')
-const eligibleCount = computed(() =>
-  getEligibleQuestionCount(props.availability, customConfig.value.pool),
-)
+const eligibleCount = computed(() => props.availability.total)
 const requestedRoundCount = computed(() =>
   customConfig.value.rounds === 'all' ? eligibleCount.value : customConfig.value.rounds,
 )
@@ -53,7 +44,7 @@ const actualRoundCount = computed(() =>
 )
 const customGameNote = computed(() => {
   if (eligibleCount.value === 0) {
-    return 'No playable archives are available in this pool yet.'
+    return 'No playable archives are available yet.'
   }
 
   if (actualRoundCount.value < requestedRoundCount.value) {
@@ -69,7 +60,7 @@ const quickPlayNote = computed(() => {
     return `${QUICK_PLAY_CONFIG.rounds} requested; playing all ${actual} available unique archives.`
   }
 
-  return 'Five unique archives selected from both pools.'
+  return 'Five unique archives selected without repeats.'
 })
 const startError = computed(() =>
   props.startState.status === 'rejected' ? props.startState.message : null,
@@ -103,13 +94,9 @@ function startCustomGame(): void {
           <span class="setup-card__status">Recommended</span>
         </div>
         <h3>Start with one click.</h3>
-        <p>Jump straight into a mixed run with the standard game settings.</p>
+        <p>Jump straight in with the standard game settings.</p>
 
         <dl class="setup-card__facts">
-          <div>
-            <dt>Pool</dt>
-            <dd>Mixed</dd>
-          </div>
           <div>
             <dt>Rounds</dt>
             <dd>5</dd>
@@ -140,16 +127,9 @@ function startCustomGame(): void {
           <span>Solo</span>
         </div>
         <h3>Build your own run.</h3>
-        <p>Choose the archive pool, game length, and time pressure.</p>
+        <p>Choose the game length and time pressure.</p>
 
         <v-form class="setup-form" @submit.prevent="startCustomGame">
-          <v-select
-            v-model="customConfig.pool"
-            :items="poolItems"
-            label="Question pool"
-            aria-label="Question pool"
-            hide-details
-          />
           <div class="setup-form__row">
             <v-select
               v-model="customConfig.rounds"

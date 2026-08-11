@@ -30,7 +30,6 @@ const perfectAnswer: PlayerAnswer = { ...expected, catalogEditionId: null }
 const solution: QuestionSolution = { answer: expected }
 const prompt: QuestionPrompt = {
   id: 'q-7m4k2d9xrp6v',
-  pool: 'classic',
   image: '/questions/q-7m4k2d9xrp6v.webp',
   imageAlt: 'A redacted broadcast frame.',
   archiveLabel: 'Archive',
@@ -163,7 +162,7 @@ describe('buildShareText', () => {
       { teamChoices },
     )
     const plan: SoloGamePlan = {
-      config: { pool: 'mixed', rounds: 5, timerSeconds: 90 },
+      config: { rounds: 5, timerSeconds: 90 },
       eligibleQuestionCount: 2,
       roundCount: 2,
       constrainedByAvailability: true,
@@ -177,7 +176,6 @@ describe('buildShareText', () => {
           roundId: 'round-1',
           questionId: 'q-000000000001',
           archiveLabel: 'Archive 1',
-          pool: 'classic',
           result: perfectResult,
           completionReason: 'submitted',
         },
@@ -186,7 +184,6 @@ describe('buildShareText', () => {
           roundId: 'round-2',
           questionId: 'q-000000000002',
           archiveLabel: 'Archive 2',
-          pool: 'deep-cut',
           result: imperfectResult,
           completionReason: 'timed-out',
         },
@@ -198,7 +195,10 @@ describe('buildShareText', () => {
     expect(text).toContain('ProScene Guesser · 7/8')
     expect(text).toContain('R1 🟩🟩🟩🟩 4/4')
     expect(text).toContain('R2 ⬛🟩🟩🟩 3/4 · timed out')
-    expect(text).toContain('Mixed · 2 archives · 90s')
+    expect(text).toContain('2 archives · 90s')
+    expect(text).not.toContain('Mixed')
+    expect(text).not.toContain('Classics')
+    expect(text).not.toContain('Deep Cuts')
     expect(text).toContain('https://example.com/play')
     expect(text).not.toContain('Blue Comets')
     expect(text).not.toContain(expected.tournament)

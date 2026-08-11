@@ -1,7 +1,3 @@
-export const QUESTION_POOLS = ['classic', 'deep-cut'] as const
-
-export type QuestionPool = (typeof QUESTION_POOLS)[number]
-
 export interface QuestionTeamChoice {
   id: string
   name: string
@@ -41,7 +37,6 @@ export interface QuestionSource {
 
 export interface QuestionPrompt {
   id: string
-  pool: QuestionPool
   image: string
   imageAlt: string
   archiveLabel: string

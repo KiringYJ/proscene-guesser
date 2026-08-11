@@ -31,7 +31,7 @@ export type RoundTimer =
 
 export type StartRejectionCode =
   | 'invalid-config'
-  | 'no-questions-in-pool'
+  | 'no-questions'
   | 'not-startable'
   | 'already-starting'
   | 'temporarily-unavailable'

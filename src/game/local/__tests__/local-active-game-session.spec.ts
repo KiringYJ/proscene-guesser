@@ -7,17 +7,12 @@ import {
 } from '@/game/local/local-active-game-session'
 import { QUICK_PLAY_CONFIG, type SoloGameConfig } from '@/game/solo'
 import type { ActiveGameSnapshot } from '@/game/session'
-import { createEmptyAnswer, type PlayerAnswer, type QuestionPool } from '@/types/question'
+import { createEmptyAnswer, type PlayerAnswer } from '@/types/question'
 
-function makeBundle(
-  id: string,
-  pool: QuestionPool = 'classic',
-  gameNumber = 1,
-): LocalQuestionBundle {
+function makeBundle(id: string, gameNumber = 1): LocalQuestionBundle {
   return {
     prompt: {
       id,
-      pool,
       image: `/questions/${id}.webp`,
       imageAlt: 'A redacted broadcast frame.',
       archiveLabel: `Archive ${id.slice(-1)}`,
@@ -52,9 +47,9 @@ function makeBundle(
   }
 }
 
-const firstBundle = makeBundle('q-000000000001', 'classic', 1)
-const secondBundle = makeBundle('q-000000000002', 'deep-cut', 2)
-const thirdBundle = makeBundle('q-000000000003', 'classic', 3)
+const firstBundle = makeBundle('q-000000000001', 1)
+const secondBundle = makeBundle('q-000000000002', 2)
+const thirdBundle = makeBundle('q-000000000003', 3)
 
 function answerFor(bundle: LocalQuestionBundle): PlayerAnswer {
   return {
@@ -90,10 +85,6 @@ describe('LocalActiveGameSession', () => {
       phase: 'setup',
       availability: {
         total: 3,
-        byPool: {
-          classic: 2,
-          'deep-cut': 1,
-        },
       },
       initialConfig: QUICK_PLAY_CONFIG,
       start: { status: 'ready' },
@@ -161,7 +152,7 @@ describe('LocalActiveGameSession', () => {
     const session = new LocalActiveGameSession([firstBundle, secondBundle], {
       random: () => 0.999,
     })
-    await startGame(session, { pool: 'mixed', rounds: 'all', timerSeconds: 'none' })
+    await startGame(session, { rounds: 'all', timerSeconds: 'none' })
 
     await session.submitAnswer(answerFor(firstBundle))
     await expect(session.advanceRound()).resolves.toMatchObject({
@@ -205,7 +196,7 @@ describe('LocalActiveGameSession', () => {
       now: () => now,
       random: () => 0.999,
     })
-    const initial = await startGame(session, { pool: 'mixed', rounds: 5, timerSeconds: 60 })
+    const initial = await startGame(session, { rounds: 5, timerSeconds: 60 })
     const partialAnswer = { ...createEmptyAnswer(), year: 2024 }
 
     await expect(session.expireRound(initial.roundId, partialAnswer)).resolves.toMatchObject({
@@ -248,7 +239,7 @@ describe('LocalActiveGameSession', () => {
         }
       },
     })
-    const initial = await startGame(session, { pool: 'mixed', rounds: 5, timerSeconds: 60 })
+    const initial = await startGame(session, { rounds: 5, timerSeconds: 60 })
     const partialAnswer = { ...createEmptyAnswer(), year: 2024 }
     now = 60_000
 
@@ -278,7 +269,7 @@ describe('LocalActiveGameSession', () => {
       now: () => now,
       random: () => 0.999,
     })
-    await startGame(session, { pool: 'mixed', rounds: 5, timerSeconds: 60 })
+    await startGame(session, { rounds: 5, timerSeconds: 60 })
     now = 60_000
 
     await expect(session.submitAnswer(answerFor(firstBundle))).resolves.toMatchObject({ ok: true })
@@ -292,7 +283,6 @@ describe('LocalActiveGameSession', () => {
   it('publishes an unlimited timer when No limit is selected', async () => {
     const session = new LocalActiveGameSession([firstBundle])
     const snapshot = await startGame(session, {
-      pool: 'classic',
       rounds: 'all',
       timerSeconds: 'none',
     })
@@ -300,26 +290,25 @@ describe('LocalActiveGameSession', () => {
     expect(snapshot.timer).toEqual({ kind: 'unlimited' })
   })
 
-  it('rejects an empty selected pool without leaving setup', async () => {
-    const session = new LocalActiveGameSession([firstBundle])
+  it('rejects an empty catalog without leaving setup', async () => {
+    const session = new LocalActiveGameSession([])
 
     await expect(
-      session.startGame({ pool: 'deep-cut', rounds: 5, timerSeconds: 90 }),
+      session.startGame({ rounds: 5, timerSeconds: 90 }),
     ).resolves.toMatchObject({
       ok: false,
-      code: 'no-questions-in-pool',
+      code: 'no-questions',
       retryable: false,
     })
     expect(session.getSnapshot()).toMatchObject({
       phase: 'setup',
-      start: { status: 'rejected', code: 'no-questions-in-pool' },
+      start: { status: 'rejected', code: 'no-questions' },
     })
   })
 
   it('replays with the same config and returns to setup without retaining score', async () => {
     const session = new LocalActiveGameSession([firstBundle])
     const first = await startGame(session, {
-      pool: 'classic',
       rounds: 'all',
       timerSeconds: 'none',
     })
@@ -357,7 +346,7 @@ describe('LocalActiveGameSession', () => {
         })
       },
     })
-    await startGame(session, { pool: 'mixed', rounds: 5, timerSeconds: 'none' })
+    await startGame(session, { rounds: 5, timerSeconds: 'none' })
     const publications: ActiveGameSnapshot[] = []
     session.subscribe((snapshot) => publications.push(snapshot))
 
@@ -386,7 +375,7 @@ describe('LocalActiveGameSession', () => {
         }
       },
     })
-    await startGame(session, { pool: 'mixed', rounds: 5, timerSeconds: 'none' })
+    await startGame(session, { rounds: 5, timerSeconds: 'none' })
 
     await expect(session.submitAnswer(answerFor(firstBundle))).resolves.toMatchObject({
       ok: false,

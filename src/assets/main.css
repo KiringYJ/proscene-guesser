@@ -375,7 +375,7 @@ a {
 
 .setup-card__facts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin: 30px 0 0;
   padding-block: 16px;
   border-block: 1px solid rgb(255 255 255 / 9%);

@@ -29,11 +29,6 @@ export function buildGameShareText(
   plan: SoloGamePlan,
   siteUrl?: string,
 ): string {
-  const poolLabel = {
-    mixed: 'Mixed',
-    classic: 'Classics',
-    'deep-cut': 'Deep Cuts',
-  }[plan.config.pool]
   const timerLabel = plan.config.timerSeconds === 'none'
     ? 'No limit'
     : `${plan.config.timerSeconds}s`
@@ -45,7 +40,7 @@ export function buildGameShareText(
 
       return `R${round.roundNumber} ${resultSquares(round.result)} ${round.result.points}/${round.result.total}${timeoutLabel}`
     }),
-    `${poolLabel} · ${archiveLabel} · ${timerLabel}`,
+    `${archiveLabel} · ${timerLabel}`,
     'Year · Event · Teams · Game',
   ]
 

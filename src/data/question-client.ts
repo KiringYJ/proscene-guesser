@@ -95,7 +95,6 @@ export function createGeneratedLocalQuestionBundle(
   return {
     prompt: {
       id,
-      pool: manifest.pool,
       imageAlt: manifest.imageAlt,
       archiveLabel: manifest.archiveLabel,
       clue: manifest.clue,

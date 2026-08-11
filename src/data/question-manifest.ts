@@ -1,11 +1,10 @@
 import type { InternationalCatalog } from './catalog/types.ts'
 import type { GeneratedLocalQuestionBundle } from '../game/authority/question-bundle.ts'
-import {
-  QUESTION_POOLS,
-  type QuestionPool,
-  type QuestionSource,
-  type QuestionTeamChoice,
-} from '../types/question.ts'
+import type { QuestionSource, QuestionTeamChoice } from '../types/question.ts'
+
+const QUESTION_POOLS = ['classic', 'deep-cut'] as const
+
+type QuestionPool = (typeof QUESTION_POOLS)[number]
 
 export const QUESTION_ID_PATTERN = /^q-[0-9a-hj-km-np-tv-z]{12}$/
 

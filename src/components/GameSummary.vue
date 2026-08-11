@@ -20,11 +20,6 @@ const starting = computed(() => props.startState.status === 'pending')
 const scorePercentage = computed(() =>
   props.summary.total === 0 ? 0 : (props.summary.points / props.summary.total) * 100,
 )
-const poolLabel = computed(() => ({
-  mixed: 'Mixed',
-  classic: 'Classics',
-  'deep-cut': 'Deep Cuts',
-})[props.plan.config.pool])
 const timerLabel = computed(() =>
   props.plan.config.timerSeconds === 'none'
     ? 'No limit'
@@ -40,7 +35,7 @@ const timerLabel = computed(() =>
         <h1 id="game-summary-title" class="phase-heading" tabindex="-1">Final reconstruction</h1>
         <p>
           {{ plan.roundCount }} {{ plan.roundCount === 1 ? 'archive' : 'archives' }} ·
-          {{ poolLabel }} · {{ timerLabel }}
+          {{ timerLabel }}
         </p>
       </div>
 

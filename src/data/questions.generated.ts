@@ -6,7 +6,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-0r4rxh4p5phz",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -230,7 +229,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-1a3ad3vz4whk",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -463,7 +461,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-1vrb4kxd61ez",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -636,7 +633,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-29j05z7kqkk7",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -791,7 +787,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-2ptdjdea04jv",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -1007,7 +1002,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-33fr5w6c3n5v",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -1223,7 +1217,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-5418n2bprxpr",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -1439,7 +1432,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-5dmfnkdn4a93",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -1612,7 +1604,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-6hdstdr838ga",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -1785,7 +1776,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-73cjdm0bxama",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -1989,7 +1979,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-803e2xh5a25v",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -2221,7 +2210,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-80fa9kcd9ybt",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -2437,7 +2425,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-85h9cr84xyyb",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -2641,7 +2628,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-8eqr26qdmpxy",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -2814,7 +2800,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-9jj2sbh1yzpr",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -3018,7 +3003,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-9nmmp40pgdx5",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -3242,7 +3226,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-9qn1xn018wp6",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -3397,7 +3380,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-a08d5g69276z",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -3621,7 +3603,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-b2dhgh1g8tr4",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -3837,7 +3818,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-cjxqmy1bgbkb",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -4061,7 +4041,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-dvcb6v0vmxsh",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -4293,7 +4272,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-dza1ed9emd6a",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -4497,7 +4475,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-e9q1r17j0x24",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -4701,7 +4678,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-efd3q8g07jxb",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -4917,7 +4893,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-fxadef9qhpd4",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -5121,7 +5096,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-h9sdy0crms1j",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -5294,7 +5268,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-htrkaye30qzf",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -5498,7 +5471,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-j3jk8p9rs99q",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -5722,7 +5694,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-jp9stvkag85k",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -5938,7 +5909,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-js2nf07ef2nm",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -6142,7 +6112,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-kjvc92vqbcma",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -6346,7 +6315,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-mb12v84m5gdt",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -6550,7 +6518,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-mbw1d9xcasa8",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -6754,7 +6721,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-n1pdaf42q6qa",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -6958,7 +6924,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-pvdn2de95rpk",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -7174,7 +7139,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-qarxkzvjn2s9",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -7347,7 +7311,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-qmfry14qxt4w",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -7502,7 +7465,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-rxx8zhz8e5xz",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -7726,7 +7688,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-rzprjk41hk84",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -7930,7 +7891,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-snfj6vhdx5r7",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -8146,7 +8106,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-t5h12699fxgp",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -8370,7 +8329,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-tfpsvtqjnem3",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -8602,7 +8560,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-vzte4wmyqs8e",
-      "pool": "deep-cut",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",
@@ -8775,7 +8732,6 @@ export const playableQuestionBundles = [
   {
     "prompt": {
       "id": "q-ws5a9pwp6d72",
-      "pool": "classic",
       "imageAlt": "A redacted professional League of Legends broadcast frame.",
       "archiveLabel": "Pro match archive",
       "clue": "Infer the match from the remaining broadcast and game-state clues.",

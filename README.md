@@ -13,10 +13,10 @@ This repository is bootstrapped as a static, client-only MVP. A validated questi
 
 The Home screen offers two solo modes:
 
-- **Quick Play** starts immediately with the Mixed pool, requests 5 unique random questions, and uses a 90-second timer for each round.
-- **Custom Game** lets you choose Mixed, Classics, or Deep Cuts; 5, 10, or All rounds; and a timer setting of 60 seconds, 90 seconds, 2 minutes, or No limit. The defaults are 5 rounds and 90 seconds.
+- **Quick Play** starts immediately with 5 unique random questions and a 90-second timer for each round.
+- **Custom Game** lets you choose 5, 10, or All rounds and a timer setting of 60 seconds, 90 seconds, 2 minutes, or No limit. The defaults are 5 rounds and 90 seconds.
 
-Solo games start without a room or lobby. Questions do not repeat within a game. If the selected pool contains fewer questions than requested, the game uses every available question and shows the actual round count rather than promising unavailable rounds.
+Solo games start without a room or lobby. Questions do not repeat within a game. If fewer questions are available than requested, the game uses every available question and shows the actual round count rather than promising unavailable rounds.
 
 Each round shows one redacted frame and, when enabled, a countdown. Fill in the four scored answers and submit to lock them. If time expires first, the current partial answer is locked. The reveal shows the correct answer and the round score out of 4 before continuing.
 
@@ -90,7 +90,7 @@ Generate each ID once, confirm that it is unused, and keep it unchanged. Do not 
 
 Each question's canonical answer and authoring metadata live beside its source image in `sources/questions/<question-id>/question.json`. The directory name owns the question ID. The presence of `redacted.webp` is the only readiness signal: there is no lifecycle field and no second public-image copy. `npm run questions:sync` validates every manifest, materializes safe presentation and catalog-backed choice defaults, and generates `src/data/questions.generated.ts` from questions that have a redacted derivative; do not edit that generated module by hand. An invalid ready question fails synchronization instead of silently becoming another status. Rights-review evidence is deliberately omitted from the client catalog. Stable edition and team IDs are retained for cascading choices and scoring, while historical display names come from the catalog.
 
-Every question belongs to exactly one authored pool: `classic` for iconic matches and `deep-cut` for less-famous material aimed at dedicated fans. The runtime retains the stable pool value; presentation code may display them as “Classics” and “Deep Cuts.”
+Internal curation metadata is validated during authoring and omitted from the generated browser catalog.
 
 For a catalog-backed question, `catalogEditionId` determines the year and tournament, and the answer records only the stage, side-specific team IDs, and game number. Selecting a year limits the tournament selector to editions from that year. Selecting an edition then limits stage and team choices to that edition, and changing either upstream value clears stale downstream selections. Year and event score independently: choosing the same tournament and stage for another year still earns the event point. When one series has multiple editions in the same year, such as Rift Rivals, the form displays the full edition name and uses its stable tournament identity to keep regional variants distinct. Stage and participant lists come from the edition catalog rather than being duplicated in each question manifest.
 
@@ -99,7 +99,7 @@ The runtime adapter in `src/data/questions.ts` turns generated prompt/disclosure
 ## Adding a question
 
 1. Generate a new opaque question ID.
-2. Create `sources/questions/<question-id>/question.json`, choose its `pool`, and record the exact answer. Do not repeat the ID or lifecycle state inside the manifest.
+2. Create `sources/questions/<question-id>/question.json`, complete its internal curation metadata, and record the exact answer. Do not repeat the ID or lifecycle state inside the manifest.
 3. Add the original PNG beside it as `original.png` so it is tracked by Git without entering the Vite build.
 4. Complete source attribution and structured rights-review evidence in `question.json`. Presentation and choice scopes may be supplied explicitly; safe defaults are derived for catalog-backed questions when omitted.
 5. Redact the source image offline and write the flattened derivative to `sources/questions/<question-id>/redacted.webp`. Its presence makes the question playable.
