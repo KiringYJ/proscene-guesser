@@ -5,12 +5,7 @@ import { createClientQuestionRecord } from '@/data/question-client'
 import type { PublishedQuestionManifest } from '@/data/question-manifest'
 
 const publishedManifest: PublishedQuestionManifest = {
-  schemaVersion: 1,
-  id: 'q-7m4k2d9xrp6v',
-  kind: 'production',
-  status: 'published',
   catalogEditionId: 'worlds-2024',
-  publicImage: 'q-7m4k2d9xrp6v.webp',
   imageAlt: 'A redacted broadcast frame.',
   archiveLabel: 'Archive',
   clue: 'Use the visible game state.',
@@ -35,7 +30,11 @@ const publishedManifest: PublishedQuestionManifest = {
 
 describe('client question records', () => {
   it('emits the selected edition and only editions in the configured year/event scope', () => {
-    const record = createClientQuestionRecord(publishedManifest, internationalCatalog)
+    const record = createClientQuestionRecord(
+      'q-7m4k2d9xrp6v',
+      publishedManifest,
+      internationalCatalog,
+    )
 
     expect(record.catalogEditionId).toBe('worlds-2024')
     expect(record.catalogEditionIds).toEqual([
@@ -56,12 +55,15 @@ describe('client question records', () => {
     expect(record.choices.teams).toContain('Bilibili Gaming')
   })
 
-  it('strips authoring fields from the client record', () => {
-    const record = createClientQuestionRecord(publishedManifest, internationalCatalog)
+  it('derives runtime identity and the public image filename', () => {
+    const record = createClientQuestionRecord(
+      'q-7m4k2d9xrp6v',
+      publishedManifest,
+      internationalCatalog,
+    )
 
-    expect(record).not.toHaveProperty('schemaVersion')
-    expect(record).not.toHaveProperty('kind')
-    expect(record).not.toHaveProperty('status')
+    expect(record.id).toBe('q-7m4k2d9xrp6v')
+    expect(record.publicImage).toBe('q-7m4k2d9xrp6v.webp')
   })
 
   it('rejects a catalog-backed year with no allowed tournament edition', () => {
@@ -73,8 +75,8 @@ describe('client question records', () => {
       },
     }
 
-    expect(() => createClientQuestionRecord(invalidScope, internationalCatalog)).toThrow(
-      'catalog choice scope has no tournament for 2099',
-    )
+    expect(() =>
+      createClientQuestionRecord('q-7m4k2d9xrp6v', invalidScope, internationalCatalog),
+    ).toThrow('catalog choice scope has no tournament for 2099')
   })
 })

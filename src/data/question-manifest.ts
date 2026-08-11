@@ -6,9 +6,7 @@ import type {
 } from '../types/question'
 
 export const QUESTION_ID_PATTERN = /^q-[0-9a-hj-km-np-tv-z]{12}$/
-
-export type QuestionKind = 'production' | 'synthetic'
-export type QuestionStatus = 'draft' | 'published'
+export const QUESTION_PUBLIC_IMAGE_PATTERN = /^(q-[0-9a-hj-km-np-tv-z]{12})\.webp$/
 
 export interface InternationalTournamentChoiceSource {
   source: 'international-series'
@@ -36,18 +34,12 @@ export interface ClientQuestionRecord {
 }
 
 interface QuestionManifestBase {
-  schemaVersion: 1
-  id: string
-  kind: QuestionKind
-  status: QuestionStatus
   catalogEditionId?: string
   answer: QuestionAnswer
   source?: QuestionSource
 }
 
-export interface DraftQuestionManifest extends QuestionManifestBase {
-  status: 'draft'
-  publicImage?: string
+export interface QuestionManifest extends QuestionManifestBase {
   imageAlt?: string
   archiveLabel?: string
   clue?: string
@@ -55,30 +47,22 @@ export interface DraftQuestionManifest extends QuestionManifestBase {
 }
 
 export interface PublishedQuestionManifest extends QuestionManifestBase {
-  status: 'published'
-  publicImage: string
   imageAlt: string
   archiveLabel: string
   clue: string
   choices: QuestionManifestChoices
+  source: QuestionSource
 }
 
-export type QuestionManifest = DraftQuestionManifest | PublishedQuestionManifest
-
 export interface QuestionManifestValidationContext {
-  expectedId?: string
   catalog?: InternationalCatalog
+  published?: boolean
 }
 
 type UnknownRecord = Record<string, unknown>
 
 const manifestKeys = new Set([
-  'schemaVersion',
-  'id',
-  'kind',
-  'status',
   'catalogEditionId',
-  'publicImage',
   'imageAlt',
   'archiveLabel',
   'clue',
@@ -370,37 +354,6 @@ function validateCatalogReference(
   }
 }
 
-function validatePublicImage(manifest: UnknownRecord, issues: string[]): void {
-  if (manifest.publicImage === undefined) {
-    return
-  }
-
-  if (!isNonEmptyString(manifest.publicImage)) {
-    issues.push('publicImage must be a non-empty filename')
-    return
-  }
-
-  if (manifest.publicImage.includes('/') || manifest.publicImage.includes('\\')) {
-    issues.push('publicImage must be a filename without directories')
-  }
-
-  if (isNonEmptyString(manifest.id) && !manifest.publicImage.startsWith(`${manifest.id}.`)) {
-    issues.push('publicImage basename must equal the question ID')
-  }
-
-  if (manifest.kind === 'production' && !manifest.publicImage.endsWith('.webp')) {
-    issues.push('production publicImage must use WebP')
-  }
-
-  if (
-    manifest.kind === 'synthetic' &&
-    !manifest.publicImage.endsWith('.svg') &&
-    !manifest.publicImage.endsWith('.webp')
-  ) {
-    issues.push('synthetic publicImage must use SVG or WebP')
-  }
-}
-
 export function validateQuestionManifest(
   value: unknown,
   context: QuestionManifestValidationContext = {},
@@ -413,24 +366,6 @@ export function validateQuestionManifest(
 
   reportUnknownKeys(value, manifestKeys, 'manifest', issues)
 
-  if (value.schemaVersion !== 1) {
-    issues.push('schemaVersion must be 1')
-  }
-
-  if (!isNonEmptyString(value.id) || !QUESTION_ID_PATTERN.test(value.id)) {
-    issues.push('id must match ^q-[0-9a-hj-km-np-tv-z]{12}$')
-  } else if (context.expectedId && value.id !== context.expectedId) {
-    issues.push(`id must match directory name ${context.expectedId}`)
-  }
-
-  if (!['production', 'synthetic'].includes(String(value.kind))) {
-    issues.push('kind must be production or synthetic')
-  }
-
-  if (!['draft', 'published'].includes(String(value.status))) {
-    issues.push('status must be draft or published')
-  }
-
   const answer = validateAnswer(value.answer, issues)
 
   if (value.source !== undefined) {
@@ -438,10 +373,9 @@ export function validateQuestionManifest(
   }
 
   validateCatalogReference(value, answer, context.catalog, issues)
-  validatePublicImage(value, issues)
 
-  if (value.status === 'published') {
-    for (const field of ['publicImage', 'imageAlt', 'archiveLabel', 'clue'] as const) {
+  if (context.published) {
+    for (const field of ['imageAlt', 'archiveLabel', 'clue'] as const) {
       if (!isNonEmptyString(value[field])) {
         issues.push(`${field} is required for a published question`)
       }
@@ -449,8 +383,8 @@ export function validateQuestionManifest(
 
     validateChoices(value.choices, answer, context.catalog, value.catalogEditionId, issues)
 
-    if (value.kind === 'production' && value.source === undefined) {
-      issues.push('source is required for a published production question')
+    if (value.source === undefined) {
+      issues.push('source is required for a published question')
     }
   } else {
     for (const field of ['imageAlt', 'archiveLabel', 'clue'] as const) {
@@ -461,6 +395,33 @@ export function validateQuestionManifest(
 
     if (value.choices !== undefined) {
       validateChoices(value.choices, answer, context.catalog, value.catalogEditionId, issues)
+    }
+  }
+
+  return issues
+}
+
+export function getQuestionPublicImageFilename(id: string): string {
+  return `${id}.webp`
+}
+
+export function validatePublicQuestionImageInventory(
+  filenames: readonly string[],
+  questionIds: ReadonlySet<string>,
+): readonly string[] {
+  const issues: string[] = []
+
+  for (const filename of filenames) {
+    if (filename === 'README.md') {
+      continue
+    }
+
+    const match = QUESTION_PUBLIC_IMAGE_PATTERN.exec(filename)
+
+    if (!match) {
+      issues.push(`public question file must be an opaque question ID followed by .webp: ${filename}`)
+    } else if (!questionIds.has(filename.slice(0, -'.webp'.length))) {
+      issues.push(`public question image has no source directory: ${filename}`)
     }
   }
 

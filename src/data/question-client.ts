@@ -1,10 +1,12 @@
-import type { InternationalCatalog } from './catalog/types'
-import type {
-  ClientQuestionRecord,
-  PublishedQuestionManifest,
-} from './question-manifest'
+import {
+  getQuestionPublicImageFilename,
+  type ClientQuestionRecord,
+  type PublishedQuestionManifest,
+} from './question-manifest.ts'
+import type { InternationalCatalog } from './catalog/types.ts'
 
 export function createClientQuestionRecord(
+  id: string,
   manifest: PublishedQuestionManifest,
   catalog: InternationalCatalog,
 ): ClientQuestionRecord {
@@ -36,7 +38,7 @@ export function createClientQuestionRecord(
     (!answerEdition || !catalogEditionIds?.includes(manifest.catalogEditionId))
   ) {
     throw new Error(
-      `${manifest.id}: catalog edition ${manifest.catalogEditionId} is outside the configured choice scope`,
+      `${id}: catalog edition ${manifest.catalogEditionId} is outside the configured choice scope`,
     )
   }
 
@@ -45,7 +47,7 @@ export function createClientQuestionRecord(
     manifest.choices.teams
 
   if (!stages || !teams) {
-    throw new Error(`${manifest.id}: static questions must define stage and team choices`)
+    throw new Error(`${id}: static questions must define stage and team choices`)
   }
 
   if (catalogEditionIds) {
@@ -58,14 +60,14 @@ export function createClientQuestionRecord(
 
     if (emptyYears.length > 0) {
       throw new Error(
-        `${manifest.id}: catalog choice scope has no tournament for ${emptyYears.join(', ')}`,
+        `${id}: catalog choice scope has no tournament for ${emptyYears.join(', ')}`,
       )
     }
   }
 
   return {
-    id: manifest.id,
-    publicImage: manifest.publicImage,
+    id,
+    publicImage: getQuestionPublicImageFilename(id),
     imageAlt: manifest.imageAlt,
     archiveLabel: manifest.archiveLabel,
     clue: manifest.clue,

@@ -68,7 +68,7 @@ Generate each ID once, confirm that it is unused, and keep it unchanged. Do not 
 
 ## Question data
 
-Each question's canonical answer and lifecycle metadata live beside its source image in `sources/questions/<question-id>/question.json`. Draft manifests are retained in Git but omitted from the browser bundle. `npm run questions:sync` validates every manifest, resolves catalog-backed choices, and generates `src/data/questions.generated.ts` from only the client-safe fields of published records; do not edit that generated module by hand. Authoring fields such as draft status are never copied into the client catalog. Stable edition IDs and the permitted edition scope are included because the answer form uses them for cascading choices.
+Each question's canonical answer and authoring metadata live beside its source image in `sources/questions/<question-id>/question.json`. The directory name owns the question ID, and the public image name is derived as `<question-id>.webp`. A manifest remains a draft while that image is absent from `public/questions/`; placing the image there makes it a publication candidate. `npm run questions:sync` validates every manifest, resolves catalog-backed choices, and generates `src/data/questions.generated.ts` from only complete publication candidates; do not edit that generated module by hand. Stable edition IDs and the permitted edition scope are included because the answer form uses them for cascading choices.
 
 For a catalog-backed question, selecting a year limits the tournament selector to editions from that year. Selecting an edition then limits stage and team choices to that edition, and changing either upstream value clears stale downstream selections. When one series has multiple editions in the same year, such as Rift Rivals, the form displays the full edition name and scores its stable edition ID. Stage and participant lists come from the edition catalog rather than being duplicated in each question manifest.
 
@@ -77,10 +77,10 @@ The runtime adapter in `src/data/questions.ts` turns the generated records into 
 ## Adding a question
 
 1. Generate a new opaque question ID.
-2. Create `sources/questions/<question-id>/question.json` with `status` set to `draft` and record the exact answer.
+2. Create `sources/questions/<question-id>/question.json` and record the exact answer. Do not repeat the ID or lifecycle state inside the manifest.
 3. Add the original PNG beside it as `original.png` so it is tracked by Git without entering the Vite build.
 4. Redact the source image offline and export a flattened WebP to `public/questions/<question-id>.webp`.
-5. Complete the presentation fields, answer choices, and source attribution in `question.json`, then change its status to `published`.
+5. Complete the presentation fields, answer choices, and source attribution in `question.json`. Moving the WebP into `public/questions/` is the single publication action.
 6. Run `npm run questions:sync` to validate the manifests and regenerate the client catalog.
 7. Run `npm run check` and manually play the round at narrow and wide viewport sizes.
 

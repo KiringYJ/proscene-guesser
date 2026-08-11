@@ -3,7 +3,9 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
+  getQuestionPublicImageFilename,
   QUESTION_ID_PATTERN,
+  validatePublicQuestionImageInventory,
   validateQuestionManifest,
   type ClientQuestionRecord,
   type PublishedQuestionManifest,
@@ -19,6 +21,12 @@ const sourceRoot = resolve(repositoryRoot, 'sources/questions')
 const publicRoot = resolve(repositoryRoot, 'public/questions')
 const catalogPath = resolve(repositoryRoot, 'src/data/catalog/international-catalog.json')
 const generatedPath = resolve(repositoryRoot, 'src/data/questions.generated.ts')
+
+interface LoadedQuestionManifest {
+  id: string
+  manifest: QuestionManifest
+  published: boolean
+}
 
 async function fileExists(path: string): Promise<boolean> {
   try {
@@ -52,15 +60,21 @@ async function loadCatalog(): Promise<InternationalCatalog> {
 
 async function loadQuestionManifests(
   catalog: InternationalCatalog,
-): Promise<readonly QuestionManifest[]> {
+  publicImageFilenames: readonly string[],
+): Promise<readonly LoadedQuestionManifest[]> {
   const entries = (await readdir(sourceRoot, { withFileTypes: true }))
     .filter((entry) => entry.isDirectory())
     .sort((left, right) => left.name.localeCompare(right.name))
-  const manifests: QuestionManifest[] = []
+  const manifests: LoadedQuestionManifest[] = []
   const issues: string[] = []
+  const questionIds = new Set(entries.map((entry) => entry.name))
+  const publicImages = new Set(publicImageFilenames)
+
+  issues.push(...validatePublicQuestionImageInventory(publicImageFilenames, questionIds))
 
   for (const entry of entries) {
     const manifestPath = resolve(sourceRoot, entry.name, 'question.json')
+    const published = publicImages.has(getQuestionPublicImageFilename(entry.name))
 
     if (!QUESTION_ID_PATTERN.test(entry.name)) {
       issues.push(`${entry.name}: directory name is not an opaque question ID`)
@@ -83,8 +97,8 @@ async function loadQuestionManifests(
     }
 
     const manifestIssues = validateQuestionManifest(value, {
-      expectedId: entry.name,
       catalog,
+      published,
     })
 
     issues.push(...manifestIssues.map((issue) => `${entry.name}: ${issue}`))
@@ -95,29 +109,11 @@ async function loadQuestionManifests(
 
     const manifest = value as QuestionManifest
 
-    if (
-      manifest.kind === 'production' &&
-      !(await fileExists(resolve(sourceRoot, entry.name, 'original.png')))
-    ) {
-      issues.push(`${entry.name}: production question is missing original.png`)
+    if (!(await fileExists(resolve(sourceRoot, entry.name, 'original.png')))) {
+      issues.push(`${entry.name}: question is missing original.png`)
     }
 
-    if (
-      manifest.status === 'published' &&
-      !(await fileExists(resolve(publicRoot, manifest.publicImage)))
-    ) {
-      issues.push(`${entry.name}: public image ${manifest.publicImage} does not exist`)
-    }
-
-    manifests.push(manifest)
-  }
-
-  const duplicateIds = manifests
-    .map((manifest) => manifest.id)
-    .filter((id, index, ids) => ids.indexOf(id) !== index)
-
-  for (const duplicateId of new Set(duplicateIds)) {
-    issues.push(`Duplicate question ID: ${duplicateId}`)
+    manifests.push({ id: entry.name, manifest, published })
   }
 
   if (issues.length > 0) {
@@ -136,13 +132,20 @@ async function main(): Promise<void> {
   }
 
   const catalog = await loadCatalog()
-  const manifests = await loadQuestionManifests(catalog)
+  const publicImageFilenames = (await readdir(publicRoot, { withFileTypes: true }))
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+  const manifests = await loadQuestionManifests(catalog, publicImageFilenames)
   const published = manifests
-    .filter((manifest): manifest is PublishedQuestionManifest => manifest.status === 'published')
+    .filter((record) => record.published)
+    .map((record) => ({
+      id: record.id,
+      manifest: record.manifest as PublishedQuestionManifest,
+    }))
     .sort((left, right) => left.id.localeCompare(right.id))
 
   const generatedModule = createGeneratedModule(
-    published.map((manifest) => createClientQuestionRecord(manifest, catalog)),
+    published.map(({ id, manifest }) => createClientQuestionRecord(id, manifest, catalog)),
   )
 
   if (checkOnly) {

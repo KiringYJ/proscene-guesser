@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest'
 
 import type { InternationalCatalog } from '@/data/catalog/types'
 import {
+  validatePublicQuestionImageInventory,
   validateQuestionManifest,
-  type DraftQuestionManifest,
   type PublishedQuestionManifest,
+  type QuestionManifest,
 } from '@/data/question-manifest'
 
 const catalog: InternationalCatalog = {
@@ -53,12 +54,7 @@ const catalog: InternationalCatalog = {
 }
 
 const publishedManifest: PublishedQuestionManifest = {
-  schemaVersion: 1,
-  id: 'q-7m4k2d9xrp6v',
-  kind: 'production',
-  status: 'published',
   catalogEditionId: 'worlds-2024',
-  publicImage: 'q-7m4k2d9xrp6v.webp',
   imageAlt: 'A redacted broadcast frame.',
   archiveLabel: 'Archive',
   clue: 'Use the visible game state.',
@@ -87,13 +83,11 @@ describe('question manifest validation', () => {
   it('accepts a complete published manifest', () => {
     expect(
       validateQuestionManifest(publishedManifest, {
-        expectedId: publishedManifest.id,
         catalog,
+        published: true,
       }),
     ).toEqual([])
-    expect(
-      validateQuestionManifest(publishedManifest, { expectedId: publishedManifest.id }),
-    ).toEqual([])
+    expect(validateQuestionManifest(publishedManifest, { published: true })).toEqual([])
   })
 
   it('derives stage and team choices for a catalog-backed manifest', () => {
@@ -111,22 +105,17 @@ describe('question manifest validation', () => {
   })
 
   it('accepts a draft with an answer but no public presentation data', () => {
-    const draft: DraftQuestionManifest = {
-      schemaVersion: 1,
-      id: 'q-1a3ad3vz4whk',
-      kind: 'production',
-      status: 'draft',
+    const draft: QuestionManifest = {
       catalogEditionId: 'worlds-2024',
       answer: publishedManifest.answer,
     }
 
-    expect(validateQuestionManifest(draft, { expectedId: draft.id, catalog })).toEqual([])
+    expect(validateQuestionManifest(draft, { catalog })).toEqual([])
   })
 
-  it('rejects mismatched directories, catalog facts, and missing answer choices', () => {
+  it('rejects catalog facts and missing answer choices', () => {
     const invalid = {
       ...publishedManifest,
-      id: 'worlds-2024-final',
       answer: {
         ...publishedManifest.answer,
         year: 2023,
@@ -138,14 +127,10 @@ describe('question manifest validation', () => {
         teams: ['Blue Team', 'Red Team'],
       },
     }
-    const issues = validateQuestionManifest(invalid, {
-      expectedId: publishedManifest.id,
-      catalog,
-    })
+    const issues = validateQuestionManifest(invalid, { catalog, published: true })
 
     expect(issues).toEqual(
       expect.arrayContaining([
-        'id must match ^q-[0-9a-hj-km-np-tv-z]{12}$',
         'answer.year does not match catalog edition worlds-2024',
         'answer.blueTeam is not a participant in worlds-2024',
         'choices.years does not include answer value 2023',
@@ -157,8 +142,29 @@ describe('question manifest validation', () => {
   it('requires attribution before a production question can be published', () => {
     const { source: _source, ...withoutSource } = publishedManifest
 
-    expect(validateQuestionManifest(withoutSource, { catalog })).toContain(
-      'source is required for a published production question',
+    expect(validateQuestionManifest(withoutSource, { catalog, published: true })).toContain(
+      'source is required for a published question',
+    )
+  })
+
+  it('rejects legacy control fields instead of maintaining duplicate state', () => {
+    const legacy = {
+      ...publishedManifest,
+      schemaVersion: 1,
+      id: 'q-7m4k2d9xrp6v',
+      kind: 'production',
+      status: 'published',
+      publicImage: 'q-7m4k2d9xrp6v.webp',
+    }
+
+    expect(validateQuestionManifest(legacy, { catalog, published: true })).toEqual(
+      expect.arrayContaining([
+        'manifest has unknown field schemaVersion',
+        'manifest has unknown field id',
+        'manifest has unknown field kind',
+        'manifest has unknown field status',
+        'manifest has unknown field publicImage',
+      ]),
     )
   })
 
@@ -192,5 +198,19 @@ describe('question manifest validation', () => {
     expect(validateQuestionManifest(invalidTournament, { catalog })).toContain(
       'choices.tournaments includes unknown catalog series Imaginary Cup',
     )
+  })
+})
+
+describe('public question image inventory', () => {
+  it('accepts derived WebP names and rejects orphaned or unsupported files', () => {
+    expect(
+      validatePublicQuestionImageInventory(
+        ['README.md', 'q-7m4k2d9xrp6v.webp', 'q-1a3ad3vz4whk.webp', 'preview.png'],
+        new Set(['q-7m4k2d9xrp6v']),
+      ),
+    ).toEqual([
+      'public question image has no source directory: q-1a3ad3vz4whk.webp',
+      'public question file must be an opaque question ID followed by .webp: preview.png',
+    ])
   })
 })
