@@ -50,6 +50,21 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-terrain-slogans",
+      "rectangleIds": [
+        "terrain-slogan.top-river-horizontal",
+        "terrain-slogan.top-river-vertical",
+        "terrain-slogan.left-river",
+        "terrain-slogan.left-jungle",
+        "terrain-slogan.pit-west",
+        "terrain-slogan.pit-east-upper",
+        "terrain-slogan.pit-east-lower"
+      ],
+      "reason": "Repeated Worlds 2023 THE GRIND terrain slogans have distinct perspective, orientation, and visible extents."
+    }
+  ],
   "rectangles": [
     {
       "id": "scoreboard.blueIdentity",
@@ -210,6 +225,70 @@
       "y": 997,
       "width": 120,
       "height": 22
+    },
+    {
+      "id": "terrain-slogan.top-river-horizontal",
+      "purpose": "Worlds 2023 THE GRIND terrain slogan",
+      "x": 706,
+      "y": 94,
+      "width": 154,
+      "height": 61
+    },
+    {
+      "id": "terrain-slogan.top-river-vertical",
+      "purpose": "Worlds 2023 THE GRIND terrain slogan",
+      "x": 851,
+      "y": 83,
+      "width": 44,
+      "height": 106
+    },
+    {
+      "id": "terrain-slogan.left-river",
+      "purpose": "Worlds 2023 THE GRIND terrain slogan",
+      "x": 132,
+      "y": 300,
+      "width": 45,
+      "height": 126
+    },
+    {
+      "id": "terrain-slogan.left-jungle",
+      "purpose": "partially visible Worlds 2023 terrain slogan",
+      "x": 458,
+      "y": 586,
+      "width": 52,
+      "height": 143
+    },
+    {
+      "id": "terrain-slogan.pit-west",
+      "purpose": "Worlds 2023 THE GRIND terrain slogan",
+      "x": 864,
+      "y": 413,
+      "width": 54,
+      "height": 137
+    },
+    {
+      "id": "terrain-edition-mark.pit-west",
+      "purpose": "distinctive Worlds 2023 trophy mark on terrain",
+      "x": 770,
+      "y": 484,
+      "width": 93,
+      "height": 111
+    },
+    {
+      "id": "terrain-slogan.pit-east-upper",
+      "purpose": "Worlds 2023 THE GRIND terrain slogan",
+      "x": 1285,
+      "y": 236,
+      "width": 57,
+      "height": 148
+    },
+    {
+      "id": "terrain-slogan.pit-east-lower",
+      "purpose": "Worlds 2023 THE GRIND terrain slogan",
+      "x": 1457,
+      "y": 346,
+      "width": 72,
+      "height": 151
     }
   ]
 }

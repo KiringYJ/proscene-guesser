@@ -11,6 +11,15 @@
   },
   "geometryGroups": [
     {
+      "id": "event-emblems",
+      "rule": "uniform-width",
+      "width": 40,
+      "rectangleIds": [
+        "event-emblem-scoreboard",
+        "event-emblem-roster-divider"
+      ]
+    },
+    {
       "id": "scoreboard-team-mirror",
       "rule": "horizontal-mirror",
       "rectangleIds": [
@@ -38,7 +47,35 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-slogan-banners",
+      "rectangleIds": [
+        "slogan-banner-left-river",
+        "slogan-banner-right-river",
+        "slogan-banner-right-jungle",
+        "slogan-banner-lower-river"
+      ],
+      "reason": "Earn Your Legacy terrain banners have distinct perspective and visible extents."
+    }
+  ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 1262,
+      "y": 27,
+      "width": 40,
+      "height": 45
+    },
+    {
+      "id": "event-emblem-roster-divider",
+      "purpose": "Worlds event trophy emblem between lower roster columns",
+      "x": 1262,
+      "y": 1326,
+      "width": 40,
+      "height": 52
+    },
     {
       "id": "scoreboard-blue-team",
       "purpose": "Blue team logo, name, seed, and series ticks",
@@ -110,6 +147,38 @@
       "y": 1093,
       "width": 238,
       "height": 347
+    },
+    {
+      "id": "slogan-banner-left-river",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 425,
+      "y": 433,
+      "width": 70,
+      "height": 205
+    },
+    {
+      "id": "slogan-banner-right-river",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 1750,
+      "y": 523,
+      "width": 91,
+      "height": 190
+    },
+    {
+      "id": "slogan-banner-right-jungle",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 2079,
+      "y": 742,
+      "width": 128,
+      "height": 199
+    },
+    {
+      "id": "slogan-banner-lower-river",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 1092,
+      "y": 941,
+      "width": 104,
+      "height": 183
     }
   ]
 }

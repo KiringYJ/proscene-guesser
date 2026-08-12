@@ -27,6 +27,15 @@
         "floating-02",
         "floating-03"
       ]
+    },
+    {
+      "id": "event-emblems",
+      "rule": "uniform-width",
+      "width": 64,
+      "rectangleIds": [
+        "event-emblem-scoreboard",
+        "event-emblem-roster-divider"
+      ]
     }
   ],
   "rectangles": [
@@ -93,6 +102,22 @@
       "y": 649,
       "width": 200,
       "height": 29
+    },
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "MSI event emblem in scoreboard",
+      "x": 1248,
+      "y": 18,
+      "width": 64,
+      "height": 66
+    },
+    {
+      "id": "event-emblem-roster-divider",
+      "purpose": "MSI event emblem in lower roster divider",
+      "x": 1248,
+      "y": 1320,
+      "width": 64,
+      "height": 76
     }
   ]
 }

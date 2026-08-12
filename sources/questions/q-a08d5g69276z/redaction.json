@@ -45,6 +45,20 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-terrain-slogan-banners",
+      "rectangleIds": [
+        "terrain-slogan-upper-left",
+        "terrain-slogan-upper-right-edge",
+        "terrain-slogan-center",
+        "terrain-slogan-lower-left",
+        "terrain-slogan-right",
+        "terrain-slogan-bottom"
+      ],
+      "reason": "The repeated The Glory banners are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
+    }
+  ],
   "rectangles": [
     {
       "id": "scoreboard.blueIdentity",
@@ -149,6 +163,54 @@
       "y": 833,
       "width": 305,
       "height": 129
+    },
+    {
+      "id": "terrain-slogan-upper-left",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 625,
+      "y": 229,
+      "width": 67,
+      "height": 145
+    },
+    {
+      "id": "terrain-slogan-upper-right-edge",
+      "purpose": "edition-specific The Glory terrain slogan at the upper frame edge",
+      "x": 1434,
+      "y": 0,
+      "width": 64,
+      "height": 108
+    },
+    {
+      "id": "terrain-slogan-center",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 970,
+      "y": 392,
+      "width": 65,
+      "height": 132
+    },
+    {
+      "id": "terrain-slogan-lower-left",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 48,
+      "y": 674,
+      "width": 110,
+      "height": 132
+    },
+    {
+      "id": "terrain-slogan-right",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 1525,
+      "y": 606,
+      "width": 78,
+      "height": 135
+    },
+    {
+      "id": "terrain-slogan-bottom",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 990,
+      "y": 922,
+      "width": 72,
+      "height": 135
     },
     {
       "id": "compound.centralUpperLeft",

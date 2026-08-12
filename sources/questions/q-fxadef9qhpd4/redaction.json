@@ -46,9 +46,26 @@
         "stats-red-names"
       ],
       "reason": "Asymmetric table columns preserve adjacent gameplay statistics and item information."
+    },
+    {
+      "id": "perspective-slogan-banners",
+      "rectangleIds": [
+        "slogan-banner-left-jungle",
+        "slogan-banner-center-jungle",
+        "slogan-banner-far-right-jungle"
+      ],
+      "reason": "Earn Your Legacy terrain banners have distinct perspective and visible extents."
     }
   ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 1262,
+      "y": 27,
+      "width": 40,
+      "height": 45
+    },
     {
       "id": "scoreboard-blue-team",
       "purpose": "Blue team logo, name, seed, and series ticks",
@@ -136,6 +153,30 @@
       "y": 1093,
       "width": 238,
       "height": 347
+    },
+    {
+      "id": "slogan-banner-left-jungle",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 677,
+      "y": 526,
+      "width": 111,
+      "height": 232
+    },
+    {
+      "id": "slogan-banner-center-jungle",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 1153,
+      "y": 390,
+      "width": 117,
+      "height": 175
+    },
+    {
+      "id": "slogan-banner-far-right-jungle",
+      "purpose": "Earn Your Legacy edition slogan on terrain banner",
+      "x": 2278,
+      "y": 552,
+      "width": 102,
+      "height": 162
     }
   ]
 }

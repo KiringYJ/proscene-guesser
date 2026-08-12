@@ -71,6 +71,14 @@
       "height": 273
     },
     {
+      "id": "terrain-banner-first-stand-logo",
+      "purpose": "edition-specific First Stand logo repeated on terrain banner",
+      "x": 1118,
+      "y": 462,
+      "width": 92,
+      "height": 270
+    },
+    {
       "id": "floating-01",
       "purpose": "player-nameplate",
       "x": 742,

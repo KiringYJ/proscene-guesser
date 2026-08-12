@@ -39,6 +39,15 @@
         "floating-06",
         "floating-07"
       ]
+    },
+    {
+      "id": "event-emblems",
+      "rule": "uniform-width",
+      "width": 64,
+      "rectangleIds": [
+        "event-emblem-scoreboard",
+        "event-emblem-roster-divider"
+      ]
     }
   ],
   "geometryExceptions": [
@@ -49,6 +58,18 @@
         "floating-05"
       ],
       "reason": "Two overlapping player nameplates require independent centered rectangles."
+    },
+    {
+      "id": "perspective-event-banners",
+      "rectangleIds": [
+        "terrain-event.msi25.upper-left",
+        "terrain-event.msi25.pit-west-upper",
+        "terrain-event.msi25.pit-west-lower",
+        "terrain-event.msi25.pit-center-mark",
+        "terrain-event.msi25.pit-east-upper",
+        "terrain-event.msi25.pit-east-lower"
+      ],
+      "reason": "Repeated MSI 2025 terrain banners have distinct perspective, orientation, and visible extents."
     }
   ],
   "rectangles": [
@@ -155,6 +176,70 @@
       "y": 1053,
       "width": 200,
       "height": 29
+    },
+    {
+      "id": "terrain-event.msi25.upper-left",
+      "purpose": "MSI 2025 event text on terrain banner",
+      "x": 105,
+      "y": 111,
+      "width": 105,
+      "height": 220
+    },
+    {
+      "id": "terrain-event.msi25.pit-west-upper",
+      "purpose": "MSI 2025 event text on terrain banner",
+      "x": 672,
+      "y": 473,
+      "width": 92,
+      "height": 218
+    },
+    {
+      "id": "terrain-event.msi25.pit-west-lower",
+      "purpose": "MSI 2025 event text on terrain banner",
+      "x": 481,
+      "y": 603,
+      "width": 96,
+      "height": 204
+    },
+    {
+      "id": "terrain-event.msi25.pit-center-mark",
+      "purpose": "distinctive MSI 2025 terrain edition mark",
+      "x": 548,
+      "y": 509,
+      "width": 151,
+      "height": 159
+    },
+    {
+      "id": "terrain-event.msi25.pit-east-upper",
+      "purpose": "MSI 2025 event text on terrain banner",
+      "x": 1310,
+      "y": 174,
+      "width": 85,
+      "height": 194
+    },
+    {
+      "id": "terrain-event.msi25.pit-east-lower",
+      "purpose": "MSI 2025 event text on terrain banner",
+      "x": 1565,
+      "y": 333,
+      "width": 102,
+      "height": 211
+    },
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "MSI event emblem in scoreboard",
+      "x": 1248,
+      "y": 18,
+      "width": 64,
+      "height": 66
+    },
+    {
+      "id": "event-emblem-roster-divider",
+      "purpose": "MSI event emblem in lower roster divider",
+      "x": 1248,
+      "y": 1320,
+      "width": 64,
+      "height": 76
     }
   ]
 }

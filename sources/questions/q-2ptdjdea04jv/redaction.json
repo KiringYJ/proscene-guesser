@@ -59,6 +59,14 @@
         "year-banner-bottom-edge-left"
       ],
       "reason": "Four environmental banners have irregular visible bounds caused by scale and perspective."
+    },
+    {
+      "id": "perspective-worlds-emblems",
+      "rectangleIds": [
+        "event-emblem-watermark",
+        "event-emblem-rift-rock"
+      ],
+      "reason": "The broadcast watermark and environmental Rift emblem have different rendered sizes and perspective."
     }
   ],
   "rectangles": [
@@ -261,6 +269,22 @@
       "y": 995,
       "width": 791,
       "height": 445
+    },
+    {
+      "id": "event-emblem-watermark",
+      "purpose": "Worlds event emblem in upper-right broadcast watermark",
+      "x": 2480,
+      "y": 0,
+      "width": 80,
+      "height": 92
+    },
+    {
+      "id": "event-emblem-rift-rock",
+      "purpose": "Worlds event emblem on lower-left Rift rock",
+      "x": 530,
+      "y": 1240,
+      "width": 115,
+      "height": 105
     }
   ]
 }

@@ -217,6 +217,14 @@
       "y": 90,
       "width": 135,
       "height": 230
+    },
+    {
+      "id": "campaign-banner-base-right",
+      "purpose": "Worlds 2024 MAKE THEM BELIEVE terrain slogan",
+      "x": 1346,
+      "y": 704,
+      "width": 96,
+      "height": 374
     }
   ]
 }

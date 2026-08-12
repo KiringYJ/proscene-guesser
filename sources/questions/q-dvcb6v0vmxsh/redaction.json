@@ -58,9 +58,36 @@
         "float.drxOverlap2"
       ],
       "reason": "Two DRX nameplates are mutually occluded; padded fixed-width rectangles cover all visible identity text."
+    },
+    {
+      "id": "perspective-worlds-terrain-lockups",
+      "rectangleIds": [
+        "terrain-lockup-upper-left",
+        "terrain-lockup-pit-left",
+        "terrain-lockup-pit-right",
+        "terrain-lockup-pit-bottom",
+        "terrain-lockup-river-left",
+        "terrain-lockup-river-bottom",
+        "terrain-lockup-upper-right-01",
+        "terrain-lockup-upper-right-02",
+        "terrain-lockup-upper-right-03",
+        "terrain-lockup-right-01",
+        "terrain-lockup-right-02",
+        "terrain-lockup-bottom-edge",
+        "mapBanner.worlds"
+      ],
+      "reason": "The repeated Worlds 2022 terrain lockups are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
     }
   ],
   "rectangles": [
+    {
+      "id": "broadcast-event-logo",
+      "purpose": "Worlds 2022 broadcast logo",
+      "x": 0,
+      "y": 0,
+      "width": 67,
+      "height": 66
+    },
     {
       "id": "scoreboard.blueIdentity",
       "purpose": "blue-side team logo/name, seed, and series score",
@@ -228,6 +255,102 @@
       "y": 914,
       "width": 102,
       "height": 82
+    },
+    {
+      "id": "terrain-lockup-upper-left",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 88,
+      "y": 242,
+      "width": 82,
+      "height": 101
+    },
+    {
+      "id": "terrain-lockup-pit-left",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 557,
+      "y": 233,
+      "width": 72,
+      "height": 130
+    },
+    {
+      "id": "terrain-lockup-pit-right",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 819,
+      "y": 207,
+      "width": 72,
+      "height": 130
+    },
+    {
+      "id": "terrain-lockup-pit-bottom",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 768,
+      "y": 375,
+      "width": 70,
+      "height": 103
+    },
+    {
+      "id": "terrain-lockup-river-left",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 348,
+      "y": 596,
+      "width": 88,
+      "height": 125
+    },
+    {
+      "id": "terrain-lockup-river-bottom",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 801,
+      "y": 810,
+      "width": 73,
+      "height": 132
+    },
+    {
+      "id": "terrain-lockup-upper-right-01",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 1107,
+      "y": 294,
+      "width": 75,
+      "height": 100
+    },
+    {
+      "id": "terrain-lockup-upper-right-02",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 1396,
+      "y": 79,
+      "width": 70,
+      "height": 102
+    },
+    {
+      "id": "terrain-lockup-upper-right-03",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 1877,
+      "y": 78,
+      "width": 43,
+      "height": 104
+    },
+    {
+      "id": "terrain-lockup-right-01",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 1367,
+      "y": 443,
+      "width": 83,
+      "height": 122
+    },
+    {
+      "id": "terrain-lockup-right-02",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 1687,
+      "y": 448,
+      "width": 86,
+      "height": 122
+    },
+    {
+      "id": "terrain-lockup-bottom-edge",
+      "purpose": "edition-specific Worlds terrain lockup",
+      "x": 1078,
+      "y": 1000,
+      "width": 76,
+      "height": 80
     }
   ]
 }

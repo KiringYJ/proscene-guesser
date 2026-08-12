@@ -56,7 +56,35 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-terrain-slogan-banners",
+      "rectangleIds": [
+        "terrain-slogan-mid-lane",
+        "terrain-slogan-left-river",
+        "terrain-slogan-left-jungle",
+        "terrain-slogan-far-left-jungle",
+        "terrain-slogan-dragon-left",
+        "terrain-slogan-river-upper",
+        "terrain-slogan-river-right",
+        "terrain-slogan-upper-right",
+        "terrain-slogan-right-lane-inner",
+        "terrain-slogan-right-lane-outer",
+        "terrain-slogan-dragon-lower-left",
+        "terrain-slogan-dragon-lower-right"
+      ],
+      "reason": "The repeated Earn Your Legacy banners are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
+    }
+  ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 947,
+      "y": 22,
+      "width": 30,
+      "height": 34
+    },
     {
       "id": "team-blue-top",
       "purpose": "blue team logo/name/seed",
@@ -216,6 +244,102 @@
       "y": 821,
       "width": 176,
       "height": 259
+    },
+    {
+      "id": "terrain-slogan-mid-lane",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 354,
+      "y": 92,
+      "width": 45,
+      "height": 98
+    },
+    {
+      "id": "terrain-slogan-left-river",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 550,
+      "y": 180,
+      "width": 48,
+      "height": 115
+    },
+    {
+      "id": "terrain-slogan-left-jungle",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 337,
+      "y": 260,
+      "width": 55,
+      "height": 120
+    },
+    {
+      "id": "terrain-slogan-far-left-jungle",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 100,
+      "y": 330,
+      "width": 65,
+      "height": 90
+    },
+    {
+      "id": "terrain-slogan-dragon-left",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 798,
+      "y": 350,
+      "width": 52,
+      "height": 110
+    },
+    {
+      "id": "terrain-slogan-river-upper",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1052,
+      "y": 225,
+      "width": 48,
+      "height": 100
+    },
+    {
+      "id": "terrain-slogan-river-right",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1168,
+      "y": 260,
+      "width": 54,
+      "height": 120
+    },
+    {
+      "id": "terrain-slogan-upper-right",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1795,
+      "y": 70,
+      "width": 58,
+      "height": 115
+    },
+    {
+      "id": "terrain-slogan-right-lane-inner",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1758,
+      "y": 218,
+      "width": 60,
+      "height": 85
+    },
+    {
+      "id": "terrain-slogan-right-lane-outer",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1828,
+      "y": 235,
+      "width": 70,
+      "height": 115
+    },
+    {
+      "id": "terrain-slogan-dragon-lower-left",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1530,
+      "y": 638,
+      "width": 58,
+      "height": 100
+    },
+    {
+      "id": "terrain-slogan-dragon-lower-right",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1615,
+      "y": 642,
+      "width": 60,
+      "height": 100
     }
   ]
 }

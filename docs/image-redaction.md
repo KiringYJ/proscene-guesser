@@ -53,6 +53,16 @@ Both `auto-applied` and `approved` may produce final output. The renderer blocks
 7. Transfer corrections to the manifest coordinates against the clean original. Never render from the annotated preview. Unless the user explicitly approves the corrected set, mark it `"auto-applied"` and regenerate the final immediately.
 8. Set `reviewStatus` to `"approved"` only when the user explicitly approves the current coordinates.
 
+## Edition-specific environmental identifiers
+
+Treat readable or otherwise unmistakable tournament-edition branding embedded in the Rift as direct answer leakage, not as an inferential map-state clue. This includes campaign slogans, yearly theme lines, event/year lockups, and distinctive slogan fragments that identify a specific tournament edition. For example, `MAKE THEM BELIEVE` identifies Worlds 2024 and `EARN YOUR LEGACY` identifies Worlds 2025, so either phrase reveals both the year and tournament dimensions.
+
+- Redact every visible instance, including repeated terrain banners and fragments that remain sufficient to reconstruct or recognize the edition-specific phrase.
+- Cover the identifying text or lockup with a small safety margin rather than hiding the entire banner prop, wall, pit, or surrounding terrain.
+- Redact a generic Worlds, MSI, event, year, or stage mark when it directly identifies a scored answer. Preserve generic Riot Games branding because it does not identify the match.
+- Preserve non-textual color schemes, ordinary Rift decoration, and slogan fragments too incomplete to identify an edition; these remain inferential clues.
+- During an audit, inspect both the clean original and flattened derivative at high detail, including scoreboard score separators, lower roster dividers, corner watermarks, repeated banners along river walls, objective pits, lane edges, and partially cropped screen boundaries.
+
 ## Geometry invariants
 
 Rectangle geometry can disclose hidden information. A box tightly fitted to each string can reveal the approximate length of a player or team ID.

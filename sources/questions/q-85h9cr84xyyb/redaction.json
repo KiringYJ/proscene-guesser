@@ -53,7 +53,25 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-terrain-slogan-banners",
+      "rectangleIds": [
+        "terrain-slogan-top-lane-center",
+        "terrain-slogan-upper-right"
+      ],
+      "reason": "The repeated Earn Your Legacy banners are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
+    }
+  ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 947,
+      "y": 22,
+      "width": 30,
+      "height": 34
+    },
     {
       "id": "team-blue-top",
       "purpose": "blue team logo/name/seed",
@@ -189,6 +207,22 @@
       "y": 821,
       "width": 176,
       "height": 259
+    },
+    {
+      "id": "terrain-slogan-top-lane-center",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 920,
+      "y": 235,
+      "width": 60,
+      "height": 135
+    },
+    {
+      "id": "terrain-slogan-upper-right",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1695,
+      "y": 92,
+      "width": 65,
+      "height": 145
     }
   ]
 }

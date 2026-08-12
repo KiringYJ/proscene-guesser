@@ -68,6 +68,14 @@
   ],
   "rectangles": [
     {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 947,
+      "y": 22,
+      "width": 30,
+      "height": 34
+    },
+    {
       "id": "team-blue-top",
       "purpose": "blue team logo/name/seed",
       "x": 520,
@@ -90,6 +98,22 @@
       "y": 820,
       "width": 288,
       "height": 45
+    },
+    {
+      "id": "rift-slogan-upper-right-upper",
+      "purpose": "upper portion of Earn Your Legacy edition-specific Rift banner",
+      "x": 1810,
+      "y": 68,
+      "width": 72,
+      "height": 86
+    },
+    {
+      "id": "rift-slogan-upper-right-lower",
+      "purpose": "lower portion of Earn Your Legacy edition-specific Rift banner below the kill feed",
+      "x": 1772,
+      "y": 190,
+      "width": 80,
+      "height": 92
     },
     {
       "id": "float-blue-01",

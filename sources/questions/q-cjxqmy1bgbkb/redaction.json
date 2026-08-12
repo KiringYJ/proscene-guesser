@@ -44,6 +44,14 @@
         "camera.redPlayer"
       ],
       "reason": "Broadcast camera panels have genuine unequal widths and are retained at full inspected bounds."
+    },
+    {
+      "id": "perspective-terrain-slogan-banners",
+      "rectangleIds": [
+        "terrain-slogan-top-left",
+        "terrain-slogan-top-right"
+      ],
+      "reason": "The repeated The Glory banners are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
     }
   ],
   "rectangles": [
@@ -174,6 +182,22 @@
       "y": 288,
       "width": 120,
       "height": 22
+    },
+    {
+      "id": "terrain-slogan-top-left",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 640,
+      "y": 80,
+      "width": 62,
+      "height": 130
+    },
+    {
+      "id": "terrain-slogan-top-right",
+      "purpose": "edition-specific The Glory terrain slogan",
+      "x": 1210,
+      "y": 80,
+      "width": 68,
+      "height": 132
     }
   ]
 }

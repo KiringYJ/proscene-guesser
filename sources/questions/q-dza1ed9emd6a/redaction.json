@@ -11,6 +11,15 @@
   },
   "geometryGroups": [
     {
+      "id": "event-emblems",
+      "rule": "uniform-width",
+      "width": 30,
+      "rectangleIds": [
+        "event-emblem-scoreboard",
+        "event-emblem-roster-divider"
+      ]
+    },
+    {
       "id": "top-team-identities",
       "rule": "horizontal-mirror",
       "rectangleIds": [
@@ -39,7 +48,36 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-terrain-slogan-banners",
+      "rectangleIds": [
+        "terrain-slogan-left",
+        "terrain-slogan-upper-right",
+        "terrain-slogan-right",
+        "terrain-slogan-lower-center",
+        "terrain-slogan-bottom-left"
+      ],
+      "reason": "The repeated Earn Your Legacy banners are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
+    }
+  ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 947,
+      "y": 22,
+      "width": 30,
+      "height": 34
+    },
+    {
+      "id": "event-emblem-roster-divider",
+      "purpose": "Worlds event trophy emblem between lower roster columns",
+      "x": 947,
+      "y": 999,
+      "width": 30,
+      "height": 40
+    },
     {
       "id": "team-blue-top",
       "purpose": "blue team logo/name/seed",
@@ -127,6 +165,46 @@
       "y": 821,
       "width": 176,
       "height": 259
+    },
+    {
+      "id": "terrain-slogan-left",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 314,
+      "y": 332,
+      "width": 70,
+      "height": 123
+    },
+    {
+      "id": "terrain-slogan-upper-right",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1260,
+      "y": 390,
+      "width": 76,
+      "height": 130
+    },
+    {
+      "id": "terrain-slogan-right",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 1412,
+      "y": 488,
+      "width": 88,
+      "height": 158
+    },
+    {
+      "id": "terrain-slogan-lower-center",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 776,
+      "y": 650,
+      "width": 79,
+      "height": 143
+    },
+    {
+      "id": "terrain-slogan-bottom-left",
+      "purpose": "edition-specific Earn Your Legacy terrain slogan",
+      "x": 630,
+      "y": 770,
+      "width": 92,
+      "height": 151
     }
   ]
 }

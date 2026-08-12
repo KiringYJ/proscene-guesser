@@ -56,6 +56,14 @@
         "red-player-camera"
       ],
       "reason": "Broadcast camera panels have different native widths at the minimap boundary."
+    },
+    {
+      "id": "perspective-terrain-slogan-banners",
+      "rectangleIds": [
+        "terrain-slogan-upper-left",
+        "terrain-slogan-lower-left"
+      ],
+      "reason": "The repeated Make Them Believe banners are projected at different angles and sizes by the game camera, so each uses its inspected axis-aligned bounds."
     }
   ],
   "rectangles": [
@@ -218,6 +226,22 @@
       "y": 8,
       "width": 80,
       "height": 46
+    },
+    {
+      "id": "terrain-slogan-upper-left",
+      "purpose": "edition-specific Make Them Believe terrain slogan",
+      "x": 329,
+      "y": 303,
+      "width": 46,
+      "height": 126
+    },
+    {
+      "id": "terrain-slogan-lower-left",
+      "purpose": "edition-specific Make Them Believe terrain slogan",
+      "x": 168,
+      "y": 641,
+      "width": 72,
+      "height": 147
     }
   ]
 }

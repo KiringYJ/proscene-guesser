@@ -53,6 +53,17 @@
         "camera.redPlayer"
       ],
       "reason": "Broadcast camera panels have genuine unequal widths and are retained at full inspected bounds."
+    },
+    {
+      "id": "perspective-event-banners",
+      "rectangleIds": [
+        "mapBanner.worldsLogo.leftEdge",
+        "mapBanner.worldsLogo.midLeft",
+        "mapBanner.worldsLogo.lowerMid",
+        "mapBanner.worldsLogo.upperRight",
+        "mapBanner.worldsLogo.lowerRight"
+      ],
+      "reason": "Repeated Worlds trophy terrain banners have distinct perspective, partial occlusion, and visible extents."
     }
   ],
   "rectangles": [
@@ -191,6 +202,46 @@
       "y": 272,
       "width": 98,
       "height": 146
+    },
+    {
+      "id": "mapBanner.worldsLogo.leftEdge",
+      "purpose": "Worlds event trophy logo on terrain banner",
+      "x": 47,
+      "y": 158,
+      "width": 57,
+      "height": 175
+    },
+    {
+      "id": "mapBanner.worldsLogo.midLeft",
+      "purpose": "Worlds event trophy logo on terrain banner",
+      "x": 407,
+      "y": 378,
+      "width": 71,
+      "height": 146
+    },
+    {
+      "id": "mapBanner.worldsLogo.lowerMid",
+      "purpose": "Worlds event trophy logo on terrain banner",
+      "x": 606,
+      "y": 494,
+      "width": 57,
+      "height": 130
+    },
+    {
+      "id": "mapBanner.worldsLogo.upperRight",
+      "purpose": "Worlds event trophy logo on terrain banner",
+      "x": 1602,
+      "y": 147,
+      "width": 78,
+      "height": 176
+    },
+    {
+      "id": "mapBanner.worldsLogo.lowerRight",
+      "purpose": "Worlds event trophy logo on terrain banner",
+      "x": 1649,
+      "y": 394,
+      "width": 113,
+      "height": 155
     }
   ]
 }

@@ -57,9 +57,29 @@
         "stats-red-names"
       ],
       "reason": "Asymmetric table columns preserve adjacent champions, items, CS, KDA, gold, levels, and resource bars."
+    },
+    {
+      "id": "perspective-campaign-slogans",
+      "rectangleIds": [
+        "terrain-slogan.upper-left",
+        "terrain-slogan.upper-left-inner",
+        "terrain-slogan.mid-left",
+        "terrain-slogan.upper-center",
+        "terrain-slogan.upper-right",
+        "terrain-slogan.lower-left"
+      ],
+      "reason": "Repeated Worlds 2025 EARN YOUR LEGACY terrain banners have distinct perspective, partial edge visibility, and visible extents."
     }
   ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 1262,
+      "y": 27,
+      "width": 40,
+      "height": 45
+    },
     {
       "id": "scoreboard-blue-team",
       "purpose": "Blue team logo, name, seed, and series ticks",
@@ -179,6 +199,54 @@
       "y": 1093,
       "width": 238,
       "height": 347
+    },
+    {
+      "id": "terrain-slogan.upper-left",
+      "purpose": "Worlds 2025 EARN YOUR LEGACY terrain slogan",
+      "x": 389,
+      "y": 52,
+      "width": 67,
+      "height": 132
+    },
+    {
+      "id": "terrain-slogan.upper-left-inner",
+      "purpose": "Worlds 2025 EARN YOUR LEGACY terrain slogan",
+      "x": 512,
+      "y": 43,
+      "width": 87,
+      "height": 190
+    },
+    {
+      "id": "terrain-slogan.mid-left",
+      "purpose": "Worlds 2025 EARN YOUR LEGACY terrain slogan",
+      "x": 328,
+      "y": 378,
+      "width": 131,
+      "height": 134
+    },
+    {
+      "id": "terrain-slogan.upper-center",
+      "purpose": "Worlds 2025 EARN YOUR LEGACY terrain slogan",
+      "x": 1182,
+      "y": 133,
+      "width": 68,
+      "height": 157
+    },
+    {
+      "id": "terrain-slogan.upper-right",
+      "purpose": "Worlds 2025 EARN YOUR LEGACY terrain slogan",
+      "x": 1457,
+      "y": 207,
+      "width": 82,
+      "height": 171
+    },
+    {
+      "id": "terrain-slogan.lower-left",
+      "purpose": "Worlds 2025 EARN YOUR LEGACY terrain slogan",
+      "x": 39,
+      "y": 845,
+      "width": 220,
+      "height": 153
     }
   ]
 }

@@ -48,6 +48,20 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-slogan-banners",
+      "rectangleIds": [
+        "slogan-banner-upper-left",
+        "slogan-banner-upper-center",
+        "slogan-banner-upper-right",
+        "slogan-banner-right-river",
+        "slogan-banner-pit-upper",
+        "slogan-banner-pit-lower"
+      ],
+      "reason": "The Glory terrain banners have distinct perspective and visible extents."
+    }
+  ],
   "rectangles": [
     {
       "id": "scoreboard.blueIdentity",
@@ -200,6 +214,54 @@
       "y": 821,
       "width": 120,
       "height": 22
+    },
+    {
+      "id": "slogan-banner-upper-left",
+      "purpose": "The Glory edition slogan on terrain banner",
+      "x": 363,
+      "y": 0,
+      "width": 34,
+      "height": 101
+    },
+    {
+      "id": "slogan-banner-upper-center",
+      "purpose": "The Glory edition slogan on terrain banner",
+      "x": 645,
+      "y": 43,
+      "width": 47,
+      "height": 126
+    },
+    {
+      "id": "slogan-banner-upper-right",
+      "purpose": "The Glory edition slogan on terrain banner",
+      "x": 1094,
+      "y": 244,
+      "width": 51,
+      "height": 126
+    },
+    {
+      "id": "slogan-banner-right-river",
+      "purpose": "The Glory edition slogan on terrain banner",
+      "x": 1301,
+      "y": 335,
+      "width": 66,
+      "height": 133
+    },
+    {
+      "id": "slogan-banner-pit-upper",
+      "purpose": "The Glory edition slogan on terrain banner",
+      "x": 587,
+      "y": 427,
+      "width": 72,
+      "height": 160
+    },
+    {
+      "id": "slogan-banner-pit-lower",
+      "purpose": "The Glory edition slogan on terrain banner",
+      "x": 445,
+      "y": 535,
+      "width": 80,
+      "height": 134
     }
   ]
 }

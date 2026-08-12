@@ -273,6 +273,14 @@
       "y": 1360,
       "width": 220,
       "height": 80
+    },
+    {
+      "id": "event-emblem-watermark",
+      "purpose": "Worlds event emblem in upper-right broadcast watermark",
+      "x": 2480,
+      "y": 0,
+      "width": 80,
+      "height": 92
     }
   ]
 }

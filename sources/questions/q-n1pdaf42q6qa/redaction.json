@@ -146,6 +146,14 @@
       "y": 1093,
       "width": 238,
       "height": 347
+    },
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event emblem in scoreboard",
+      "x": 1248,
+      "y": 18,
+      "width": 64,
+      "height": 66
     }
   ]
 }

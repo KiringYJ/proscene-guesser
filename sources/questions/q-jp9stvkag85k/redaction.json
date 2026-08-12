@@ -52,10 +52,12 @@
     {
       "id": "perspective-year-banners",
       "rectangleIds": [
+        "year-banner-far-left",
         "year-banner-left-river",
-        "year-banner-right-river"
+        "year-banner-right-river",
+        "slogan-banner-right-jungle"
       ],
-      "reason": "Environmental banners have distinct perspective and visible extents."
+      "reason": "Environmental year and Make Them Believe banners have distinct perspective and visible extents."
     }
   ],
   "rectangles": [
@@ -210,6 +212,22 @@
       "y": 219,
       "width": 53,
       "height": 125
+    },
+    {
+      "id": "year-banner-far-left",
+      "purpose": "visible 2024 event banner",
+      "x": 145,
+      "y": 211,
+      "width": 53,
+      "height": 139
+    },
+    {
+      "id": "slogan-banner-right-jungle",
+      "purpose": "Make Them Believe edition slogan on terrain banner",
+      "x": 1724,
+      "y": 348,
+      "width": 111,
+      "height": 99
     }
   ]
 }

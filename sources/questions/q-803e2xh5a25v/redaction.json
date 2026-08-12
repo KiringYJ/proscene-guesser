@@ -53,6 +53,17 @@
         "camera.redPlayer"
       ],
       "reason": "Broadcast camera panels have genuine unequal widths and are retained at full inspected bounds."
+    },
+    {
+      "id": "terrain-event-mark-perspective",
+      "rectangleIds": [
+        "terrain-event-mark.upper-left",
+        "terrain-event-mark.upper-mid",
+        "terrain-event-mark.upper-right",
+        "terrain-event-mark.right-mid",
+        "terrain-event-mark.lower-right"
+      ],
+      "reason": "Repeated Worlds 2022 terrain marks appear at different sizes and angles because of map placement and camera perspective."
     }
   ],
   "rectangles": [
@@ -191,6 +202,46 @@
       "y": 342,
       "width": 120,
       "height": 22
+    },
+    {
+      "id": "terrain-event-mark.upper-left",
+      "purpose": "Worlds 2022 terrain event mark",
+      "x": 460,
+      "y": 111,
+      "width": 55,
+      "height": 115
+    },
+    {
+      "id": "terrain-event-mark.upper-mid",
+      "purpose": "Worlds 2022 terrain event mark",
+      "x": 771,
+      "y": 109,
+      "width": 48,
+      "height": 117
+    },
+    {
+      "id": "terrain-event-mark.upper-right",
+      "purpose": "Worlds 2022 terrain event mark",
+      "x": 1525,
+      "y": 86,
+      "width": 91,
+      "height": 179
+    },
+    {
+      "id": "terrain-event-mark.right-mid",
+      "purpose": "Worlds 2022 terrain event mark",
+      "x": 1466,
+      "y": 589,
+      "width": 64,
+      "height": 117
+    },
+    {
+      "id": "terrain-event-mark.lower-right",
+      "purpose": "Worlds 2022 terrain event mark",
+      "x": 1507,
+      "y": 758,
+      "width": 55,
+      "height": 92
     }
   ]
 }

@@ -11,6 +11,15 @@
   },
   "geometryGroups": [
     {
+      "id": "event-emblems",
+      "rule": "uniform-width",
+      "width": 30,
+      "rectangleIds": [
+        "event-emblem-scoreboard",
+        "event-emblem-roster-divider"
+      ]
+    },
+    {
       "id": "top-team-identities",
       "rule": "horizontal-mirror",
       "rectangleIds": [
@@ -41,7 +50,36 @@
       ]
     }
   ],
+  "geometryExceptions": [
+    {
+      "id": "perspective-skewed-rift-slogans",
+      "rectangleIds": [
+        "rift-slogan-upper-left",
+        "rift-slogan-upper-right",
+        "rift-slogan-right-river",
+        "rift-slogan-pit-upper",
+        "rift-slogan-pit-lower"
+      ],
+      "reason": "The repeated campaign banners appear at different perspective scales and angles around the Rift, so each rectangle follows the visible slogan text instead of using one uniform width."
+    }
+  ],
   "rectangles": [
+    {
+      "id": "event-emblem-scoreboard",
+      "purpose": "Worlds event trophy emblem in scoreboard kill-score separator",
+      "x": 947,
+      "y": 22,
+      "width": 30,
+      "height": 34
+    },
+    {
+      "id": "event-emblem-roster-divider",
+      "purpose": "Worlds event trophy emblem between lower roster columns",
+      "x": 947,
+      "y": 999,
+      "width": 30,
+      "height": 40
+    },
     {
       "id": "team-blue-top",
       "purpose": "blue team logo/name/seed",
@@ -65,6 +103,46 @@
       "y": 820,
       "width": 288,
       "height": 45
+    },
+    {
+      "id": "rift-slogan-upper-left",
+      "purpose": "Earn Your Legacy edition-specific Rift banner",
+      "x": 296,
+      "y": 190,
+      "width": 42,
+      "height": 136
+    },
+    {
+      "id": "rift-slogan-upper-right",
+      "purpose": "Earn Your Legacy edition-specific Rift banner",
+      "x": 1284,
+      "y": 260,
+      "width": 34,
+      "height": 126
+    },
+    {
+      "id": "rift-slogan-right-river",
+      "purpose": "Earn Your Legacy edition-specific Rift banner",
+      "x": 1504,
+      "y": 374,
+      "width": 38,
+      "height": 132
+    },
+    {
+      "id": "rift-slogan-pit-upper",
+      "purpose": "Earn Your Legacy edition-specific Rift banner",
+      "x": 792,
+      "y": 538,
+      "width": 38,
+      "height": 126
+    },
+    {
+      "id": "rift-slogan-pit-lower",
+      "purpose": "Earn Your Legacy edition-specific Rift banner",
+      "x": 638,
+      "y": 642,
+      "width": 44,
+      "height": 142
     },
     {
       "id": "float-red-01",
