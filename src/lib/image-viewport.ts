@@ -17,7 +17,6 @@ export interface ImageTransform {
 }
 
 interface ZoomAroundPointInput extends ImageTransform {
-  content?: ViewportSize
   nextScale: number
   point: Point
   viewport: ViewportSize
@@ -31,7 +30,7 @@ export function clampScale(scale: number): number {
   return clamp(scale, MIN_IMAGE_SCALE, MAX_IMAGE_SCALE)
 }
 
-export function fitCoverSize(viewport: ViewportSize, image: ViewportSize): ViewportSize {
+export function fitContainSize(viewport: ViewportSize, image: ViewportSize): ViewportSize {
   if (
     viewport.width <= 0 ||
     viewport.height <= 0 ||
@@ -45,28 +44,11 @@ export function fitCoverSize(viewport: ViewportSize, image: ViewportSize): Viewp
   const imageRatio = image.width / image.height
 
   return imageRatio >= viewportRatio
-    ? { width: viewport.height * imageRatio, height: viewport.height }
-    : { width: viewport.width, height: viewport.width / imageRatio }
-}
-
-export function clampPan(
-  pan: Point,
-  viewport: ViewportSize,
-  scale: number,
-  content: ViewportSize = viewport,
-): Point {
-  const clampedScale = clampScale(scale)
-  const maxX = Math.max(0, (content.width * clampedScale - viewport.width) / 2)
-  const maxY = Math.max(0, (content.height * clampedScale - viewport.height) / 2)
-
-  return {
-    x: maxX === 0 ? 0 : clamp(pan.x, -maxX, maxX),
-    y: maxY === 0 ? 0 : clamp(pan.y, -maxY, maxY),
-  }
+    ? { width: viewport.width, height: viewport.width / imageRatio }
+    : { width: viewport.height * imageRatio, height: viewport.height }
 }
 
 export function zoomAroundPoint({
-  content,
   pan,
   scale,
   nextScale,
@@ -83,7 +65,7 @@ export function zoomAroundPoint({
   }
 
   return {
-    pan: clampPan(nextPan, viewport, clampedScale, content),
+    pan: nextPan,
     scale: clampedScale,
   }
 }

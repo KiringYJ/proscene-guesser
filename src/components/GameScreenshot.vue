@@ -9,9 +9,8 @@ import {
 } from 'vue'
 
 import {
-  clampPan,
   clampScale,
-  fitCoverSize,
+  fitContainSize,
   MAX_IMAGE_SCALE,
   MIN_IMAGE_SCALE,
   zoomAroundPoint,
@@ -32,7 +31,6 @@ interface DragGesture {
 
 interface PinchGesture {
   center: Point
-  content: ViewportSize
   distance: number
   pan: Point
   scale: number
@@ -55,7 +53,7 @@ const zoomPercentage = computed(() => Math.round(scale.value * 100))
 const canZoomIn = computed(() => scale.value < MAX_IMAGE_SCALE)
 const canZoomOut = computed(() => scale.value > MIN_IMAGE_SCALE)
 const fittedImageSize = computed(() =>
-  fitCoverSize(viewportDimensions.value, naturalImageSize.value),
+  fitContainSize(viewportDimensions.value, naturalImageSize.value),
 )
 const imageStyle = computed<CSSProperties>(() => ({
   width: `${fittedImageSize.value.width}px`,
@@ -88,13 +86,13 @@ onMounted(() => {
     resizeObserver = new ResizeObserver(updateViewportGeometry)
     resizeObserver.observe(element)
   } else {
-    window.addEventListener('resize', clampCurrentPan)
+    window.addEventListener('resize', updateViewportGeometry)
   }
 })
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
-  window.removeEventListener('resize', clampCurrentPan)
+  window.removeEventListener('resize', updateViewportGeometry)
   activePointers.clear()
 })
 
@@ -105,10 +103,6 @@ function getViewportSize(): ViewportSize {
     width: rect?.width ?? 0,
     height: rect?.height ?? 0,
   }
-}
-
-function getFittedImageSize(viewportSize = getViewportSize()): ViewportSize {
-  return fitCoverSize(viewportSize, naturalImageSize.value)
 }
 
 function getLocalPoint(clientX: number, clientY: number): Point {
@@ -122,18 +116,6 @@ function getLocalPoint(clientX: number, clientY: number): Point {
 
 function updateViewportGeometry(): void {
   viewportDimensions.value = getViewportSize()
-  clampCurrentPan()
-}
-
-function clampCurrentPan(): void {
-  const viewportSize = getViewportSize()
-
-  pan.value = clampPan(
-    pan.value,
-    viewportSize,
-    scale.value,
-    getFittedImageSize(viewportSize),
-  )
 }
 
 function handleImageLoad(event: Event): void {
@@ -143,7 +125,6 @@ function handleImageLoad(event: Event): void {
     width: image.naturalWidth,
     height: image.naturalHeight,
   }
-  clampCurrentPan()
 }
 
 function resetView(focusViewport = false): void {
@@ -163,7 +144,6 @@ function applyZoom(nextScale: number, point?: Point): void {
     y: viewportSize.height / 2,
   }
   const transform = zoomAroundPoint({
-    content: getFittedImageSize(viewportSize),
     pan: pan.value,
     scale: scale.value,
     nextScale,
@@ -181,14 +161,7 @@ function zoomBy(amount: number): void {
 }
 
 function panBy(x: number, y: number): void {
-  const viewportSize = getViewportSize()
-
-  pan.value = clampPan(
-    { x: pan.value.x + x, y: pan.value.y + y },
-    viewportSize,
-    scale.value,
-    getFittedImageSize(viewportSize),
-  )
+  pan.value = { x: pan.value.x + x, y: pan.value.y + y }
   hasInteracted.value = true
 }
 
@@ -232,7 +205,6 @@ function beginPinch(): void {
       x: center.x - (rect?.left ?? 0),
       y: center.y - (rect?.top ?? 0),
     },
-    content: getFittedImageSize(),
     distance: Math.max(1, getPointerDistance(first, second)),
     pan: { ...pan.value },
     scale: scale.value,
@@ -304,27 +276,15 @@ function handlePointerMove(event: PointerEvent): void {
     }
 
     scale.value = nextScale
-    pan.value = clampPan(
-      nextPan,
-      pinchGesture.viewport,
-      nextScale,
-      pinchGesture.content,
-    )
+    pan.value = nextPan
     return
   }
 
   if (dragGesture) {
-    const viewportSize = getViewportSize()
-
-    pan.value = clampPan(
-      {
-        x: dragGesture.pan.x + event.clientX - dragGesture.pointer.x,
-        y: dragGesture.pan.y + event.clientY - dragGesture.pointer.y,
-      },
-      viewportSize,
-      scale.value,
-      getFittedImageSize(viewportSize),
-    )
+    pan.value = {
+      x: dragGesture.pan.x + event.clientX - dragGesture.pointer.x,
+      y: dragGesture.pan.y + event.clientY - dragGesture.pointer.y,
+    }
   }
 }
 
