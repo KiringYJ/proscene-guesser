@@ -7,7 +7,15 @@ import GameSetup from '@/components/GameSetup.vue'
 import GameSummary from '@/components/GameSummary.vue'
 import ResultCard from '@/components/ResultCard.vue'
 import { useActiveGameSession } from '@/composables/use-active-game-session'
-import { formatRemainingTime, getRemainingSeconds } from '@/game/round-timer'
+import {
+  ElapsedAnswerClock,
+  shouldCountAnswerTime,
+} from '@/game/elapsed-answer-clock'
+import {
+  formatElapsedTime,
+  formatRemainingTime,
+  getRemainingSeconds,
+} from '@/game/round-timer'
 import { isAnswerComplete } from '@/game/scoring'
 import type { SoloGameConfig } from '@/game/solo'
 import { buildGameShareText, buildShareText } from '@/lib/share'
@@ -18,12 +26,17 @@ const answer = ref<PlayerAnswer>(createEmptyAnswer())
 const toast = ref('')
 const snackbarOpen = ref(false)
 const remainingSeconds = ref<number | null>(null)
+const elapsedAnswerSeconds = ref(0)
+const answerPanelOpen = ref(true)
 const accessibilityAnnouncement = ref('')
 const expiringRoundIds = new Set<string>()
 const expirationRetryAt = new Map<string, number>()
+const elapsedAnswerClock = new ElapsedAnswerClock()
 let lowTimeAnnouncementRoundId: string | undefined
 let countdownInterval: ReturnType<typeof setInterval> | undefined
 let expirationRetryTimeout: ReturnType<typeof setTimeout> | undefined
+let elapsedInterval: ReturnType<typeof setInterval> | undefined
+let trackedElapsedGameId: string | undefined
 
 const currentQuestion = computed(() => {
   const state = snapshot.value
@@ -84,6 +97,7 @@ const timerUrgent = computed(() =>
   remainingSeconds.value !== null &&
   remainingSeconds.value <= 10,
 )
+const elapsedDisplay = computed(() => formatElapsedTime(elapsedAnswerSeconds.value))
 
 watch(
   () => {
@@ -96,6 +110,7 @@ watch(
   (roundId, previousRoundId) => {
     if (roundId !== null && roundId !== previousRoundId) {
       answer.value = createEmptyAnswer()
+      answerPanelOpen.value = true
     }
   },
 )
@@ -120,6 +135,24 @@ watch(
   () => {
     const state = snapshot.value
 
+    if (state.phase === 'answering' || state.phase === 'revealed') {
+      const submission = state.phase === 'answering'
+        ? `${state.submission.status}:${state.submission.status === 'rejected' ? state.submission.retryable : ''}`
+        : ''
+
+      return `${state.phase}:${state.gameId}:${state.roundId}:${submission}`
+    }
+
+    return state.phase
+  },
+  syncElapsedClock,
+  { immediate: true },
+)
+
+watch(
+  () => {
+    const state = snapshot.value
+
     return state.phase === 'answering' || state.phase === 'revealed'
       ? `${state.phase}:${state.roundId}`
       : state.phase
@@ -132,6 +165,7 @@ watch(
     if (state.phase === 'setup') {
       headingSelector = '#game-setup-title'
     } else if (state.phase === 'revealed') {
+      answerPanelOpen.value = true
       accessibilityAnnouncement.value = state.completionReason === 'timed-out'
         ? `Time expired. You scored ${state.result.points} out of ${state.result.total}.`
         : `Answer locked. You scored ${state.result.points} out of ${state.result.total}.`
@@ -147,7 +181,10 @@ watch(
   },
 )
 
-onBeforeUnmount(stopCountdown)
+onBeforeUnmount(() => {
+  stopCountdown()
+  stopElapsedClock()
+})
 
 function notify(message: string): void {
   toast.value = message
@@ -163,6 +200,64 @@ function stopCountdown(): void {
   if (expirationRetryTimeout !== undefined) {
     clearTimeout(expirationRetryTimeout)
     expirationRetryTimeout = undefined
+  }
+}
+
+function stopElapsedInterval(): void {
+  if (elapsedInterval !== undefined) {
+    clearInterval(elapsedInterval)
+    elapsedInterval = undefined
+  }
+}
+
+function updateElapsedDisplay(now = Date.now()): void {
+  elapsedAnswerSeconds.value = elapsedAnswerClock.getElapsedSeconds(now)
+}
+
+function pauseElapsedClock(now = Date.now()): void {
+  elapsedAnswerClock.pause(now)
+  updateElapsedDisplay(now)
+  stopElapsedInterval()
+}
+
+function stopElapsedClock(): void {
+  pauseElapsedClock()
+  trackedElapsedGameId = undefined
+}
+
+function syncElapsedClock(): void {
+  const state = snapshot.value
+  const now = Date.now()
+
+  if (state.phase !== 'answering') {
+    pauseElapsedClock(now)
+
+    if (state.phase === 'setup') {
+      trackedElapsedGameId = undefined
+      elapsedAnswerClock.reset()
+      elapsedAnswerSeconds.value = 0
+    }
+
+    return
+  }
+
+  if (trackedElapsedGameId !== state.gameId) {
+    stopElapsedInterval()
+    trackedElapsedGameId = state.gameId
+    elapsedAnswerClock.reset()
+    elapsedAnswerSeconds.value = 0
+  }
+
+  if (!shouldCountAnswerTime(state.submission)) {
+    pauseElapsedClock(now)
+    return
+  }
+
+  elapsedAnswerClock.resume(now)
+  updateElapsedDisplay(now)
+
+  if (elapsedInterval === undefined) {
+    elapsedInterval = setInterval(updateElapsedDisplay, 250)
   }
 }
 
@@ -374,15 +469,15 @@ async function shareGameResult(): Promise<void> {
 </script>
 
 <template>
-  <v-app>
-    <div class="ambient-grid" aria-hidden="true"></div>
+  <v-app :class="{ 'v-application--gameplay': currentQuestion }">
+    <div v-if="!currentQuestion" class="ambient-grid" aria-hidden="true"></div>
     <p class="sr-only" aria-live="polite" aria-atomic="true">
       {{ accessibilityAnnouncement }}
     </p>
 
-    <v-main class="app-shell">
-      <v-container class="page" max-width="1440">
-        <header class="topbar">
+    <v-main class="app-shell" :class="{ 'app-shell--gameplay': currentQuestion }">
+      <v-container class="page" :class="{ 'page--gameplay': currentQuestion }" max-width="1440">
+        <header v-if="!currentQuestion" class="topbar">
           <a class="brand" href="#top" aria-label="ProScene Guesser home">
             <span class="brand__mark" aria-hidden="true">PG</span>
             <span class="brand__wordmark">
@@ -404,7 +499,7 @@ async function shareGameResult(): Promise<void> {
         </header>
 
         <div id="top">
-          <section v-if="snapshot.phase !== 'finished'" class="hero">
+          <section v-if="snapshot.phase === 'setup'" class="hero">
             <div class="hero__copy">
               <p class="eyebrow">Competitive League · Broadcast archaeology</p>
               <h1>One frame.<br /><em>Four answers.</em></h1>
@@ -413,28 +508,6 @@ async function shareGameResult(): Promise<void> {
                 identifiers.
               </p>
             </div>
-
-            <dl v-if="gameplayProgress" class="session-stats" aria-label="Game statistics">
-              <div>
-                <dt>Round</dt>
-                <dd>{{ String(gameplayProgress.roundNumber).padStart(2, '0') }}/{{ String(gameplayProgress.roundCount).padStart(2, '0') }}</dd>
-              </div>
-              <div>
-                <dt>Score</dt>
-                <dd>{{ gameplayProgress.points }}/{{ gameplayProgress.possiblePoints }}</dd>
-              </div>
-              <div>
-                <dt>Time</dt>
-                <dd
-                  role="timer"
-                  aria-label="Round time remaining"
-                  aria-live="off"
-                  :class="{ 'session-stats__urgent': timerUrgent }"
-                >
-                  {{ timerDisplay }}
-                </dd>
-              </div>
-            </dl>
           </section>
 
           <GameSetup
@@ -445,30 +518,94 @@ async function shareGameResult(): Promise<void> {
             @start="startGame"
           />
 
-          <section v-else-if="currentQuestion" class="game-layout" aria-label="Current question">
+          <section
+            v-else-if="currentQuestion && gameplayProgress"
+            class="game-layout"
+            aria-label="Current question"
+          >
             <GameScreenshot :question="currentQuestion" :revealed="snapshot.phase === 'revealed'" />
 
-            <Transition name="panel-swap" mode="out-in">
-              <ResultCard
-                v-if="result && revealedSnapshot"
-                key="result"
-                :result="result"
-                :completion-reason="revealedSnapshot.completionReason"
-                :next-label="nextLabel"
-                :disabled="advancePending"
-                @share="shareRoundResult"
-                @next="nextQuestion"
-              />
-              <AnswerForm
-                v-else
-                key="answer"
-                v-model="answer"
-                :question="currentQuestion"
-                :disabled="answerDisabled"
-                :complete="answerComplete"
-                @submit="submitAnswer"
-              />
-            </Transition>
+            <div class="game-hud">
+              <div class="game-brand" aria-label="ProScene Guesser">
+                <span class="game-brand__mark" aria-hidden="true">PG</span>
+                <span class="game-brand__wordmark">
+                  <strong>ProScene</strong>
+                  <small>Guesser</small>
+                </span>
+                <span class="game-brand__signal" aria-hidden="true">Archive live</span>
+              </div>
+
+              <div class="round-clock" :class="{ 'round-clock--urgent': timerUrgent }">
+                <span>Round timer</span>
+                <strong role="timer" aria-label="Round time remaining" aria-live="off">
+                  {{ timerDisplay }}
+                </strong>
+              </div>
+
+              <dl class="gameplay-stats" aria-label="Game statistics">
+                <div>
+                  <dt>Round</dt>
+                  <dd>
+                    {{ String(gameplayProgress.roundNumber).padStart(2, '0') }}<span>/</span>{{ String(gameplayProgress.roundCount).padStart(2, '0') }}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Score</dt>
+                  <dd>{{ gameplayProgress.points }}<span>/</span>{{ gameplayProgress.possiblePoints }}</dd>
+                </div>
+                <div>
+                  <dt>Total</dt>
+                  <dd>{{ elapsedDisplay }}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <aside
+              class="answer-dock"
+              :class="{ 'answer-dock--open': answerPanelOpen }"
+              aria-label="Answer panel"
+            >
+              <button
+                class="answer-dock__toggle"
+                type="button"
+                :aria-expanded="answerPanelOpen"
+                aria-controls="answer-dock-panel"
+                @click="answerPanelOpen = !answerPanelOpen"
+              >
+                <span class="answer-dock__toggle-icon" aria-hidden="true">
+                  {{ answerPanelOpen ? '×' : '✦' }}
+                </span>
+                <span class="answer-dock__toggle-label">
+                  {{ answerPanelOpen ? 'Hide answer' : 'Open answer' }}
+                </span>
+              </button>
+
+              <Transition name="answer-dock">
+                <div v-if="answerPanelOpen" id="answer-dock-panel" class="answer-dock__panel">
+                  <Transition name="panel-swap" mode="out-in">
+                    <ResultCard
+                      v-if="result && revealedSnapshot"
+                      key="result"
+                      :result="result"
+                      :completion-reason="revealedSnapshot.completionReason"
+                      :next-label="nextLabel"
+                      :disabled="advancePending"
+                      @share="shareRoundResult"
+                      @next="nextQuestion"
+                    />
+                    <AnswerForm
+                      v-else
+                      key="answer"
+                      v-model="answer"
+                      :question="currentQuestion"
+                      :disabled="answerDisabled"
+                      :complete="answerComplete"
+                      @submit="submitAnswer"
+                    />
+                  </Transition>
+                </div>
+              </Transition>
+            </aside>
           </section>
 
           <GameSummary
@@ -482,7 +619,7 @@ async function shareGameResult(): Promise<void> {
           />
         </div>
 
-        <footer class="footer">
+        <footer v-if="!currentQuestion" class="footer">
           <p>Playable questions use flattened redactions; originals stay outside the build.</p>
           <p>
             Event data from

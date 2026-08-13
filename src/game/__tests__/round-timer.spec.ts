@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatRemainingTime, getRemainingSeconds } from '@/game/round-timer'
+import {
+  formatElapsedTime,
+  formatRemainingTime,
+  getRemainingSeconds,
+} from '@/game/round-timer'
 import type { RoundTimer } from '@/game/session'
 
 describe('round timer display', () => {
@@ -27,5 +31,10 @@ describe('round timer display', () => {
     expect(formatRemainingTime(90)).toBe('1:30')
     expect(formatRemainingTime(9)).toBe('0:09')
     expect(formatRemainingTime(null)).toBe('No limit')
+  })
+
+  it('formats cumulative answer time across minute and hour boundaries', () => {
+    expect(formatElapsedTime(6)).toBe('0:06')
+    expect(formatElapsedTime(3_661)).toBe('1:01:01')
   })
 })

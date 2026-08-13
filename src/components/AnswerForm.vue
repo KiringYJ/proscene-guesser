@@ -165,32 +165,49 @@ const gameNumber = computed({
     </div>
 
     <v-form class="answer-form" @submit.prevent="emit('submit')">
-      <v-select
-        v-model="year"
-        :items="question.choices.years"
-        :disabled="disabled"
-        label="Year"
-        aria-label="Year"
-        hide-details
-      />
+      <div class="field-grid field-grid--event">
+        <v-select
+          v-model="year"
+          density="compact"
+          :items="question.choices.years"
+          :disabled="disabled"
+          label="Year"
+          aria-label="Year"
+          hide-details
+        />
 
-      <v-select
-        v-model="tournament"
-        :items="tournamentItems"
-        :disabled="disabled || (catalogBacked && year === null)"
-        label="Tournament"
-        aria-label="Tournament"
-        hide-details
-      />
+        <v-select
+          v-model="tournament"
+          density="compact"
+          :items="tournamentItems"
+          :disabled="disabled || (catalogBacked && year === null)"
+          label="Tournament"
+          aria-label="Tournament"
+          hide-details
+        />
+      </div>
 
-      <v-select
-        v-model="stage"
-        :items="stageItems"
-        :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
-        label="Stage"
-        aria-label="Tournament stage"
-        hide-details
-      />
+      <div class="field-grid field-grid--round">
+        <v-select
+          v-model="stage"
+          density="compact"
+          :items="stageItems"
+          :disabled="disabled || (catalogBacked && selectedCatalogEditionId === null)"
+          label="Stage"
+          aria-label="Tournament stage"
+          hide-details
+        />
+
+        <v-select
+          v-model="gameNumber"
+          density="compact"
+          :items="question.choices.games"
+          :disabled="disabled"
+          label="Game"
+          aria-label="Game number"
+          hide-details
+        />
+      </div>
 
       <div class="side-divider" aria-hidden="true">
         <span>Blue side</span>
@@ -200,6 +217,7 @@ const gameNumber = computed({
       <div class="field-grid field-grid--teams">
         <v-select
           v-model="blueTeamId"
+          density="compact"
           :items="blueTeamItems"
           item-title="name"
           item-value="id"
@@ -210,6 +228,7 @@ const gameNumber = computed({
         />
         <v-select
           v-model="redTeamId"
+          density="compact"
           :items="redTeamItems"
           item-title="name"
           item-value="id"
@@ -219,16 +238,6 @@ const gameNumber = computed({
           hide-details
         />
       </div>
-
-      <v-select
-        v-model="gameNumber"
-        :items="question.choices.games"
-        :disabled="disabled"
-        label="Game"
-        aria-label="Game number"
-        prefix="Game"
-        hide-details
-      />
 
       <div class="answer-form__footer">
         <p>Event and teams score as grouped signals.</p>

@@ -18,3 +18,14 @@ export function formatRemainingTime(seconds: number | null): string {
 
   return `${minutes}:${String(remainder).padStart(2, '0')}`
 }
+
+export function formatElapsedTime(seconds: number): string {
+  const wholeSeconds = Math.max(0, Math.floor(seconds))
+  const hours = Math.floor(wholeSeconds / 3_600)
+  const minutes = Math.floor((wholeSeconds % 3_600) / 60)
+  const remainder = wholeSeconds % 60
+  const minuteDisplay = hours > 0 ? String(minutes).padStart(2, '0') : String(minutes)
+  const clock = `${minuteDisplay}:${String(remainder).padStart(2, '0')}`
+
+  return hours > 0 ? `${hours}:${clock}` : clock
+}
