@@ -606,6 +606,8 @@ describe('question admin loopback authentication', () => {
 
     expect(html).toContain('<title>ProScene Question Admin</title>')
     expect(html).toContain('id="answerForm"')
+    expect(html).toContain('id="answerYear"')
+    expect(html).toContain('id="answerTournament"')
     expect(html).toContain('id="captureForm"')
     expect(html).toContain('id="redactionLayer"')
     expect(html).toContain('id="saveRedactions"')

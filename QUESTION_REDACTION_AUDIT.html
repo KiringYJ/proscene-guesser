@@ -548,10 +548,14 @@
 
       .answer-form {
         display: grid;
-        grid-template-columns: minmax(180px, 1.2fr) minmax(150px, 1fr) minmax(170px, 1fr) minmax(170px, 1fr) 100px;
+        grid-template-columns: 100px minmax(220px, 1.35fr) minmax(170px, 1fr) 100px;
         gap: 11px;
         align-items: end;
         padding: 16px 17px;
+      }
+
+      .answer-team-field {
+        grid-column: span 2;
       }
 
       .answer-actions {
@@ -1438,6 +1442,10 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .answer-team-field {
+          grid-column: auto;
+        }
+
         .redaction-workspace {
           grid-template-columns: 1fr;
         }
@@ -1672,30 +1680,34 @@
             <header class="editor-header">
               <div>
                 <h3 id="answerEditorHeading">Edit answer</h3>
-                <p>Change the event, stage, sides, or game number. The opaque question ID stays fixed while the semantic source directory is renamed automatically.</p>
+                <p>Choose the year and tournament, then correct the stage, sides, or game number. The opaque question ID stays fixed while the semantic source directory is renamed automatically.</p>
               </div>
               <span id="answerEditorBadge" class="badge">Catalog-backed</span>
             </header>
             <form id="answerForm" class="answer-form">
-              <label class="field-label" for="answerEdition">
-                Event edition
-                <select id="answerEdition" class="admin-input" required></select>
+              <label class="field-label" for="answerYear">
+                Year
+                <select id="answerYear" class="admin-input" required></select>
+              </label>
+              <label class="field-label" for="answerTournament">
+                Tournament
+                <select id="answerTournament" class="admin-input" required></select>
               </label>
               <label class="field-label" for="answerStage">
                 Stage
                 <select id="answerStage" class="admin-input" required></select>
               </label>
-              <label class="field-label" for="answerBlueTeam">
-                Blue team
-                <select id="answerBlueTeam" class="admin-input" required></select>
-              </label>
-              <label class="field-label" for="answerRedTeam">
-                Red team
-                <select id="answerRedTeam" class="admin-input" required></select>
-              </label>
               <label class="field-label" for="answerGameNumber">
                 Game
                 <input id="answerGameNumber" class="admin-input" type="number" min="1" step="1" required />
+              </label>
+              <label class="field-label answer-team-field" for="answerBlueTeam">
+                Blue team
+                <select id="answerBlueTeam" class="admin-input" required></select>
+              </label>
+              <label class="field-label answer-team-field" for="answerRedTeam">
+                Red team
+                <select id="answerRedTeam" class="admin-input" required></select>
               </label>
               <div class="answer-actions">
                 <code id="answerDirectoryPreview" class="directory-preview"></code>
@@ -3280,7 +3292,8 @@
             "redactionManifestLink",
             "answerEditorBadge",
             "answerForm",
-            "answerEdition",
+            "answerYear",
+            "answerTournament",
             "answerStage",
             "answerBlueTeam",
             "answerRedTeam",
@@ -3440,7 +3453,7 @@
         }
 
         function selectedEdition() {
-          return adminEditions.find((edition) => edition.id === elements.answerEdition.value) ?? null
+          return adminEditions.find((edition) => edition.id === elements.answerTournament.value) ?? null
         }
 
         function answerEditorEnabled(question = currentQuestion()) {
@@ -3483,21 +3496,35 @@
               : `${question.directoryName} → ${nextDirectory}`
         }
 
-        function refreshAnswerChoices({ preserve = true } = {}) {
+        function selectedYearEditions() {
+          const year = Number(elements.answerYear.value)
+          return Number.isInteger(year)
+            ? adminEditions.filter((edition) => edition.year === year)
+            : []
+        }
+
+        function tournamentLabel(edition, yearEditions) {
+          const seriesEditionCount = yearEditions.filter(
+            (candidate) => candidate.tournament === edition.tournament,
+          ).length
+          return seriesEditionCount === 1 ? edition.tournament : edition.name
+        }
+
+        function refreshAnswerChoices({
+          preferredStage = null,
+          preferredBlueTeam = null,
+          preferredRedTeam = null,
+        } = {}) {
           const edition = selectedEdition()
           if (!edition) return
-          const question = currentQuestion()
-          const stage = preserve ? elements.answerStage.value : question?.stage
-          const blueTeam = preserve ? elements.answerBlueTeam.value : question?.blueTeam.id
-          const redTeam = preserve ? elements.answerRedTeam.value : question?.redTeam.id
           replaceSelectOptions(
             elements.answerStage,
             edition.stages.map((value) => ({ label: value, value })),
-            stage,
+            preferredStage,
           )
           const teamOptions = edition.teams.map((team) => ({ label: team.name, value: team.id }))
-          replaceSelectOptions(elements.answerBlueTeam, teamOptions, blueTeam)
-          replaceSelectOptions(elements.answerRedTeam, teamOptions, redTeam)
+          replaceSelectOptions(elements.answerBlueTeam, teamOptions, preferredBlueTeam)
+          replaceSelectOptions(elements.answerRedTeam, teamOptions, preferredRedTeam)
           if (elements.answerBlueTeam.value === elements.answerRedTeam.value) {
             const alternative = teamOptions.find(
               (option) => option.value !== elements.answerBlueTeam.value,
@@ -3507,25 +3534,49 @@
           updateAnswerDirectoryPreview()
         }
 
+        function refreshTournamentChoices({
+          preferredEditionId = null,
+          preferredStage = null,
+          preferredBlueTeam = null,
+          preferredRedTeam = null,
+        } = {}) {
+          const editions = selectedYearEditions()
+          replaceSelectOptions(
+            elements.answerTournament,
+            editions.map((edition) => ({
+              label: tournamentLabel(edition, editions),
+              value: edition.id,
+            })),
+            preferredEditionId,
+          )
+          refreshAnswerChoices({ preferredStage, preferredBlueTeam, preferredRedTeam })
+        }
+
         function resetAnswerEditor(question) {
           const enabled = answerEditorEnabled(question)
           if (enabled) {
             replaceSelectOptions(
-              elements.answerEdition,
-              adminEditions.map((edition) => ({
-                label: `${edition.tournament} ${edition.year} · ${edition.name}`,
-                value: edition.id,
-              })),
-              question.editionId,
+              elements.answerYear,
+              [...new Set(adminEditions.map((edition) => edition.year))]
+                .sort((left, right) => right - left)
+                .map((year) => ({ label: String(year), value: String(year) })),
+              String(question.year),
             )
-            refreshAnswerChoices({ preserve: false })
+            refreshTournamentChoices({
+              preferredEditionId: question.editionId,
+              preferredStage: question.stage,
+              preferredBlueTeam: question.blueTeam.id,
+              preferredRedTeam: question.redTeam.id,
+            })
           } else {
             replaceSelectOptions(
-              elements.answerEdition,
-              [{
-                label: `${question.tournament} ${question.year} · Static question`,
-                value: question.editionId,
-              }],
+              elements.answerYear,
+              [{ label: String(question.year), value: String(question.year) }],
+              String(question.year),
+            )
+            replaceSelectOptions(
+              elements.answerTournament,
+              [{ label: question.tournament, value: question.editionId }],
               question.editionId,
             )
             replaceSelectOptions(
@@ -4817,9 +4868,8 @@
             saveReviews()
           })
 
-          elements.answerEdition.addEventListener("change", () => {
-            refreshAnswerChoices({ preserve: true })
-          })
+          elements.answerYear.addEventListener("change", () => refreshTournamentChoices())
+          elements.answerTournament.addEventListener("change", () => refreshAnswerChoices())
           for (const control of [
             elements.answerStage,
             elements.answerBlueTeam,
@@ -4848,7 +4898,7 @@
                 method: "POST",
                 body: {
                   blueTeamId: elements.answerBlueTeam.value,
-                  catalogEditionId: elements.answerEdition.value,
+                  catalogEditionId: elements.answerTournament.value,
                   confirmation: question.id,
                   expectedDirectoryName: question.directoryName,
                   expectedManifestSha256: question.manifestSha256,
