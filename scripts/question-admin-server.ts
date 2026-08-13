@@ -13,14 +13,18 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import {
   QuestionAdminConflictError,
+  QuestionAdminValidationError,
   loadAdminQuestionIndex,
   readCaptureSummary,
   replaceQuestionOriginal,
+  saveQuestionRedactions,
   resolveCaptureCandidatePath,
   resolveCaptureOutputPath,
   resolveQuestionAssetPath,
+  updateQuestionAnswer,
   type AdminQuestion,
   type CaptureSummary,
+  type QuestionRedactionRenderer,
 } from './question-admin.ts'
 import {
   createCaptureRequest,
@@ -38,8 +42,11 @@ const maximumRequestBytes = 32 * 1024
 const sessionCookieName = 'proscene_question_admin_session'
 
 export interface ServerOptions {
+  catalogSync?: (repositoryRoot: string) => Promise<CommandResult>
   openBrowser: boolean
   port: number
+  redactionRenderer?: QuestionRedactionRenderer
+  repositoryRoot?: string
 }
 
 interface CommandResult {
@@ -287,6 +294,29 @@ async function runFramePicker(arguments_: readonly string[]): Promise<CommandRes
   })
 }
 
+async function runQuestionCatalogSync(root: string): Promise<CommandResult> {
+  return await new Promise<CommandResult>((resolvePromise, reject) => {
+    const child = spawn(process.execPath, [resolve(root, 'scripts/sync-question-catalog.ts')], {
+      cwd: root,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
+    })
+    const stdout: Buffer[] = []
+    const stderr: Buffer[] = []
+    child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk))
+    child.stderr.on('data', (chunk: Buffer) => stderr.push(chunk))
+    child.on('error', reject)
+    child.on('close', (code) => {
+      const result = {
+        stderr: Buffer.concat(stderr).toString('utf8'),
+        stdout: Buffer.concat(stdout).toString('utf8'),
+      }
+      if (code === 0) resolvePromise(result)
+      else reject(new Error(displayLog(result) || `Question catalog sync exited with code ${code ?? 'unknown'}`))
+    })
+  })
+}
+
 function browserQuestion(question: AdminQuestion): Record<string, unknown> {
   const root = `/api/questions/${question.id}/assets`
 
@@ -355,6 +385,8 @@ export function createQuestionAdminServer(options: ServerOptions): {
 } {
   const sessionToken = randomBytes(32).toString('base64url')
   const activeCaptures = new Set<string>()
+  const activeQuestions = new Set<string>()
+  const serverRepositoryRoot = options.repositoryRoot ?? repositoryRoot
   let baseUrl = ''
   let expectedHost = ''
 
@@ -369,6 +401,28 @@ export function createQuestionAdminServer(options: ServerOptions): {
       return await work()
     } finally {
       activeCaptures.delete(captureId)
+    }
+  }
+
+  async function withQuestionLock<T>(questionId: string, work: () => Promise<T>): Promise<T> {
+    if (activeQuestions.has(questionId)) {
+      throw new HttpError(409, `Question ${questionId} is already being updated`)
+    }
+
+    activeQuestions.add(questionId)
+    try {
+      return await work()
+    } finally {
+      activeQuestions.delete(questionId)
+    }
+  }
+
+  async function catalogSyncResult(): Promise<{ log: string; ok: boolean }> {
+    try {
+      const result = await (options.catalogSync ?? runQuestionCatalogSync)(serverRepositoryRoot)
+      return { log: displayLog(result), ok: true }
+    } catch (error) {
+      return { log: error instanceof Error ? error.message : String(error), ok: false }
     }
   }
 
@@ -437,8 +491,9 @@ export function createQuestionAdminServer(options: ServerOptions): {
       }
 
       if (request.method === 'GET' && requestUrl.pathname === '/api/questions') {
-        const index = await loadAdminQuestionIndex(repositoryRoot)
+        const index = await loadAdminQuestionIndex(serverRepositoryRoot)
         sendJson(response, 200, {
+          editions: index.editions,
           issues: index.issues,
           questions: index.questions.map(browserQuestion),
           schemaVersion: 1,
@@ -457,7 +512,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
           | 'question-manifest'
           | 'redacted'
           | 'redaction-manifest'
-        const path = await resolveQuestionAssetPath(repositoryRoot, questionId ?? '', asset)
+        const path = await resolveQuestionAssetPath(serverRepositoryRoot, questionId ?? '', asset)
         const contentType = {
           original: 'image/png',
           'question-manifest': 'application/json; charset=utf-8',
@@ -474,7 +529,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
 
       if (request.method === 'GET' && captureAssetMatch !== null) {
         const path = await resolveCaptureCandidatePath(
-          repositoryRoot,
+          serverRepositoryRoot,
           captureAssetMatch[1] ?? '',
           captureAssetMatch[2] as 'coarse' | 'fine',
           captureAssetMatch[3] ?? '',
@@ -488,7 +543,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
       )
 
       if (request.method === 'GET' && captureOutputMatch !== null) {
-        const path = await resolveCaptureOutputPath(repositoryRoot, captureOutputMatch[1] ?? '')
+        const path = await resolveCaptureOutputPath(serverRepositoryRoot, captureOutputMatch[1] ?? '')
         await sendFile(response, path, 'image/png')
         return
       }
@@ -498,7 +553,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
       )
 
       if (request.method === 'GET' && captureMatch !== null) {
-        const capture = await readCaptureSummary(repositoryRoot, captureMatch[1] ?? '')
+        const capture = await readCaptureSummary(serverRepositoryRoot, captureMatch[1] ?? '')
         sendJson(response, 200, { capture: browserCapture(capture) })
         return
       }
@@ -524,7 +579,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
             '--no-open',
           ]),
         )
-        const capture = await readCaptureSummary(repositoryRoot, captureRequest.captureId)
+        const capture = await readCaptureSummary(serverRepositoryRoot, captureRequest.captureId)
         sendJson(response, 200, { capture: browserCapture(capture), log: displayLog(command) })
         return
       }
@@ -537,7 +592,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
         const captureId = captureStageMatch[1] ?? ''
         const stageName = captureStageMatch[2] as 'coarse' | 'final'
         const body = await readJsonBody(request)
-        const captureBefore = await readCaptureSummary(repositoryRoot, captureId)
+        const captureBefore = await readCaptureSummary(serverRepositoryRoot, captureId)
         const candidates = stageName === 'coarse' ? captureBefore.coarse?.candidates : captureBefore.fine?.candidates
 
         if (candidates === undefined || candidates === null) {
@@ -568,7 +623,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
             '--no-open',
           ]),
         )
-        const capture = await readCaptureSummary(repositoryRoot, captureId)
+        const capture = await readCaptureSummary(serverRepositoryRoot, captureId)
         sendJson(response, 200, { capture: browserCapture(capture), log: displayLog(command) })
         return
       }
@@ -585,21 +640,95 @@ export function createQuestionAdminServer(options: ServerOptions): {
           throw new HttpError(400, `confirmation must equal ${questionId}`)
         }
 
-        const result = await replaceQuestionOriginal({
-          allowDimensionChange: body.allowDimensionChange === true,
-          captureId: requiredString(body, 'captureId'),
-          expectedOriginalSha256: requiredString(body, 'expectedOriginalSha256'),
-          questionId,
-          repositoryRoot,
+        const payload = await withQuestionLock(questionId, async () => {
+          const result = await replaceQuestionOriginal({
+            allowDimensionChange: body.allowDimensionChange === true,
+            captureId: requiredString(body, 'captureId'),
+            expectedOriginalSha256: requiredString(body, 'expectedOriginalSha256'),
+            questionId,
+            repositoryRoot: serverRepositoryRoot,
+          })
+          const catalogSync = await catalogSyncResult()
+          const index = await loadAdminQuestionIndex(serverRepositoryRoot)
+          const question = index.questions.find((candidate) => candidate.id === questionId)
+          if (question === undefined) {
+            throw new Error(`Updated question ${questionId} could not be reloaded`)
+          }
+          return { catalogSync, question: browserQuestion(question), result }
         })
-        const index = await loadAdminQuestionIndex(repositoryRoot)
-        const question = index.questions.find((candidate) => candidate.id === questionId)
 
-        if (question === undefined) {
-          throw new Error(`Updated question ${questionId} could not be reloaded`)
+        sendJson(response, 200, payload)
+        return
+      }
+
+      const answerMatch = requestUrl.pathname.match(
+        /^\/api\/questions\/(q-[0-9a-hj-km-np-tv-z]{12})\/answer$/,
+      )
+
+      if (request.method === 'POST' && answerMatch !== null) {
+        const questionId = answerMatch[1] ?? ''
+        const body = await readJsonBody(request)
+        if (body.confirmation !== questionId) {
+          throw new HttpError(400, `confirmation must equal ${questionId}`)
         }
+        const payload = await withQuestionLock(questionId, async () => {
+          const result = await updateQuestionAnswer({
+            blueTeamId: requiredString(body, 'blueTeamId'),
+            catalogEditionId: requiredString(body, 'catalogEditionId'),
+            expectedDirectoryName: requiredString(body, 'expectedDirectoryName'),
+            expectedManifestSha256: requiredString(body, 'expectedManifestSha256'),
+            gameNumber: body.gameNumber as number,
+            questionId,
+            redTeamId: requiredString(body, 'redTeamId'),
+            repositoryRoot: serverRepositoryRoot,
+            stage: requiredString(body, 'stage'),
+          })
+          const catalogSync = await catalogSyncResult()
+          const index = await loadAdminQuestionIndex(serverRepositoryRoot)
+          const question = index.questions.find((candidate) => candidate.id === questionId)
+          if (question === undefined) {
+            throw new Error(`Updated question ${questionId} could not be reloaded`)
+          }
+          return { catalogSync, question: browserQuestion(question), result }
+        })
+        sendJson(response, 200, payload)
+        return
+      }
 
-        sendJson(response, 200, { question: browserQuestion(question), result })
+      const redactionsMatch = requestUrl.pathname.match(
+        /^\/api\/questions\/(q-[0-9a-hj-km-np-tv-z]{12})\/redactions$/,
+      )
+
+      if (request.method === 'POST' && redactionsMatch !== null) {
+        const questionId = redactionsMatch[1] ?? ''
+        const body = await readJsonBody(request)
+        if (body.confirmation !== questionId) {
+          throw new HttpError(400, `confirmation must equal ${questionId}`)
+        }
+        if (body.expectedRedactionManifestSha256 !== null && typeof body.expectedRedactionManifestSha256 !== 'string') {
+          throw new HttpError(400, 'expectedRedactionManifestSha256 must be a SHA-256 digest or null')
+        }
+        if (!Array.isArray(body.rectangles)) {
+          throw new HttpError(400, 'rectangles must be an array')
+        }
+        const payload = await withQuestionLock(questionId, async () => {
+          const result = await saveQuestionRedactions({
+            expectedOriginalSha256: requiredString(body, 'expectedOriginalSha256'),
+            expectedRedactionManifestSha256: body.expectedRedactionManifestSha256 as string | null,
+            questionId,
+            rectangles: body.rectangles as unknown[],
+            renderer: options.redactionRenderer,
+            repositoryRoot: serverRepositoryRoot,
+          })
+          const catalogSync = await catalogSyncResult()
+          const index = await loadAdminQuestionIndex(serverRepositoryRoot)
+          const question = index.questions.find((candidate) => candidate.id === questionId)
+          if (question === undefined) {
+            throw new Error(`Updated question ${questionId} could not be reloaded`)
+          }
+          return { catalogSync, question: browserQuestion(question), result }
+        })
+        sendJson(response, 200, payload)
         return
       }
 
@@ -612,6 +741,11 @@ export function createQuestionAdminServer(options: ServerOptions): {
 
       if (error instanceof QuestionAdminConflictError) {
         sendJson(response, 409, { error: error.message })
+        return
+      }
+
+      if (error instanceof QuestionAdminValidationError) {
+        sendJson(response, 400, { error: error.message })
         return
       }
 

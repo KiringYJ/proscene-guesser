@@ -20,7 +20,15 @@ sources/questions/<question-directory>/
 
 Run `npm run questions:admin`, choose the existing question, provide a stable YouTube video URL and rough timestamp, and complete the coarse and exact-frame selections. The final replacement updates `original.png`, stores the verified capture sidecar as `capture.json`, and updates only `question.json`'s canonical source URL. A dimension change requires an additional explicit checkbox.
 
-Source replacement never updates `redaction.json`'s SHA-256 or regenerates `redacted.webp` automatically. The resulting source mismatch is intentional: compare the new original with the existing derivative, adjust or confirm the rectangles, set the appropriate review status, rerun `scripts/apply-image-redactions.ps1`, and then run `npm run questions:sync`.
+Source replacement never updates `redaction.json`'s SHA-256 or regenerates `redacted.webp` automatically. The resulting source mismatch is intentional: compare the new original with the existing derivative, adjust or confirm the rectangles in the panel's redaction editor, then use **Save & regenerate**.
+
+## Local rectangle editor
+
+The authenticated `npm run questions:admin` panel overlays the manifest rectangles on the clean original in source-image coordinates. Use **Draw rectangle** to drag out a new box; select an existing box to move it or resize it from its handles. The inspector supports exact integer coordinates, stable ID and purpose edits, duplication, and removal. Undo, redo, reset, one-pixel arrow-key nudging, and ten-pixel Shift+Arrow nudging are available while the editor is focused.
+
+**Save & regenerate** is an explicit manual approval action. Before changing repository files, the server verifies that the original and redaction-manifest SHA-256 values still match the version loaded in the browser, validates every rectangle ID and bound, and renders through `scripts/apply-image-redactions.ps1`. It then replaces `redaction.json` and the lossless `redacted.webp` together and refreshes the generated question catalog.
+
+Geometry groups and exceptions remain when their referenced rectangles and rules are still valid. Deleting referenced rectangles removes those references; groups or exceptions with fewer than two remaining rectangles, and geometry groups whose constraint was broken by a manual move or resize, are removed and reported in the save result rather than retained as false audit metadata.
 
 ## Review states
 

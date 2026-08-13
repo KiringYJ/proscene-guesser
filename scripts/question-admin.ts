@@ -1,3 +1,4 @@
+import { spawn } from 'node:child_process'
 import { createHash, randomUUID } from 'node:crypto'
 import { constants, createReadStream } from 'node:fs'
 import {
@@ -12,7 +13,7 @@ import {
   unlink,
   writeFile,
 } from 'node:fs/promises'
-import { basename, isAbsolute, relative, resolve, sep } from 'node:path'
+import { basename, dirname, isAbsolute, relative, resolve, sep } from 'node:path'
 
 import type { InternationalCatalog, InternationalEdition } from '../src/data/catalog/types.ts'
 import { validateInternationalCatalog } from '../src/data/catalog/validation.ts'
@@ -43,6 +44,32 @@ interface RedactionSummary {
   rectangleCount: number
   reviewStatus: string
   sourceSha256: string | null
+}
+
+export interface RedactionRectangle {
+  height: number
+  id: string
+  purpose: string
+  width: number
+  x: number
+  y: number
+}
+
+export interface RedactionManifest extends UnknownRecord {
+  coordinateSpace: { height: number; width: number }
+  rectangles: readonly RedactionRectangle[]
+  reviewStatus: string
+  schemaVersion: 1
+  source: { file: string; sha256: string }
+}
+
+export interface AdminCatalogEdition {
+  id: string
+  name: string
+  stages: readonly string[]
+  teams: readonly { id: string; name: string }[]
+  tournament: string
+  year: number
 }
 
 interface CaptureStageRecord {
@@ -81,10 +108,13 @@ export interface AdminQuestion {
   gameNumber: number
   height: number
   id: string
+  manifestSha256: string
   originalSha256: string
   pool: string
   rectangleCount: number
   redactedSha256: string | null
+  redactionManifest: RedactionManifest | null
+  redactionManifestSha256: string | null
   redactionMatchesOriginal: boolean
   redactionSourceSha256: string | null
   reviewStatus: string
@@ -97,9 +127,58 @@ export interface AdminQuestion {
 }
 
 export interface AdminQuestionIndex {
+  editions: readonly AdminCatalogEdition[]
   issues: readonly string[]
   questions: readonly AdminQuestion[]
 }
+
+export interface UpdateQuestionAnswerOptions {
+  blueTeamId: string
+  catalogEditionId: string
+  expectedDirectoryName: string
+  expectedManifestSha256: string
+  gameNumber: number
+  questionId: string
+  redTeamId: string
+  repositoryRoot: string
+  stage: string
+}
+
+export interface UpdateQuestionAnswerResult {
+  directoryChanged: boolean
+  directoryName: string
+  manifestSha256: string
+  previousDirectoryName: string
+  previousManifestSha256: string
+  questionId: string
+}
+
+export interface SaveQuestionRedactionsOptions {
+  expectedOriginalSha256: string
+  expectedRedactionManifestSha256: string | null
+  questionId: string
+  rectangles: readonly unknown[]
+  renderer?: QuestionRedactionRenderer
+  repositoryRoot: string
+}
+
+export interface SaveQuestionRedactionsResult {
+  droppedGeometryExceptionIds: readonly string[]
+  droppedGeometryGroupIds: readonly string[]
+  droppedGeometryIds: readonly string[]
+  originalSha256: string
+  questionId: string
+  rectangleCount: number
+  redactedSha256: string
+  redactionManifestSha256: string
+  reviewStatus: 'approved'
+}
+
+export type QuestionRedactionRenderer = (options: {
+  inputPath: string
+  manifestPath: string
+  outputPath: string
+}) => Promise<void>
 
 export interface CaptureCandidateSummary extends FrameCandidate {
   videoTimestamp: string
@@ -141,6 +220,7 @@ export interface ReplaceQuestionOriginalResult {
 }
 
 export class QuestionAdminConflictError extends Error {}
+export class QuestionAdminValidationError extends Error {}
 
 function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -283,6 +363,107 @@ function readRedactionSummary(value: unknown): RedactionSummary {
   }
 }
 
+function validateRedactionRectangles(
+  value: unknown,
+  dimensions: { height: number; width: number },
+): readonly RedactionRectangle[] {
+  if (!Array.isArray(value) || value.length === 0) {
+    throw new QuestionAdminValidationError('rectangles must contain at least one rectangle')
+  }
+
+  const ids = new Set<string>()
+
+  return value.map((candidate, index) => {
+    if (!isRecord(candidate)) {
+      throw new QuestionAdminValidationError(`rectangles[${index}] must be an object`)
+    }
+
+    const id = typeof candidate.id === 'string' ? candidate.id.trim() : ''
+    const purpose = typeof candidate.purpose === 'string' ? candidate.purpose.trim() : ''
+
+    if (id.length === 0 || purpose.length === 0) {
+      throw new QuestionAdminValidationError(
+        `rectangles[${index}] must have non-empty id and purpose fields`,
+      )
+    }
+
+    if (ids.has(id)) {
+      throw new QuestionAdminValidationError(`Rectangle IDs must be unique: ${id}`)
+    }
+    ids.add(id)
+
+    for (const field of ['x', 'y', 'width', 'height'] as const) {
+      if (typeof candidate[field] !== 'number' || !Number.isInteger(candidate[field])) {
+        throw new QuestionAdminValidationError(`Rectangle ${id}.${field} must be an integer`)
+      }
+    }
+
+    const rectangle: RedactionRectangle = {
+      height: candidate.height as number,
+      id,
+      purpose,
+      width: candidate.width as number,
+      x: candidate.x as number,
+      y: candidate.y as number,
+    }
+
+    if (rectangle.x < 0 || rectangle.y < 0 || rectangle.width < 1 || rectangle.height < 1) {
+      throw new QuestionAdminValidationError(`Rectangle ${id} has invalid geometry`)
+    }
+
+    if (
+      rectangle.x + rectangle.width > dimensions.width ||
+      rectangle.y + rectangle.height > dimensions.height
+    ) {
+      throw new QuestionAdminValidationError(
+        `Rectangle ${id} exceeds the ${dimensions.width} x ${dimensions.height} source bounds`,
+      )
+    }
+
+    return rectangle
+  })
+}
+
+function validateRedactionManifest(value: unknown): RedactionManifest {
+  if (!isRecord(value) || value.schemaVersion !== 1) {
+    throw new Error('redaction.json must be a schemaVersion 1 object')
+  }
+
+  if (!isRecord(value.coordinateSpace)) {
+    throw new Error('redaction.json must define coordinateSpace')
+  }
+
+  const width = finitePositiveInteger(value.coordinateSpace.width)
+  const height = finitePositiveInteger(value.coordinateSpace.height)
+
+  if (width === null || height === null) {
+    throw new Error('redaction.json coordinateSpace must use positive integer dimensions')
+  }
+
+  if (!isRecord(value.source) || value.source.file !== 'original.png') {
+    throw new Error('redaction.json source.file must be original.png')
+  }
+
+  if (typeof value.source.sha256 !== 'string' || !SHA256_PATTERN.test(value.source.sha256)) {
+    throw new Error('redaction.json source.sha256 must be a SHA-256 digest')
+  }
+
+  if (!['proposed', 'auto-applied', 'approved'].includes(String(value.reviewStatus))) {
+    throw new Error('redaction.json reviewStatus is invalid')
+  }
+
+  const rectangles = validateRedactionRectangles(value.rectangles, { height, width })
+
+  return {
+    ...value,
+    coordinateSpace: { height, width },
+    rectangles,
+    reviewStatus: String(value.reviewStatus),
+    schemaVersion: 1,
+    source: { file: 'original.png', sha256: value.source.sha256.toLowerCase() },
+  }
+}
+
 async function loadInternationalCatalog(repositoryRoot: string): Promise<InternationalCatalog> {
   const path = resolve(repositoryRoot, 'src/data/catalog/international-catalog.json')
   await assertRegularFile(path)
@@ -384,6 +565,7 @@ async function loadAdminQuestion(
   await assertExistingPathWithinRepository(repositoryRoot, originalPath)
   const hasRedacted = await fileExists(redactedPath)
   const manifestValue = await readJson(manifestPath)
+  const manifestSha256 = await sha256File(manifestPath)
   const manifestIssues = validateQuestionManifest(manifestValue, { catalog })
 
   if (manifestIssues.length > 0) {
@@ -406,8 +588,12 @@ async function loadAdminQuestion(
     await assertExistingPathWithinRepository(repositoryRoot, redactionPath)
   }
 
-  const redaction = hasRedaction
-    ? readRedactionSummary(await readJson(redactionPath))
+  const redactionManifest = hasRedaction
+    ? validateRedactionManifest(await readJson(redactionPath))
+    : null
+  const redactionManifestSha256 = hasRedaction ? await sha256File(redactionPath) : null
+  const redaction = redactionManifest !== null
+    ? readRedactionSummary(redactionManifest)
     : {
         rectangleCount: 0,
         reviewStatus: 'missing',
@@ -446,10 +632,13 @@ async function loadAdminQuestion(
     gameNumber: answer.gameNumber,
     height: originalDimensions.height,
     id: parsedDirectory.id,
+    manifestSha256,
     originalSha256,
     pool: manifest.pool,
     rectangleCount: redaction.rectangleCount,
     redactedSha256,
+    redactionManifest,
+    redactionManifestSha256,
     redactionMatchesOriginal: redaction.sourceSha256 === originalSha256,
     redactionSourceSha256: redaction.sourceSha256,
     reviewStatus: redaction.reviewStatus,
@@ -493,7 +682,19 @@ export async function loadAdminQuestionIndex(repositoryRoot: string): Promise<Ad
       left.gameNumber - right.gameNumber,
   )
 
-  return { issues, questions }
+  const editions = catalog.editions.map((edition) => ({
+    id: edition.id,
+    name: edition.name,
+    stages: edition.stages,
+    teams: edition.participants.map((participant) => ({
+      id: participant.teamId,
+      name: participant.nameAtEvent,
+    })),
+    tournament: catalogTournamentName(catalog, edition),
+    year: edition.year,
+  }))
+
+  return { editions, issues, questions }
 }
 
 export async function resolveQuestionDirectory(
@@ -994,6 +1195,449 @@ async function installFileBundle(entries: readonly InstallEntry[]): Promise<void
         await unlink(entry.backupPath)
       }
     }
+  }
+}
+
+function requireSha256(value: string, field: string): string {
+  if (!SHA256_PATTERN.test(value)) {
+    throw new QuestionAdminValidationError(`${field} must be a SHA-256 digest`)
+  }
+
+  return value.toLowerCase()
+}
+
+async function rewriteManifestAndRenameDirectory(options: {
+  currentDirectory: string
+  manifestText: string
+  targetDirectory: string
+}): Promise<void> {
+  const token = randomUUID()
+  const temporaryName = `.question-admin-${token}.json.tmp`
+  const backupName = `.question-admin-${token}.json.backup`
+  const initialTemporaryPath = resolve(options.currentDirectory, temporaryName)
+  let activeDirectory = options.currentDirectory
+  let directoryRenamed = false
+  let manifestBackedUp = false
+  let manifestInstalled = false
+
+  await writeFile(initialTemporaryPath, options.manifestText, { encoding: 'utf8', flag: 'wx' })
+
+  try {
+    if (options.targetDirectory !== options.currentDirectory) {
+      await rename(options.currentDirectory, options.targetDirectory)
+      activeDirectory = options.targetDirectory
+      directoryRenamed = true
+    }
+
+    const manifestPath = resolve(activeDirectory, 'question.json')
+    const temporaryPath = resolve(activeDirectory, temporaryName)
+    const backupPath = resolve(activeDirectory, backupName)
+    await rename(manifestPath, backupPath)
+    manifestBackedUp = true
+    await rename(temporaryPath, manifestPath)
+    manifestInstalled = true
+    await unlink(backupPath)
+    manifestBackedUp = false
+  } catch (error) {
+    const rollbackErrors: unknown[] = []
+    const manifestPath = resolve(activeDirectory, 'question.json')
+    const backupPath = resolve(activeDirectory, backupName)
+
+    try {
+      if (manifestInstalled && (await fileExists(manifestPath))) {
+        await unlink(manifestPath)
+      }
+      if (manifestBackedUp && (await fileExists(backupPath))) {
+        await rename(backupPath, manifestPath)
+      }
+    } catch (rollbackError) {
+      rollbackErrors.push(rollbackError)
+    }
+
+    try {
+      if (directoryRenamed) {
+        await rename(options.targetDirectory, options.currentDirectory)
+      }
+    } catch (rollbackError) {
+      rollbackErrors.push(rollbackError)
+    }
+
+    if (rollbackErrors.length > 0) {
+      throw new AggregateError(
+        [error, ...rollbackErrors],
+        'Question answer update failed and rollback was incomplete',
+      )
+    }
+    throw error
+  } finally {
+    for (const directory of [options.currentDirectory, options.targetDirectory]) {
+      const temporaryPath = resolve(directory, temporaryName)
+      if (await fileExists(temporaryPath)) {
+        await unlink(temporaryPath)
+      }
+    }
+  }
+}
+
+export async function updateQuestionAnswer(
+  options: UpdateQuestionAnswerOptions,
+): Promise<UpdateQuestionAnswerResult> {
+  const expectedManifestSha256 = requireSha256(
+    options.expectedManifestSha256,
+    'expectedManifestSha256',
+  )
+
+  if (basename(options.expectedDirectoryName) !== options.expectedDirectoryName) {
+    throw new QuestionAdminValidationError('expectedDirectoryName must be a directory name')
+  }
+
+  if (!Number.isInteger(options.gameNumber) || options.gameNumber < 1) {
+    throw new QuestionAdminValidationError('gameNumber must be a positive integer')
+  }
+
+  const questionRoot = resolve(options.repositoryRoot, 'sources/questions')
+  const parsedExpectedDirectory = parseQuestionDirectoryName(options.expectedDirectoryName)
+
+  if (parsedExpectedDirectory?.id !== options.questionId) {
+    throw new QuestionAdminValidationError(
+      'expectedDirectoryName must be the canonical directory for questionId',
+    )
+  }
+
+  const currentDirectory = resolve(questionRoot, options.expectedDirectoryName)
+  if (!pathIsWithin(questionRoot, currentDirectory) || !(await fileExists(currentDirectory))) {
+    throw new QuestionAdminConflictError(
+      `Question ${options.questionId} moved after it was loaded; refresh before saving`,
+    )
+  }
+  await assertDirectory(currentDirectory)
+  await assertExistingPathWithinRepository(options.repositoryRoot, currentDirectory)
+  const previousDirectoryName = basename(currentDirectory)
+
+  if (previousDirectoryName !== options.expectedDirectoryName) {
+    throw new QuestionAdminConflictError(
+      `Question ${options.questionId} moved after it was loaded; refresh before saving`,
+    )
+  }
+
+  const manifestPath = resolve(currentDirectory, 'question.json')
+  const previousManifestSha256 = await sha256File(manifestPath)
+
+  if (previousManifestSha256 !== expectedManifestSha256) {
+    throw new QuestionAdminConflictError(
+      `Question ${options.questionId} changed after it was loaded; refresh before saving`,
+    )
+  }
+
+  const catalog = await loadInternationalCatalog(options.repositoryRoot)
+  const edition = catalog.editions.find((candidate) => candidate.id === options.catalogEditionId)
+
+  if (edition === undefined) {
+    throw new QuestionAdminValidationError(`Unknown international edition: ${options.catalogEditionId}`)
+  }
+
+  const current = await readJson(manifestPath)
+  const currentIssues = validateQuestionManifest(current, { catalog })
+
+  if (!isRecord(current) || currentIssues.length > 0) {
+    throw new Error(`Cannot update invalid question.json: ${currentIssues.join('; ')}`)
+  }
+
+  const updated: UnknownRecord = {
+    ...current,
+    answer: {
+      blueTeamId: options.blueTeamId,
+      gameNumber: options.gameNumber,
+      redTeamId: options.redTeamId,
+      stage: options.stage,
+    },
+    catalogEditionId: options.catalogEditionId,
+  }
+
+  if (isRecord(current.choices)) {
+    const years = Array.isArray(current.choices.years)
+      ? current.choices.years.filter((value): value is number => Number.isInteger(value))
+      : []
+    const games = Array.isArray(current.choices.games)
+      ? current.choices.games.filter(
+          (value): value is number => Number.isInteger(value) && (value as number) > 0,
+        )
+      : []
+    updated.choices = {
+      games: [...new Set([...games, options.gameNumber])],
+      tournaments: { source: 'international-series' },
+      years: [...new Set([...years, edition.year])],
+    }
+  }
+
+  const updatedIssues = validateQuestionManifest(updated, { catalog })
+
+  if (updatedIssues.length > 0) {
+    throw new QuestionAdminValidationError(
+      `Updated question.json would be invalid: ${updatedIssues.join('; ')}`,
+    )
+  }
+
+  const targetDirectoryName = createQuestionDirectoryName(
+    options.questionId,
+    updated as unknown as QuestionManifest,
+  )
+  const targetDirectory = resolve(questionRoot, targetDirectoryName)
+
+  if (!pathIsWithin(questionRoot, targetDirectory)) {
+    throw new Error('Updated question directory escapes sources/questions')
+  }
+
+  if (targetDirectory !== currentDirectory && (await fileExists(targetDirectory))) {
+    throw new QuestionAdminConflictError(`Question directory already exists: ${targetDirectoryName}`)
+  }
+
+  await rewriteManifestAndRenameDirectory({
+    currentDirectory,
+    manifestText: `${JSON.stringify(updated, null, 2)}\n`,
+    targetDirectory,
+  })
+
+  const installedManifestSha256 = await sha256File(resolve(targetDirectory, 'question.json'))
+
+  return {
+    directoryChanged: targetDirectoryName !== previousDirectoryName,
+    directoryName: targetDirectoryName,
+    manifestSha256: installedManifestSha256,
+    previousDirectoryName,
+    previousManifestSha256,
+    questionId: options.questionId,
+  }
+}
+
+function reconcileRedactionGeometry(
+  existing: UnknownRecord,
+  rectangles: readonly RedactionRectangle[],
+  sourceWidth: number,
+): {
+  droppedGeometryExceptionIds: string[]
+  droppedGeometryGroupIds: string[]
+  geometryExceptions: unknown[] | undefined
+  geometryGroups: unknown[] | undefined
+} {
+  const byId = new Map(rectangles.map((rectangle) => [rectangle.id, rectangle]))
+  const droppedGeometryGroupIds: string[] = []
+  const droppedGeometryExceptionIds: string[] = []
+  const groups = Array.isArray(existing.geometryGroups)
+    ? existing.geometryGroups.flatMap((candidate) => {
+        if (!isRecord(candidate) || typeof candidate.id !== 'string') {
+          return []
+        }
+        const rectangleIds = Array.isArray(candidate.rectangleIds)
+          ? candidate.rectangleIds.filter(
+              (id): id is string => typeof id === 'string' && byId.has(id),
+            )
+          : []
+        let valid = rectangleIds.length >= 2
+
+        if (valid && candidate.rule === 'uniform-width') {
+          valid =
+            finitePositiveInteger(candidate.width) !== null &&
+            rectangleIds.every((id) => byId.get(id)?.width === candidate.width)
+        } else if (valid && candidate.rule === 'horizontal-mirror') {
+          const sorted = rectangleIds
+            .map((id) => byId.get(id))
+            .filter((rectangle): rectangle is RedactionRectangle => rectangle !== undefined)
+            .sort((left, right) => left.x - right.x)
+          const [left, right] = sorted
+          valid =
+            sorted.length === 2 &&
+            left !== undefined &&
+            right !== undefined &&
+            left.y === right.y &&
+            left.width === right.width &&
+            left.height === right.height &&
+            right.x === sourceWidth - (left.x + left.width)
+        } else if (valid) {
+          valid = false
+        }
+
+        if (!valid) {
+          droppedGeometryGroupIds.push(candidate.id)
+          return []
+        }
+        return [{ ...candidate, rectangleIds }]
+      })
+    : undefined
+  const exceptions = Array.isArray(existing.geometryExceptions)
+    ? existing.geometryExceptions.flatMap((candidate) => {
+        if (!isRecord(candidate) || typeof candidate.id !== 'string') {
+          return []
+        }
+        const rectangleIds = Array.isArray(candidate.rectangleIds)
+          ? candidate.rectangleIds.filter(
+              (id): id is string => typeof id === 'string' && byId.has(id),
+            )
+          : []
+        if (rectangleIds.length < 2) {
+          droppedGeometryExceptionIds.push(candidate.id)
+          return []
+        }
+        return [{ ...candidate, rectangleIds }]
+      })
+    : undefined
+
+  return {
+    droppedGeometryExceptionIds,
+    droppedGeometryGroupIds,
+    geometryExceptions: exceptions,
+    geometryGroups: groups,
+  }
+}
+
+const defaultQuestionRedactionRenderer: QuestionRedactionRenderer = async (options) => {
+  const scriptPath = resolve(
+    dirname(options.inputPath),
+    '..',
+    '..',
+    '..',
+    'scripts',
+    'apply-image-redactions.ps1',
+  )
+  await new Promise<void>((resolvePromise, reject) => {
+    const child = spawn(
+      'powershell.exe',
+      [
+        '-NoProfile',
+        '-ExecutionPolicy',
+        'Bypass',
+        '-File',
+        scriptPath,
+        '-InputPath',
+        options.inputPath,
+        '-ManifestPath',
+        options.manifestPath,
+        '-OutputPath',
+        options.outputPath,
+        '-Force',
+      ],
+      { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true },
+    )
+    const stdout: Buffer[] = []
+    const stderr: Buffer[] = []
+    child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk))
+    child.stderr.on('data', (chunk: Buffer) => stderr.push(chunk))
+    child.on('error', reject)
+    child.on('close', (code) => {
+      if (code === 0) resolvePromise()
+      else {
+        const output = Buffer.concat([...stdout, ...stderr]).toString('utf8').trim()
+        reject(
+          new Error(output || `Redaction renderer exited with code ${code ?? 'unknown'}`),
+        )
+      }
+    })
+  })
+}
+
+export async function saveQuestionRedactions(
+  options: SaveQuestionRedactionsOptions,
+): Promise<SaveQuestionRedactionsResult> {
+  const expectedOriginalSha256 = requireSha256(
+    options.expectedOriginalSha256,
+    'expectedOriginalSha256',
+  )
+  const expectedRedactionManifestSha256 =
+    options.expectedRedactionManifestSha256 === null
+      ? null
+      : requireSha256(
+          options.expectedRedactionManifestSha256,
+          'expectedRedactionManifestSha256',
+        )
+  const directory = await resolveQuestionDirectory(options.repositoryRoot, options.questionId)
+  const originalPath = resolve(directory, 'original.png')
+  const manifestPath = resolve(directory, 'redaction.json')
+  const redactedPath = resolve(directory, 'redacted.webp')
+  const originalSha256 = await sha256File(originalPath)
+
+  if (originalSha256 !== expectedOriginalSha256) {
+    throw new QuestionAdminConflictError(
+      `Question ${options.questionId} original.png changed after it was loaded`,
+    )
+  }
+
+  const hasManifest = await fileExists(manifestPath)
+  const currentManifestSha256 = hasManifest ? await sha256File(manifestPath) : null
+
+  if (currentManifestSha256 !== expectedRedactionManifestSha256) {
+    throw new QuestionAdminConflictError(
+      `Question ${options.questionId} redaction.json changed after it was loaded`,
+    )
+  }
+
+  const dimensions = await readPngDimensions(originalPath)
+  const rectangles = validateRedactionRectangles(options.rectangles, dimensions)
+  const existing = hasManifest ? await readJson(manifestPath) : {}
+
+  if (!isRecord(existing)) {
+    throw new Error('Cannot update invalid redaction.json')
+  }
+
+  if (hasManifest) {
+    validateRedactionManifest(existing)
+  }
+
+  const geometry = reconcileRedactionGeometry(existing, rectangles, dimensions.width)
+  const updated: UnknownRecord = {
+    ...existing,
+    coordinateSpace: dimensions,
+    rectangles,
+    reviewStatus: 'approved',
+    schemaVersion: 1,
+    source: { file: 'original.png', sha256: originalSha256 },
+  }
+
+  if (geometry.geometryGroups !== undefined) updated.geometryGroups = geometry.geometryGroups
+  if (geometry.geometryExceptions !== undefined) {
+    updated.geometryExceptions = geometry.geometryExceptions
+  }
+  validateRedactionManifest(updated)
+
+  const token = randomUUID()
+  const stagedManifestPath = resolve(directory, `.redaction-${token}.json`)
+  const stagedWebpPath = resolve(directory, `.redacted-${token}.webp`)
+  const manifestText = `${JSON.stringify(updated, null, 2)}\n`
+
+  try {
+    await writeFile(stagedManifestPath, manifestText, { encoding: 'utf8', flag: 'wx' })
+    await (options.renderer ?? defaultQuestionRedactionRenderer)({
+      inputPath: originalPath,
+      manifestPath: stagedManifestPath,
+      outputPath: stagedWebpPath,
+    })
+    await assertRegularFile(stagedWebpPath)
+    await installFileBundle([
+      { text: manifestText, targetPath: manifestPath },
+      { sourcePath: stagedWebpPath, targetPath: redactedPath },
+    ])
+  } finally {
+    for (const path of [stagedManifestPath, stagedWebpPath]) {
+      if (await fileExists(path)) await unlink(path)
+    }
+  }
+
+  const redactionManifestSha256 = await sha256File(manifestPath)
+  const redactedSha256 = await sha256File(redactedPath)
+  const droppedGeometryIds = [
+    ...geometry.droppedGeometryGroupIds,
+    ...geometry.droppedGeometryExceptionIds,
+  ]
+
+  return {
+    droppedGeometryExceptionIds: geometry.droppedGeometryExceptionIds,
+    droppedGeometryGroupIds: geometry.droppedGeometryGroupIds,
+    droppedGeometryIds,
+    originalSha256,
+    questionId: options.questionId,
+    rectangleCount: rectangles.length,
+    redactedSha256,
+    redactionManifestSha256,
+    reviewStatus: 'approved',
   }
 }
 

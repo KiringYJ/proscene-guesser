@@ -514,6 +514,306 @@
         font-size: 0.77rem;
       }
 
+      .answer-editor,
+      .redaction-editor {
+        margin-top: 16px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .editor-header {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 15px 17px;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(90deg, rgba(81, 215, 212, 0.08), transparent 48%);
+      }
+
+      .editor-header h3 {
+        margin: 0;
+        letter-spacing: -0.015em;
+      }
+
+      .editor-header p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+
+      .answer-form {
+        display: grid;
+        grid-template-columns: minmax(180px, 1.2fr) minmax(150px, 1fr) minmax(170px, 1fr) minmax(170px, 1fr) 100px;
+        gap: 11px;
+        align-items: end;
+        padding: 16px 17px;
+      }
+
+      .answer-actions {
+        display: flex;
+        grid-column: 1 / -1;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 2px;
+      }
+
+      .directory-preview {
+        min-width: 0;
+        color: var(--quiet);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.68rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+
+      .editor-status {
+        margin: 0;
+        padding: 10px 17px;
+        border-top: 1px solid var(--line);
+        background: rgba(81, 215, 212, 0.045);
+        color: var(--muted);
+        font-size: 0.75rem;
+        line-height: 1.45;
+      }
+
+      .editor-status[data-tone="success"] {
+        color: var(--pass);
+      }
+
+      .editor-status[data-tone="error"] {
+        background: var(--fix-soft);
+        color: var(--fix);
+      }
+
+      .editor-status[data-tone="busy"] {
+        color: var(--accent);
+      }
+
+      .redaction-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      .redaction-toolbar .spacer {
+        flex: 1;
+      }
+
+      .dirty-badge[data-dirty="true"] {
+        border-color: rgba(242, 191, 98, 0.5);
+        background: rgba(242, 191, 98, 0.1);
+        color: var(--warning);
+      }
+
+      .redaction-workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 310px;
+        min-height: 520px;
+      }
+
+      .redaction-stage {
+        display: grid;
+        min-width: 0;
+        min-height: 0;
+        place-items: center;
+        overflow: auto;
+        padding: 18px;
+        background-color: #080b10;
+        background-image:
+          linear-gradient(45deg, #0e141d 25%, transparent 25%),
+          linear-gradient(-45deg, #0e141d 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #0e141d 75%),
+          linear-gradient(-45deg, transparent 75%, #0e141d 75%);
+        background-position:
+          0 0,
+          0 10px,
+          10px -10px,
+          -10px 0;
+        background-size: 20px 20px;
+      }
+
+      .redaction-canvas {
+        position: relative;
+        width: min(100%, 1280px);
+        overflow: hidden;
+        border: 1px solid var(--line-strong);
+        background: #000;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+        touch-action: none;
+        user-select: none;
+      }
+
+      .redaction-canvas img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .redaction-layer {
+        position: absolute;
+        inset: 0;
+        cursor: crosshair;
+      }
+
+      .redaction-layer[data-tool="select"] {
+        cursor: default;
+      }
+
+      .redaction-box {
+        position: absolute;
+        min-width: 1px;
+        min-height: 1px;
+        border: 2px solid rgba(81, 215, 212, 0.94);
+        background: rgba(0, 0, 0, 0.68);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
+        cursor: move;
+      }
+
+      .redaction-box.selected {
+        z-index: 2;
+        border-color: var(--warning);
+        background: rgba(0, 0, 0, 0.78);
+        box-shadow: 0 0 0 1px rgba(242, 191, 98, 0.7), 0 0 18px rgba(242, 191, 98, 0.28);
+      }
+
+      .redaction-box-label {
+        position: absolute;
+        bottom: 100%;
+        left: -2px;
+        max-width: 220px;
+        overflow: hidden;
+        padding: 3px 6px;
+        border-radius: 4px 4px 0 0;
+        background: rgba(6, 10, 15, 0.94);
+        color: var(--accent);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+
+      .redaction-box.selected .redaction-box-label {
+        color: var(--warning);
+      }
+
+      .resize-handle {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 2px solid #080b10;
+        border-radius: 3px;
+        background: var(--warning);
+      }
+
+      .resize-handle[data-handle^="n"] { top: -7px; }
+      .resize-handle[data-handle^="s"] { bottom: -7px; }
+      .resize-handle[data-handle$="w"] { left: -7px; }
+      .resize-handle[data-handle$="e"] { right: -7px; }
+      .resize-handle[data-handle="n"],
+      .resize-handle[data-handle="s"] { left: calc(50% - 6px); }
+      .resize-handle[data-handle="w"],
+      .resize-handle[data-handle="e"] { top: calc(50% - 6px); }
+      .resize-handle[data-handle="n"],
+      .resize-handle[data-handle="s"] { cursor: ns-resize; }
+      .resize-handle[data-handle="e"],
+      .resize-handle[data-handle="w"] { cursor: ew-resize; }
+      .resize-handle[data-handle="ne"],
+      .resize-handle[data-handle="sw"] { cursor: nesw-resize; }
+      .resize-handle[data-handle="nw"],
+      .resize-handle[data-handle="se"] { cursor: nwse-resize; }
+
+      .redaction-inspector {
+        min-width: 0;
+        border-left: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .inspector-section {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .inspector-section h4 {
+        margin: 0 0 10px;
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .rectangle-list {
+        display: grid;
+        max-height: 230px;
+        gap: 5px;
+        overflow-y: auto;
+      }
+
+      .rectangle-list button {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 9px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--surface-2);
+        color: var(--muted);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.66rem;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .rectangle-list button.active {
+        border-color: rgba(242, 191, 98, 0.6);
+        color: var(--warning);
+      }
+
+      .rectangle-list button span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .inspector-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .inspector-form .wide {
+        grid-column: 1 / -1;
+      }
+
+      .inspector-actions {
+        display: flex;
+        grid-column: 1 / -1;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 3px;
+      }
+
+      .redaction-empty {
+        margin: 0;
+        color: var(--quiet);
+        font-size: 0.75rem;
+        line-height: 1.5;
+      }
+
       .capture-panel {
         margin-top: 16px;
         overflow: hidden;
@@ -1134,6 +1434,23 @@
           grid-template-columns: 1fr 180px;
         }
 
+        .answer-form {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .redaction-workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .redaction-inspector {
+          border-top: 1px solid var(--line);
+          border-left: 0;
+        }
+
+        .rectangle-list {
+          max-height: 190px;
+        }
+
         .capture-form .button {
           grid-column: 1 / -1;
         }
@@ -1211,6 +1528,45 @@
         .capture-form {
           grid-template-columns: 1fr;
         }
+
+        .answer-form {
+          grid-template-columns: 1fr;
+        }
+
+        .answer-actions {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .redaction-toolbar {
+          align-items: stretch;
+        }
+
+        .redaction-toolbar .spacer {
+          display: none;
+        }
+
+        .redaction-toolbar .button {
+          min-height: 42px;
+        }
+
+        .redaction-stage {
+          padding: 8px;
+        }
+
+        .resize-handle {
+          width: 18px;
+          height: 18px;
+        }
+
+        .resize-handle[data-handle^="n"] { top: -10px; }
+        .resize-handle[data-handle^="s"] { bottom: -10px; }
+        .resize-handle[data-handle$="w"] { left: -10px; }
+        .resize-handle[data-handle$="e"] { right: -10px; }
+        .resize-handle[data-handle="n"],
+        .resize-handle[data-handle="s"] { left: calc(50% - 9px); }
+        .resize-handle[data-handle="w"],
+        .resize-handle[data-handle="e"] { top: calc(50% - 9px); }
 
         .candidate-grid,
         .candidate-grid.fine {
@@ -1312,6 +1668,46 @@
             </div>
           </section>
 
+          <section class="answer-editor" aria-labelledby="answerEditorHeading">
+            <header class="editor-header">
+              <div>
+                <h3 id="answerEditorHeading">Edit answer</h3>
+                <p>Change the event, stage, sides, or game number. The opaque question ID stays fixed while the semantic source directory is renamed automatically.</p>
+              </div>
+              <span id="answerEditorBadge" class="badge">Catalog-backed</span>
+            </header>
+            <form id="answerForm" class="answer-form">
+              <label class="field-label" for="answerEdition">
+                Event edition
+                <select id="answerEdition" class="admin-input" required></select>
+              </label>
+              <label class="field-label" for="answerStage">
+                Stage
+                <select id="answerStage" class="admin-input" required></select>
+              </label>
+              <label class="field-label" for="answerBlueTeam">
+                Blue team
+                <select id="answerBlueTeam" class="admin-input" required></select>
+              </label>
+              <label class="field-label" for="answerRedTeam">
+                Red team
+                <select id="answerRedTeam" class="admin-input" required></select>
+              </label>
+              <label class="field-label" for="answerGameNumber">
+                Game
+                <input id="answerGameNumber" class="admin-input" type="number" min="1" step="1" required />
+              </label>
+              <div class="answer-actions">
+                <code id="answerDirectoryPreview" class="directory-preview"></code>
+                <div class="header-actions">
+                  <button id="resetAnswer" class="button subtle" type="button">Reset</button>
+                  <button id="saveAnswer" class="button accent" type="submit">Save answer</button>
+                </div>
+              </div>
+            </form>
+            <p id="answerStatus" class="editor-status" role="status" aria-live="polite">Start this panel with <code>npm run questions:admin</code> to edit canonical answers.</p>
+          </section>
+
           <section class="capture-panel" aria-labelledby="captureHeading">
             <header class="capture-header">
               <div>
@@ -1376,6 +1772,62 @@
                 <button id="replaceOriginal" class="button danger" type="button">Replace original.png</button>
               </div>
             </section>
+          </section>
+
+          <section class="redaction-editor" aria-labelledby="redactionEditorHeading">
+            <header class="editor-header">
+              <div>
+                <h3 id="redactionEditorHeading">Edit redactions</h3>
+                <p>Draw, select, move, resize, duplicate, or remove opaque rectangles over the original frame. Saving regenerates the flattened lossless WebP.</p>
+              </div>
+              <span id="redactionDirtyBadge" class="badge dirty-badge" data-dirty="false">Saved</span>
+            </header>
+            <div class="redaction-toolbar" role="toolbar" aria-label="Redaction tools">
+              <button id="selectRedactionTool" class="button active" type="button" aria-pressed="true">Select / move</button>
+              <button id="drawRedactionTool" class="button" type="button" aria-pressed="false">Draw rectangle</button>
+              <button id="undoRedaction" class="button subtle" type="button" disabled>Undo</button>
+              <button id="redoRedaction" class="button subtle" type="button" disabled>Redo</button>
+              <button id="resetRedactions" class="button subtle" type="button" disabled>Reset</button>
+              <span class="spacer"></span>
+              <button id="saveRedactions" class="button accent" type="button" disabled>Save &amp; regenerate</button>
+            </div>
+            <div class="redaction-workspace">
+              <div class="redaction-stage">
+                <div id="redactionCanvas" class="redaction-canvas" tabindex="0">
+                  <img id="redactionSourceImage" alt="Original image used for redaction editing" draggable="false" />
+                  <div id="redactionLayer" class="redaction-layer" data-tool="select" aria-label="Editable redaction rectangles"></div>
+                </div>
+              </div>
+              <aside class="redaction-inspector" aria-label="Selected redaction properties">
+                <div class="inspector-section">
+                  <h4>Rectangles</h4>
+                  <div id="rectangleList" class="rectangle-list"></div>
+                </div>
+                <div class="inspector-section">
+                  <h4>Selection</h4>
+                  <p id="redactionEmptySelection" class="redaction-empty">Select a rectangle or choose Draw rectangle and drag over the image.</p>
+                  <form id="rectangleForm" class="inspector-form" hidden>
+                    <label class="field-label wide" for="rectangleId">
+                      ID
+                      <input id="rectangleId" class="admin-input" type="text" autocomplete="off" />
+                    </label>
+                    <label class="field-label wide" for="rectanglePurpose">
+                      Purpose
+                      <input id="rectanglePurpose" class="admin-input" type="text" autocomplete="off" />
+                    </label>
+                    <label class="field-label" for="rectangleX">X<input id="rectangleX" class="admin-input" type="number" min="0" step="1" /></label>
+                    <label class="field-label" for="rectangleY">Y<input id="rectangleY" class="admin-input" type="number" min="0" step="1" /></label>
+                    <label class="field-label" for="rectangleWidth">Width<input id="rectangleWidth" class="admin-input" type="number" min="1" step="1" /></label>
+                    <label class="field-label" for="rectangleHeight">Height<input id="rectangleHeight" class="admin-input" type="number" min="1" step="1" /></label>
+                    <div class="inspector-actions">
+                      <button id="duplicateRectangle" class="button" type="button">Duplicate</button>
+                      <button id="removeRectangle" class="button danger" type="button">Remove</button>
+                    </div>
+                  </form>
+                </div>
+              </aside>
+            </div>
+            <p id="redactionStatus" class="editor-status" role="status" aria-live="polite">Start this panel with <code>npm run questions:admin</code> to edit and regenerate redactions.</p>
           </section>
 
           <section id="viewerShell" class="viewer-shell" data-mode="split" aria-label="Zoomable image comparison">
@@ -2826,6 +3278,17 @@
             "sourceLink",
             "questionManifestLink",
             "redactionManifestLink",
+            "answerEditorBadge",
+            "answerForm",
+            "answerEdition",
+            "answerStage",
+            "answerBlueTeam",
+            "answerRedTeam",
+            "answerGameNumber",
+            "answerDirectoryPreview",
+            "resetAnswer",
+            "saveAnswer",
+            "answerStatus",
             "viewerShell",
             "splitMode",
             "wipeMode",
@@ -2874,6 +3337,28 @@
             "dimensionConsent",
             "dimensionConsentText",
             "replaceOriginal",
+            "redactionDirtyBadge",
+            "selectRedactionTool",
+            "drawRedactionTool",
+            "undoRedaction",
+            "redoRedaction",
+            "resetRedactions",
+            "saveRedactions",
+            "redactionCanvas",
+            "redactionSourceImage",
+            "redactionLayer",
+            "rectangleList",
+            "redactionEmptySelection",
+            "rectangleForm",
+            "rectangleId",
+            "rectanglePurpose",
+            "rectangleX",
+            "rectangleY",
+            "rectangleWidth",
+            "rectangleHeight",
+            "duplicateRectangle",
+            "removeRectangle",
+            "redactionStatus",
             "toast",
           ].map((id) => [id, document.getElementById(id)]),
         )
@@ -2896,6 +3381,17 @@
         let captureQuestionId = null
         let selectedCoarseCandidate = null
         let selectedFineCandidate = null
+        let adminEditions = []
+        let answerBusy = false
+        let redactionBusy = false
+        let redactionDraft = []
+        let savedRedactionSnapshot = "[]"
+        let redactionBaseRequiresSave = false
+        let selectedRectangleId = null
+        let redactionTool = "select"
+        let redactionUndoStack = []
+        let redactionRedoStack = []
+        let redactionPointerOperation = null
 
         async function apiRequest(path, options = {}) {
           const method = options.method ?? "GET"
@@ -2916,6 +3412,649 @@
           }
 
           return payload
+        }
+
+        function setEditorStatus(element, message, tone = "neutral") {
+          element.textContent = message
+          element.dataset.tone = tone
+        }
+
+        function replaceQuestionRecord(question) {
+          questions = questions.map((candidate) =>
+            candidate.id === question.id ? question : candidate,
+          )
+          filteredQuestions = filteredQuestions.map((candidate) =>
+            candidate.id === question.id ? question : candidate,
+          )
+        }
+
+        function slugSegment(value) {
+          const slug = value
+            .normalize("NFKD")
+            .toLocaleLowerCase("en-US")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/['’]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+          return slug || "unknown"
+        }
+
+        function selectedEdition() {
+          return adminEditions.find((edition) => edition.id === elements.answerEdition.value) ?? null
+        }
+
+        function answerEditorEnabled(question = currentQuestion()) {
+          return (
+            adminAvailable &&
+            question !== null &&
+            adminEditions.some((edition) => edition.id === question.editionId)
+          )
+        }
+
+        function replaceSelectOptions(select, options, preferredValue) {
+          select.replaceChildren(
+            ...options.map((option) => new Option(option.label, option.value)),
+          )
+          if (options.some((option) => option.value === preferredValue)) {
+            select.value = preferredValue
+          }
+        }
+
+        function answerDirectoryName(question) {
+          const edition = selectedEdition()
+          if (!edition) return question.directoryName
+          return [
+            slugSegment(edition.id),
+            slugSegment(elements.answerStage.value),
+            slugSegment(elements.answerBlueTeam.value),
+            slugSegment(elements.answerRedTeam.value),
+            `g${elements.answerGameNumber.value || "1"}`,
+            question.id.slice(2),
+          ].join("--")
+        }
+
+        function updateAnswerDirectoryPreview() {
+          const question = currentQuestion()
+          if (!question) return
+          const nextDirectory = answerDirectoryName(question)
+          elements.answerDirectoryPreview.textContent =
+            nextDirectory === question.directoryName
+              ? `Directory unchanged · ${question.directoryName}`
+              : `${question.directoryName} → ${nextDirectory}`
+        }
+
+        function refreshAnswerChoices({ preserve = true } = {}) {
+          const edition = selectedEdition()
+          if (!edition) return
+          const question = currentQuestion()
+          const stage = preserve ? elements.answerStage.value : question?.stage
+          const blueTeam = preserve ? elements.answerBlueTeam.value : question?.blueTeam.id
+          const redTeam = preserve ? elements.answerRedTeam.value : question?.redTeam.id
+          replaceSelectOptions(
+            elements.answerStage,
+            edition.stages.map((value) => ({ label: value, value })),
+            stage,
+          )
+          const teamOptions = edition.teams.map((team) => ({ label: team.name, value: team.id }))
+          replaceSelectOptions(elements.answerBlueTeam, teamOptions, blueTeam)
+          replaceSelectOptions(elements.answerRedTeam, teamOptions, redTeam)
+          if (elements.answerBlueTeam.value === elements.answerRedTeam.value) {
+            const alternative = teamOptions.find(
+              (option) => option.value !== elements.answerBlueTeam.value,
+            )
+            if (alternative) elements.answerRedTeam.value = alternative.value
+          }
+          updateAnswerDirectoryPreview()
+        }
+
+        function resetAnswerEditor(question) {
+          const enabled = answerEditorEnabled(question)
+          if (enabled) {
+            replaceSelectOptions(
+              elements.answerEdition,
+              adminEditions.map((edition) => ({
+                label: `${edition.tournament} ${edition.year} · ${edition.name}`,
+                value: edition.id,
+              })),
+              question.editionId,
+            )
+            refreshAnswerChoices({ preserve: false })
+          } else {
+            replaceSelectOptions(
+              elements.answerEdition,
+              [{
+                label: `${question.tournament} ${question.year} · Static question`,
+                value: question.editionId,
+              }],
+              question.editionId,
+            )
+            replaceSelectOptions(
+              elements.answerStage,
+              [{ label: question.stage, value: question.stage }],
+              question.stage,
+            )
+            replaceSelectOptions(
+              elements.answerBlueTeam,
+              [{ label: question.blueTeam.name, value: question.blueTeam.id }],
+              question.blueTeam.id,
+            )
+            replaceSelectOptions(
+              elements.answerRedTeam,
+              [{ label: question.redTeam.name, value: question.redTeam.id }],
+              question.redTeam.id,
+            )
+          }
+          elements.answerGameNumber.value = String(question.gameNumber)
+          elements.answerEditorBadge.textContent = question.editionId || "Static answer"
+          elements.answerForm.querySelectorAll("input, select, button").forEach((control) => {
+            control.disabled = !enabled || answerBusy
+          })
+          setEditorStatus(
+            elements.answerStatus,
+            enabled
+              ? `Editing ${question.id}. Save validates the catalog and preserves this opaque ID.`
+              : adminAvailable
+                ? "Static-question answer editing is not available in the catalog-backed editor."
+                : "Start this panel with npm run questions:admin to edit canonical answers.",
+          )
+          updateAnswerDirectoryPreview()
+        }
+
+        function setAnswerBusy(busy) {
+          answerBusy = busy
+          elements.answerForm.querySelectorAll("input, select, button").forEach((control) => {
+            control.disabled = busy || !answerEditorEnabled()
+          })
+        }
+
+        function catalogSyncMessage(payload, successMessage) {
+          if (payload.catalogSync?.ok === false) {
+            return `${successMessage} Catalog refresh needs attention: ${payload.catalogSync.log || "run npm run questions:sync"}`
+          }
+          return successMessage
+        }
+
+        function cloneRectangles(rectangles = redactionDraft) {
+          return rectangles.map((rectangle) => ({ ...rectangle }))
+        }
+
+        function rectangleSnapshot(rectangles = redactionDraft) {
+          return JSON.stringify(rectangles)
+        }
+
+        function redactionsAreDirty() {
+          return redactionBaseRequiresSave || rectangleSnapshot() !== savedRedactionSnapshot
+        }
+
+        function selectedRectangle() {
+          return redactionDraft.find((rectangle) => rectangle.id === selectedRectangleId) ?? null
+        }
+
+        function nextRectangleId() {
+          const ids = new Set(redactionDraft.map((rectangle) => rectangle.id))
+          for (let index = 1; ; index += 1) {
+            const id = `manual-redaction-${String(index).padStart(3, "0")}`
+            if (!ids.has(id)) return id
+          }
+        }
+
+        function setRedactionTool(tool) {
+          redactionTool = tool
+          elements.redactionLayer.dataset.tool = tool
+          const select = tool === "select"
+          elements.selectRedactionTool.classList.toggle("active", select)
+          elements.drawRedactionTool.classList.toggle("active", !select)
+          elements.selectRedactionTool.setAttribute("aria-pressed", String(select))
+          elements.drawRedactionTool.setAttribute("aria-pressed", String(!select))
+        }
+
+        function renderRectangleList() {
+          const fragment = document.createDocumentFragment()
+          for (const rectangle of redactionDraft) {
+            const button = document.createElement("button")
+            button.type = "button"
+            button.dataset.rectangleId = rectangle.id
+            button.classList.toggle("active", rectangle.id === selectedRectangleId)
+            const id = document.createElement("span")
+            id.textContent = rectangle.id
+            const dimensions = document.createElement("span")
+            dimensions.textContent = `${rectangle.width}×${rectangle.height}`
+            button.append(id, dimensions)
+            fragment.append(button)
+          }
+          elements.rectangleList.replaceChildren(fragment)
+        }
+
+        function createResizeHandle(name) {
+          const handle = document.createElement("span")
+          handle.className = "resize-handle"
+          handle.dataset.handle = name
+          handle.setAttribute("aria-hidden", "true")
+          return handle
+        }
+
+        function renderRedactionBoxes() {
+          const question = currentQuestion()
+          if (!question) return
+          const fragment = document.createDocumentFragment()
+          for (const rectangle of redactionDraft) {
+            const box = document.createElement("div")
+            box.className = "redaction-box"
+            box.classList.toggle("selected", rectangle.id === selectedRectangleId)
+            box.dataset.rectangleId = rectangle.id
+            box.style.left = `${(rectangle.x / question.width) * 100}%`
+            box.style.top = `${(rectangle.y / question.height) * 100}%`
+            box.style.width = `${(rectangle.width / question.width) * 100}%`
+            box.style.height = `${(rectangle.height / question.height) * 100}%`
+            const label = document.createElement("span")
+            label.className = "redaction-box-label"
+            label.textContent = rectangle.id
+            box.append(label)
+            if (rectangle.id === selectedRectangleId) {
+              box.append(
+                ...["nw", "n", "ne", "e", "se", "s", "sw", "w"].map(createResizeHandle),
+              )
+            }
+            fragment.append(box)
+          }
+          elements.redactionLayer.replaceChildren(fragment)
+        }
+
+        function renderRectangleInspector() {
+          const rectangle = selectedRectangle()
+          elements.rectangleForm.hidden = rectangle === null
+          elements.redactionEmptySelection.hidden = rectangle !== null
+          if (!rectangle) return
+          elements.rectangleId.value = rectangle.id
+          elements.rectanglePurpose.value = rectangle.purpose
+          elements.rectangleX.value = String(rectangle.x)
+          elements.rectangleY.value = String(rectangle.y)
+          elements.rectangleWidth.value = String(rectangle.width)
+          elements.rectangleHeight.value = String(rectangle.height)
+          elements.removeRectangle.disabled = redactionDraft.length <= 1 || redactionBusy
+          elements.duplicateRectangle.disabled = redactionBusy
+        }
+
+        function updateRedactionControls() {
+          const dirty = redactionsAreDirty()
+          elements.redactionDirtyBadge.dataset.dirty = String(dirty)
+          elements.redactionDirtyBadge.textContent = dirty ? "Unsaved changes" : "Saved"
+          elements.undoRedaction.disabled = redactionBusy || redactionUndoStack.length === 0
+          elements.redoRedaction.disabled = redactionBusy || redactionRedoStack.length === 0
+          elements.resetRedactions.disabled = redactionBusy || !dirty
+          elements.saveRedactions.disabled =
+            redactionBusy || !adminAvailable || !dirty || redactionDraft.length === 0
+          elements.selectRedactionTool.disabled = redactionBusy || !adminAvailable
+          elements.drawRedactionTool.disabled = redactionBusy || !adminAvailable
+          elements.redactionLayer.style.pointerEvents =
+            redactionBusy || !adminAvailable ? "none" : "auto"
+          renderRectangleInspector()
+        }
+
+        function renderRedactionEditor() {
+          renderRedactionBoxes()
+          renderRectangleList()
+          renderRectangleInspector()
+          updateRedactionControls()
+        }
+
+        function resetRedactionEditor(question) {
+          const referenceWidth = Number(question.redactionManifest?.coordinateSpace?.width)
+          const referenceHeight = Number(question.redactionManifest?.coordinateSpace?.height)
+          const hasReferenceDimensions =
+            Number.isInteger(referenceWidth) &&
+            referenceWidth > 0 &&
+            Number.isInteger(referenceHeight) &&
+            referenceHeight > 0
+          const scaleX = hasReferenceDimensions ? question.width / referenceWidth : 1
+          const scaleY = hasReferenceDimensions ? question.height / referenceHeight : 1
+          const sourceRectangles = Array.isArray(question.redactionManifest?.rectangles)
+            ? question.redactionManifest.rectangles
+                .map((rectangle) => ({
+                  id: String(rectangle.id ?? ""),
+                  purpose: String(rectangle.purpose ?? "manual-redaction"),
+                  x: Number(rectangle.x),
+                  y: Number(rectangle.y),
+                  width: Number(rectangle.width),
+                  height: Number(rectangle.height),
+                }))
+                .filter(
+                  (rectangle) =>
+                    rectangle.id &&
+                    Number.isInteger(rectangle.x) &&
+                    Number.isInteger(rectangle.y) &&
+                    Number.isInteger(rectangle.width) &&
+                    Number.isInteger(rectangle.height),
+                )
+            : []
+          const rectangles = sourceRectangles.map((rectangle) =>
+            clampRectangle(
+              {
+                ...rectangle,
+                x: rectangle.x * scaleX,
+                y: rectangle.y * scaleY,
+                width: rectangle.width * scaleX,
+                height: rectangle.height * scaleY,
+              },
+              question,
+            ),
+          )
+          redactionDraft = rectangles
+          savedRedactionSnapshot = rectangleSnapshot(rectangles)
+          redactionBaseRequiresSave =
+            Boolean(question.redactionManifest) &&
+            (!hasReferenceDimensions ||
+              referenceWidth !== question.width ||
+              referenceHeight !== question.height ||
+              !question.redactionMatchesOriginal)
+          selectedRectangleId = rectangles[0]?.id ?? null
+          redactionUndoStack = []
+          redactionRedoStack = []
+          redactionPointerOperation = null
+          elements.redactionCanvas.style.aspectRatio = `${question.width} / ${question.height}`
+          elements.redactionSourceImage.src = question.originalPath
+          setRedactionTool("select")
+          setEditorStatus(
+            elements.redactionStatus,
+            adminAvailable
+              ? redactionBaseRequiresSave
+                ? `The source image changed. ${rectangles.length} rectangles were mapped to ${question.width}×${question.height}; review them, then save and regenerate.`
+                : rectangles.length > 0
+                  ? `${rectangles.length} rectangles loaded. Save & regenerate records manual approval and replaces redacted.webp.`
+                : "No redaction manifest exists. Draw at least one rectangle before saving."
+              : "Start this panel with npm run questions:admin to edit and regenerate redactions.",
+          )
+          renderRedactionEditor()
+        }
+
+        function commitRedactionMutation(before) {
+          if (rectangleSnapshot(before) === rectangleSnapshot()) return
+          redactionUndoStack.push(before)
+          if (redactionUndoStack.length > 80) redactionUndoStack.shift()
+          redactionRedoStack = []
+          renderRedactionEditor()
+        }
+
+        function undoRedactionMutation() {
+          const previous = redactionUndoStack.pop()
+          if (!previous) return
+          redactionRedoStack.push(cloneRectangles())
+          redactionDraft = cloneRectangles(previous)
+          if (!selectedRectangle()) selectedRectangleId = redactionDraft[0]?.id ?? null
+          renderRedactionEditor()
+        }
+
+        function redoRedactionMutation() {
+          const next = redactionRedoStack.pop()
+          if (!next) return
+          redactionUndoStack.push(cloneRectangles())
+          redactionDraft = cloneRectangles(next)
+          if (!selectedRectangle()) selectedRectangleId = redactionDraft[0]?.id ?? null
+          renderRedactionEditor()
+        }
+
+        function redactionImagePoint(event) {
+          const question = currentQuestion()
+          const bounds = elements.redactionLayer.getBoundingClientRect()
+          if (!question || bounds.width <= 0 || bounds.height <= 0) return null
+          return {
+            x: Math.max(0, Math.min(question.width, ((event.clientX - bounds.left) / bounds.width) * question.width)),
+            y: Math.max(0, Math.min(question.height, ((event.clientY - bounds.top) / bounds.height) * question.height)),
+          }
+        }
+
+        function clampRectangle(rectangle, question) {
+          const width = Math.max(1, Math.min(question.width, Math.round(rectangle.width)))
+          const height = Math.max(1, Math.min(question.height, Math.round(rectangle.height)))
+          return {
+            ...rectangle,
+            x: Math.max(0, Math.min(question.width - width, Math.round(rectangle.x))),
+            y: Math.max(0, Math.min(question.height - height, Math.round(rectangle.y))),
+            width,
+            height,
+          }
+        }
+
+        function applyResize(original, handle, deltaX, deltaY, question) {
+          let left = original.x
+          let top = original.y
+          let right = original.x + original.width
+          let bottom = original.y + original.height
+          if (handle.includes("w")) left = Math.min(right - 1, Math.max(0, original.x + deltaX))
+          if (handle.includes("e")) right = Math.max(left + 1, Math.min(question.width, original.x + original.width + deltaX))
+          if (handle.includes("n")) top = Math.min(bottom - 1, Math.max(0, original.y + deltaY))
+          if (handle.includes("s")) bottom = Math.max(top + 1, Math.min(question.height, original.y + original.height + deltaY))
+          return {
+            ...original,
+            x: Math.round(left),
+            y: Math.round(top),
+            width: Math.max(1, Math.round(right - left)),
+            height: Math.max(1, Math.round(bottom - top)),
+          }
+        }
+
+        function startRedactionPointer(event) {
+          if (event.button !== 0 || redactionBusy || !adminAvailable) return
+          const point = redactionImagePoint(event)
+          const question = currentQuestion()
+          if (!point || !question) return
+          elements.redactionCanvas.focus({ preventScroll: true })
+          const box = event.target.closest("[data-rectangle-id]")
+          const handle = event.target.closest("[data-handle]")
+
+          if (redactionTool === "draw" && !box) {
+            const before = cloneRectangles()
+            const rectangle = {
+              id: nextRectangleId(),
+              purpose: "manual-redaction",
+              x: Math.round(point.x),
+              y: Math.round(point.y),
+              width: 1,
+              height: 1,
+            }
+            redactionDraft.push(rectangle)
+            selectedRectangleId = rectangle.id
+            redactionPointerOperation = {
+              before,
+              kind: "draw",
+              pointerId: event.pointerId,
+              start: point,
+              rectangleId: rectangle.id,
+            }
+            elements.redactionLayer.setPointerCapture(event.pointerId)
+            renderRedactionEditor()
+            event.preventDefault()
+            return
+          }
+
+          if (!box) {
+            selectedRectangleId = null
+            renderRedactionEditor()
+            return
+          }
+
+          const rectangle = redactionDraft.find((candidate) => candidate.id === box.dataset.rectangleId)
+          if (!rectangle) return
+          selectedRectangleId = rectangle.id
+          redactionPointerOperation = {
+            before: cloneRectangles(),
+            kind: handle ? "resize" : "move",
+            handle: handle?.dataset.handle ?? null,
+            original: { ...rectangle },
+            pointerId: event.pointerId,
+            start: point,
+            rectangleId: rectangle.id,
+          }
+          elements.redactionLayer.setPointerCapture(event.pointerId)
+          renderRedactionEditor()
+          event.preventDefault()
+        }
+
+        function moveRedactionPointer(event) {
+          const operation = redactionPointerOperation
+          if (!operation || operation.pointerId !== event.pointerId) return
+          const point = redactionImagePoint(event)
+          const question = currentQuestion()
+          const rectangle = redactionDraft.find((candidate) => candidate.id === operation.rectangleId)
+          if (!point || !question || !rectangle) return
+          const deltaX = point.x - operation.start.x
+          const deltaY = point.y - operation.start.y
+
+          if (operation.kind === "draw") {
+            rectangle.x = Math.round(Math.min(operation.start.x, point.x))
+            rectangle.y = Math.round(Math.min(operation.start.y, point.y))
+            rectangle.width = Math.max(1, Math.round(Math.abs(point.x - operation.start.x)))
+            rectangle.height = Math.max(1, Math.round(Math.abs(point.y - operation.start.y)))
+          } else if (operation.kind === "move") {
+            Object.assign(
+              rectangle,
+              clampRectangle(
+                {
+                  ...operation.original,
+                  x: operation.original.x + deltaX,
+                  y: operation.original.y + deltaY,
+                },
+                question,
+              ),
+            )
+          } else {
+            Object.assign(
+              rectangle,
+              applyResize(operation.original, operation.handle ?? "se", deltaX, deltaY, question),
+            )
+          }
+          renderRedactionEditor()
+          event.preventDefault()
+        }
+
+        function endRedactionPointer(event) {
+          const operation = redactionPointerOperation
+          if (!operation || operation.pointerId !== event.pointerId) return
+          const rectangle = redactionDraft.find((candidate) => candidate.id === operation.rectangleId)
+          redactionPointerOperation = null
+          if (elements.redactionLayer.hasPointerCapture(event.pointerId)) {
+            elements.redactionLayer.releasePointerCapture(event.pointerId)
+          }
+          if (operation.kind === "draw" && rectangle && (rectangle.width < 2 || rectangle.height < 2)) {
+            redactionDraft = redactionDraft.filter((candidate) => candidate.id !== rectangle.id)
+            selectedRectangleId = null
+          }
+          commitRedactionMutation(operation.before)
+          if (operation.kind === "draw") setRedactionTool("select")
+          renderRedactionEditor()
+        }
+
+        function mutateSelectedRectangle(mutator) {
+          const rectangle = selectedRectangle()
+          const question = currentQuestion()
+          if (!rectangle || !question) return
+          const before = cloneRectangles()
+          mutator(rectangle, question)
+          Object.assign(rectangle, clampRectangle(rectangle, question))
+          commitRedactionMutation(before)
+        }
+
+        function removeSelectedRectangle() {
+          if (redactionDraft.length <= 1 || !selectedRectangle()) {
+            showToast("A redaction manifest must keep at least one rectangle.")
+            return
+          }
+          const before = cloneRectangles()
+          const selectedIndex = redactionDraft.findIndex((rectangle) => rectangle.id === selectedRectangleId)
+          redactionDraft.splice(selectedIndex, 1)
+          selectedRectangleId = redactionDraft[Math.min(selectedIndex, redactionDraft.length - 1)]?.id ?? null
+          commitRedactionMutation(before)
+        }
+
+        function duplicateSelectedRectangle() {
+          const rectangle = selectedRectangle()
+          const question = currentQuestion()
+          if (!rectangle || !question) return
+          const before = cloneRectangles()
+          const duplicate = clampRectangle(
+            {
+              ...rectangle,
+              id: nextRectangleId(),
+              x: rectangle.x + 12,
+              y: rectangle.y + 12,
+            },
+            question,
+          )
+          redactionDraft.push(duplicate)
+          selectedRectangleId = duplicate.id
+          commitRedactionMutation(before)
+        }
+
+        function updateSelectedRectangleField(field, value) {
+          const rectangle = selectedRectangle()
+          const question = currentQuestion()
+          if (!rectangle || !question) return
+          const before = cloneRectangles()
+
+          if (field === "id") {
+            const nextId = String(value).trim()
+            if (!nextId) {
+              showToast("Rectangle ID cannot be empty.")
+              renderRectangleInspector()
+              return
+            }
+            if (redactionDraft.some((candidate) => candidate !== rectangle && candidate.id === nextId)) {
+              showToast(`Rectangle ID ${nextId} is already used.`)
+              renderRectangleInspector()
+              return
+            }
+            rectangle.id = nextId
+            selectedRectangleId = nextId
+          } else if (field === "purpose") {
+            const purpose = String(value).trim()
+            if (!purpose) {
+              showToast("Rectangle purpose cannot be empty.")
+              renderRectangleInspector()
+              return
+            }
+            rectangle.purpose = purpose
+          } else {
+            const number = Number(value)
+            if (!Number.isInteger(number)) {
+              showToast(`${field} must be a whole number.`)
+              renderRectangleInspector()
+              return
+            }
+            rectangle[field] = number
+            Object.assign(rectangle, clampRectangle(rectangle, question))
+          }
+          commitRedactionMutation(before)
+        }
+
+        function setRedactionBusy(busy) {
+          redactionBusy = busy
+          elements.rectangleForm.querySelectorAll("input, button").forEach((control) => {
+            control.disabled = busy
+          })
+          updateRedactionControls()
+        }
+
+        function resetRedactionsToSaved() {
+          const question = currentQuestion()
+          if (!question) return
+          redactionDraft = JSON.parse(savedRedactionSnapshot)
+          selectedRectangleId = redactionDraft[0]?.id ?? null
+          redactionUndoStack = []
+          redactionRedoStack = []
+          renderRedactionEditor()
+          setEditorStatus(
+            elements.redactionStatus,
+            redactionBaseRequiresSave
+              ? "Reset to the source-mapped rectangles. Regeneration is still required."
+              : "Discarded unsaved rectangle changes.",
+          )
+        }
+
+        function nudgeSelectedRectangle(deltaX, deltaY) {
+          mutateSelectedRectangle((rectangle) => {
+            rectangle.x += deltaX
+            rectangle.y += deltaY
+          })
         }
 
         function setCaptureStatus(message, tone = "neutral", log = "") {
@@ -2962,7 +4101,12 @@
             throw new Error("Admin server returned an invalid question index")
           }
 
+          if (!Array.isArray(payload.editions)) {
+            throw new Error("Admin server returned an invalid edition index")
+          }
+
           questions = payload.questions
+          adminEditions = payload.editions
           filteredQuestions = [...questions]
           currentQuestionId =
             questions.find((question) => question.id === preferredQuestionId)?.id ??
@@ -3321,6 +4465,14 @@
         function selectQuestion(questionId) {
           const question = questions.find((candidate) => candidate.id === questionId)
           if (!question) return
+          if (
+            currentQuestionId !== null &&
+            questionId !== currentQuestionId &&
+            redactionsAreDirty() &&
+            !window.confirm("Discard unsaved redaction changes and open another question?")
+          ) {
+            return
+          }
 
           currentQuestionId = questionId
           imageWidth = question.width
@@ -3383,6 +4535,9 @@
           if (captureQuestionId !== question.id) {
             resetCapturePanel(question)
           }
+
+          resetAnswerEditor(question)
+          resetRedactionEditor(question)
 
           updateReviewControls()
           renderQuestionList()
@@ -3662,6 +4817,148 @@
             saveReviews()
           })
 
+          elements.answerEdition.addEventListener("change", () => {
+            refreshAnswerChoices({ preserve: true })
+          })
+          for (const control of [
+            elements.answerStage,
+            elements.answerBlueTeam,
+            elements.answerRedTeam,
+            elements.answerGameNumber,
+          ]) {
+            control.addEventListener("input", updateAnswerDirectoryPreview)
+            control.addEventListener("change", updateAnswerDirectoryPreview)
+          }
+          elements.resetAnswer.addEventListener("click", () => {
+            const question = currentQuestion()
+            if (question) resetAnswerEditor(question)
+          })
+          elements.answerForm.addEventListener("submit", async (event) => {
+            event.preventDefault()
+            const question = currentQuestion()
+            if (!question || !answerEditorEnabled(question) || answerBusy) return
+            if (elements.answerBlueTeam.value === elements.answerRedTeam.value) {
+              setEditorStatus(elements.answerStatus, "Blue and red teams must be different.", "error")
+              return
+            }
+            setAnswerBusy(true)
+            setEditorStatus(elements.answerStatus, `Saving the canonical answer for ${question.id}…`, "busy")
+            try {
+              const payload = await apiRequest(`/api/questions/${question.id}/answer`, {
+                method: "POST",
+                body: {
+                  blueTeamId: elements.answerBlueTeam.value,
+                  catalogEditionId: elements.answerEdition.value,
+                  confirmation: question.id,
+                  expectedDirectoryName: question.directoryName,
+                  expectedManifestSha256: question.manifestSha256,
+                  gameNumber: Number(elements.answerGameNumber.value),
+                  redTeamId: elements.answerRedTeam.value,
+                  stage: elements.answerStage.value,
+                },
+              })
+              replaceQuestionRecord(payload.question)
+              populateEventFilter()
+              applyFilters()
+              selectQuestion(question.id)
+              setEditorStatus(
+                elements.answerStatus,
+                catalogSyncMessage(
+                  payload,
+                  payload.result.directoryChanged
+                    ? `Answer saved. Source directory renamed to ${payload.result.directoryName}.`
+                    : "Answer saved. The source directory was already canonical.",
+                ),
+                payload.catalogSync?.ok === false ? "error" : "success",
+              )
+              showToast(`Saved answer for ${question.id}`)
+            } catch (error) {
+              setEditorStatus(
+                elements.answerStatus,
+                error instanceof Error ? error.message : String(error),
+                "error",
+              )
+            } finally {
+              setAnswerBusy(false)
+            }
+          })
+
+          elements.selectRedactionTool.addEventListener("click", () => setRedactionTool("select"))
+          elements.drawRedactionTool.addEventListener("click", () => setRedactionTool("draw"))
+          elements.undoRedaction.addEventListener("click", undoRedactionMutation)
+          elements.redoRedaction.addEventListener("click", redoRedactionMutation)
+          elements.resetRedactions.addEventListener("click", resetRedactionsToSaved)
+          elements.duplicateRectangle.addEventListener("click", duplicateSelectedRectangle)
+          elements.removeRectangle.addEventListener("click", removeSelectedRectangle)
+          elements.rectangleList.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-rectangle-id]")
+            if (!button) return
+            selectedRectangleId = button.dataset.rectangleId
+            setRedactionTool("select")
+            renderRedactionEditor()
+          })
+          elements.redactionLayer.addEventListener("pointerdown", startRedactionPointer)
+          elements.redactionLayer.addEventListener("pointermove", moveRedactionPointer)
+          elements.redactionLayer.addEventListener("pointerup", endRedactionPointer)
+          elements.redactionLayer.addEventListener("pointercancel", endRedactionPointer)
+          for (const [element, field] of [
+            [elements.rectangleId, "id"],
+            [elements.rectanglePurpose, "purpose"],
+            [elements.rectangleX, "x"],
+            [elements.rectangleY, "y"],
+            [elements.rectangleWidth, "width"],
+            [elements.rectangleHeight, "height"],
+          ]) {
+            element.addEventListener("change", () => updateSelectedRectangleField(field, element.value))
+          }
+          elements.saveRedactions.addEventListener("click", async () => {
+            const question = currentQuestion()
+            if (!question || !adminAvailable || redactionBusy || !redactionsAreDirty()) return
+            setRedactionBusy(true)
+            setEditorStatus(
+              elements.redactionStatus,
+              `Validating ${redactionDraft.length} rectangles and regenerating redacted.webp…`,
+              "busy",
+            )
+            try {
+              const payload = await apiRequest(`/api/questions/${question.id}/redactions`, {
+                method: "POST",
+                body: {
+                  confirmation: question.id,
+                  expectedOriginalSha256: question.originalSha256,
+                  expectedRedactionManifestSha256: question.redactionManifestSha256,
+                  rectangles: redactionDraft,
+                },
+              })
+              replaceQuestionRecord(payload.question)
+              selectQuestion(question.id)
+              const dropped = [
+                ...(payload.result.droppedGeometryGroupIds ?? []),
+                ...(payload.result.droppedGeometryExceptionIds ?? []),
+              ]
+              const geometryNote = dropped.length
+                ? ` Removed obsolete geometry metadata: ${dropped.join(", ")}.`
+                : ""
+              setEditorStatus(
+                elements.redactionStatus,
+                catalogSyncMessage(
+                  payload,
+                  `Saved ${payload.result.rectangleCount} rectangles and regenerated redacted.webp.${geometryNote}`,
+                ),
+                payload.catalogSync?.ok === false ? "error" : "success",
+              )
+              showToast(`Regenerated redactions for ${question.id}`)
+            } catch (error) {
+              setEditorStatus(
+                elements.redactionStatus,
+                error instanceof Error ? error.message : String(error),
+                "error",
+              )
+            } finally {
+              setRedactionBusy(false)
+            }
+          })
+
           elements.captureForm.addEventListener("submit", async (event) => {
             event.preventDefault()
             const question = currentQuestion()
@@ -3802,6 +5099,61 @@
           })
           document.addEventListener("keydown", (event) => {
             if (isTypingTarget(event.target)) return
+            const redactionKeyboardActive =
+              elements.redactionCanvas.closest(".redaction-editor").contains(document.activeElement)
+            if (
+              redactionKeyboardActive &&
+              (event.ctrlKey || event.metaKey) &&
+              event.key.toLocaleLowerCase("en-US") === "z"
+            ) {
+              event.preventDefault()
+              if (event.shiftKey) redoRedactionMutation()
+              else undoRedactionMutation()
+              return
+            }
+            if (
+              redactionKeyboardActive &&
+              (event.ctrlKey || event.metaKey) &&
+              event.key.toLocaleLowerCase("en-US") === "y"
+            ) {
+              event.preventDefault()
+              redoRedactionMutation()
+              return
+            }
+            if (redactionKeyboardActive && (event.key === "Delete" || event.key === "Backspace")) {
+              event.preventDefault()
+              removeSelectedRectangle()
+              return
+            }
+            if (redactionKeyboardActive && event.key === "Escape" && redactionPointerOperation) {
+              redactionDraft = cloneRectangles(redactionPointerOperation.before)
+              redactionPointerOperation = null
+              renderRedactionEditor()
+              return
+            }
+            if (redactionKeyboardActive && event.key.toLocaleLowerCase("en-US") === "r") setRedactionTool("draw")
+            if (redactionKeyboardActive && event.key.toLocaleLowerCase("en-US") === "v") setRedactionTool("select")
+            const nudge = event.shiftKey ? 10 : 1
+            if (redactionKeyboardActive && selectedRectangle() && event.key === "ArrowUp") {
+              event.preventDefault()
+              nudgeSelectedRectangle(0, -nudge)
+              return
+            }
+            if (redactionKeyboardActive && selectedRectangle() && event.key === "ArrowDown") {
+              event.preventDefault()
+              nudgeSelectedRectangle(0, nudge)
+              return
+            }
+            if (redactionKeyboardActive && selectedRectangle() && event.key === "ArrowLeft") {
+              event.preventDefault()
+              nudgeSelectedRectangle(-nudge, 0)
+              return
+            }
+            if (redactionKeyboardActive && selectedRectangle() && event.key === "ArrowRight") {
+              event.preventDefault()
+              nudgeSelectedRectangle(nudge, 0)
+              return
+            }
             if (event.key === "ArrowLeft") navigate(-1)
             if (event.key === "ArrowRight") navigate(1)
             if (event.key === "+" || event.key === "=") setZoomAtCenter(zoom * 1.25)
@@ -3809,6 +5161,11 @@
             if (event.key === "0") fitToView()
             if (event.key === "1") setZoomAtCenter(1)
             if (event.key.toLocaleLowerCase("en-US") === "f") toggleFullscreen()
+          })
+          window.addEventListener("beforeunload", (event) => {
+            if (!redactionsAreDirty()) return
+            event.preventDefault()
+            event.returnValue = ""
           })
         }
 
