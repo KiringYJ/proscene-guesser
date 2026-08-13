@@ -28,6 +28,7 @@ A finite game ends with the total score, a per-round breakdown, and actions to p
 - Vite
 - Vuetify 4
 - Vitest, Vue TypeScript checking, ESLint, and Oxlint
+- uv-managed yt-dlp media authoring tools with system FFmpeg
 - GitHub Pages through GitHub Actions
 
 There is intentionally no router, account system, backend, or leaderboard in the current architecture.
@@ -53,6 +54,41 @@ npm run check
 
 The production build is written to `dist/`.
 
+## Media authoring
+
+The browser application does not require Python. Maintainers can use the separate uv environment to acquire a source broadcast with yt-dlp and cut candidate frames with FFmpeg.
+
+From the repository root, create the locked environment and verify both tools:
+
+```powershell
+uv sync --locked
+uv run yt-dlp --version
+ffmpeg -version
+ffprobe -version
+```
+
+FFmpeg and FFprobe must be real executables on `PATH`; do not install the unrelated Python package named `ffmpeg`. yt-dlp discovers the executables automatically. The checked-in `yt-dlp.conf` enables the repository's Node runtime for YouTube support, refuses playlist expansion, and writes downloads plus metadata under the ignored `.media/` directory.
+
+Download one source video with the project defaults:
+
+```powershell
+uv run yt-dlp "<source-url>"
+```
+
+For frame selection, downloading only a short section is usually faster. The following example fetches ten seconds and asks FFmpeg to make the section boundaries exact:
+
+```powershell
+uv run yt-dlp --download-sections "*01:23:40-01:23:50" --force-keyframes-at-cuts "<source-url>"
+```
+
+Extract a lossless candidate frame from the path reported by yt-dlp. Here `00:00:05.000` is relative to the start of that section:
+
+```powershell
+ffmpeg -i ".media\downloads\<downloaded-file>" -ss 00:00:05.000 -frames:v 1 ".media\candidate.png"
+```
+
+Keep downloaded media and candidate frames in `.media/`. Copy a selected frame to `sources/questions/<question-id>/original.png` only after completing the source-attribution and rights-review requirements below.
+
 ## Project layout
 
 ```text
@@ -67,6 +103,8 @@ src/
 docs/               Architecture and content-workflow decisions
 sources/
   questions/        Canonical manifests, originals, and flattened redactions
+pyproject.toml       uv-managed media-authoring dependencies
+yt-dlp.conf          Repository-local download defaults
 .github/workflows/  GitHub Pages deployment
 ```
 
