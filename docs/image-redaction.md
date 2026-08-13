@@ -14,7 +14,13 @@ sources/questions/<question-directory>/
   redacted.webp
 ```
 
-`original.png` remains immutable. `redaction.json` is the coordinate source of truth. `redacted.webp` may be created from an auto-applied or approved redaction manifest. Its presence makes a valid question playable on the next catalog synchronization; there is no separate publication copy or status.
+`original.png` remains immutable during normal redaction work. An explicit existing-question regeneration through `npm run questions:admin` is the controlled exception: it verifies the chosen capture and current source hash, records `capture.json`, and leaves the previous redaction source hash untouched so the mismatch remains visible. `redaction.json` is the coordinate source of truth. `redacted.webp` may be created from an auto-applied or approved redaction manifest. Its presence makes a valid question playable on the next catalog synchronization; there is no separate publication copy or status.
+
+## Replacing an existing original
+
+Run `npm run questions:admin`, choose the existing question, provide a stable YouTube video URL and rough timestamp, and complete the coarse and exact-frame selections. The final replacement updates `original.png`, stores the verified capture sidecar as `capture.json`, and updates only `question.json`'s canonical source URL. A dimension change requires an additional explicit checkbox.
+
+Source replacement never updates `redaction.json`'s SHA-256 or regenerates `redacted.webp` automatically. The resulting source mismatch is intentional: compare the new original with the existing derivative, adjust or confirm the rectangles, set the appropriate review status, rerun `scripts/apply-image-redactions.ps1`, and then run `npm run questions:sync`.
 
 ## Review states
 

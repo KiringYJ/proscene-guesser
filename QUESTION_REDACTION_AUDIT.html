@@ -1,0 +1,3849 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>ProScene Question Admin</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --page: #070a0f;
+        --surface: #0d1219;
+        --surface-2: #121923;
+        --surface-3: #18212d;
+        --line: #273241;
+        --line-strong: #3b4a5d;
+        --text: #eef4fb;
+        --muted: #93a3b5;
+        --quiet: #687789;
+        --accent: #51d7d4;
+        --accent-strong: #12aaa7;
+        --accent-soft: rgba(81, 215, 212, 0.12);
+        --pass: #62d394;
+        --pass-soft: rgba(98, 211, 148, 0.13);
+        --fix: #ff7474;
+        --fix-soft: rgba(255, 116, 116, 0.13);
+        --warning: #f2bf62;
+        --shadow: 0 18px 52px rgba(0, 0, 0, 0.34);
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100dvh;
+        min-height: 0;
+        margin: 0;
+        overflow: hidden;
+        overscroll-behavior: none;
+        background: var(--page);
+        color: var(--text);
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button,
+      select,
+      input[type="range"] {
+        accent-color: var(--accent);
+      }
+
+      button,
+      a,
+      input,
+      select,
+      textarea {
+        outline: none;
+      }
+
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible {
+        box-shadow: 0 0 0 3px rgba(81, 215, 212, 0.28);
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 330px minmax(0, 1fr);
+        width: 100%;
+        height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        display: flex;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        flex-direction: column;
+        overflow: hidden;
+        border-right: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(81, 215, 212, 0.06), transparent 220px),
+          var(--surface);
+      }
+
+      .sidebar-header {
+        flex: none;
+        padding: 22px 20px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0 0 7px;
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .sidebar h1 {
+        margin: 0;
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+      }
+
+      .sidebar-subtitle {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .progress-summary {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px 12px;
+        align-items: center;
+        margin-top: 18px;
+      }
+
+      .progress-label {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .progress-count {
+        font-size: 0.78rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .progress-track {
+        grid-column: 1 / -1;
+        height: 5px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: var(--surface-3);
+      }
+
+      .progress-fill {
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+        transition: width 180ms ease;
+      }
+
+      .filters {
+        display: grid;
+        flex: none;
+        gap: 10px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .search-wrap {
+        position: relative;
+      }
+
+      .search-wrap::before {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        color: var(--quiet);
+        content: "⌕";
+        font-size: 1.15rem;
+        transform: translateY(-54%);
+        pointer-events: none;
+      }
+
+      .search-input,
+      .filter-select,
+      .review-notes {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: var(--surface-2);
+        color: var(--text);
+      }
+
+      .search-input {
+        height: 39px;
+        padding: 0 12px 0 36px;
+      }
+
+      .filter-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .filter-select {
+        height: 36px;
+        padding: 0 9px;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .question-list {
+        height: 0;
+        min-height: 0;
+        flex: 1 1 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        overscroll-behavior: contain;
+        padding: 8px;
+        scrollbar-color: var(--line-strong) transparent;
+        scrollbar-gutter: stable;
+        scrollbar-width: thin;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .question-list::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      .question-list::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .question-list::-webkit-scrollbar-thumb {
+        border: 2px solid transparent;
+        border-radius: 999px;
+        background: var(--line-strong);
+        background-clip: padding-box;
+      }
+
+      .question-list::-webkit-scrollbar-thumb:hover {
+        background: var(--muted);
+        background-clip: padding-box;
+      }
+
+      .question-item {
+        display: grid;
+        grid-template-columns: 10px minmax(0, 1fr) auto;
+        gap: 9px;
+        align-items: center;
+        width: 100%;
+        padding: 11px 10px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .question-item:hover {
+        background: var(--surface-2);
+      }
+
+      .question-item[aria-current="true"] {
+        border-color: rgba(81, 215, 212, 0.38);
+        background: var(--accent-soft);
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border: 1px solid var(--line-strong);
+        border-radius: 50%;
+        background: var(--surface-3);
+      }
+
+      .status-dot.pass {
+        border-color: var(--pass);
+        background: var(--pass);
+      }
+
+      .status-dot.fix {
+        border-color: var(--fix);
+        background: var(--fix);
+      }
+
+      .question-copy {
+        min-width: 0;
+      }
+
+      .question-event,
+      .question-matchup {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .question-event {
+        font-size: 0.78rem;
+        font-weight: 750;
+      }
+
+      .question-matchup {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 0.73rem;
+      }
+
+      .question-number {
+        color: var(--quiet);
+        font-size: 0.69rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .empty-list {
+        padding: 34px 20px;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .sidebar-footer {
+        display: flex;
+        flex: none;
+        gap: 8px;
+        padding: 12px 16px;
+        border-top: 1px solid var(--line);
+      }
+
+      .workspace {
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        overflow-y: scroll;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+        -webkit-overflow-scrolling: touch;
+        background:
+          radial-gradient(circle at 80% 0%, rgba(81, 215, 212, 0.055), transparent 28rem),
+          var(--page);
+      }
+
+      .content {
+        width: min(1700px, 100%);
+        margin: 0 auto;
+        padding: 22px clamp(16px, 2vw, 30px) 32px;
+      }
+
+      .question-header {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 18px;
+        align-items: center;
+      }
+
+      .navigation-cluster,
+      .header-actions,
+      .viewer-controls,
+      .mode-switch,
+      .review-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .question-heading {
+        min-width: 0;
+      }
+
+      .question-position {
+        margin: 0 0 3px;
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .question-heading h2 {
+        margin: 0;
+        overflow: hidden;
+        font-size: clamp(1.15rem, 2vw, 1.7rem);
+        letter-spacing: -0.025em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .answer-line {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .answer-line strong {
+        color: var(--text);
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 0 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface-2);
+        color: var(--text);
+        font-size: 0.79rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .button:hover:not(:disabled) {
+        border-color: var(--line-strong);
+        background: var(--surface-3);
+      }
+
+      .button:disabled {
+        opacity: 0.38;
+        cursor: not-allowed;
+      }
+
+      .button.icon-button {
+        width: 36px;
+        padding: 0;
+        font-size: 1.05rem;
+      }
+
+      .button.subtle {
+        background: transparent;
+        color: var(--muted);
+      }
+
+      .button.accent {
+        border-color: rgba(81, 215, 212, 0.45);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .button.pass.active {
+        border-color: var(--pass);
+        background: var(--pass-soft);
+        color: var(--pass);
+      }
+
+      .button.fix.active {
+        border-color: var(--fix);
+        background: var(--fix-soft);
+        color: var(--fix);
+      }
+
+      .meta-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(240px, 1fr);
+        gap: 18px;
+        margin-top: 18px;
+        padding: 15px 17px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(13, 18, 25, 0.8);
+        box-shadow: var(--shadow);
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .badge {
+        display: inline-flex;
+        min-height: 25px;
+        align-items: center;
+        padding: 0 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 750;
+      }
+
+      .exact-answer {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.74rem;
+        line-height: 1.55;
+        overflow-wrap: anywhere;
+      }
+
+      .source-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        align-content: center;
+        justify-content: flex-end;
+        font-size: 0.77rem;
+      }
+
+      .capture-panel {
+        margin-top: 16px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .capture-header,
+      .capture-form,
+      .capture-stage,
+      .capture-output {
+        padding: 16px 17px;
+      }
+
+      .capture-header {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(90deg, rgba(81, 215, 212, 0.08), transparent 45%);
+      }
+
+      .capture-header h3,
+      .capture-stage h4,
+      .capture-output h4 {
+        margin: 0;
+        letter-spacing: -0.015em;
+      }
+
+      .capture-header p,
+      .capture-stage p,
+      .capture-output p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+
+      .connection-badge[data-state="connected"] {
+        border-color: rgba(98, 211, 148, 0.45);
+        background: var(--pass-soft);
+        color: var(--pass);
+      }
+
+      .connection-badge[data-state="offline"],
+      .source-health[data-state="stale"] {
+        border-color: rgba(242, 191, 98, 0.45);
+        background: rgba(242, 191, 98, 0.1);
+        color: var(--warning);
+      }
+
+      .source-health[data-state="current"] {
+        border-color: rgba(98, 211, 148, 0.45);
+        background: var(--pass-soft);
+        color: var(--pass);
+      }
+
+      .capture-form {
+        display: grid;
+        grid-template-columns: minmax(280px, 1fr) minmax(160px, 220px) auto;
+        gap: 12px;
+        align-items: end;
+      }
+
+      .field-label {
+        display: grid;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 750;
+      }
+
+      .admin-input {
+        width: 100%;
+        min-height: 39px;
+        padding: 0 11px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface-2);
+        color: var(--text);
+      }
+
+      .capture-status {
+        margin: 0;
+        padding: 11px 17px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: rgba(81, 215, 212, 0.045);
+        color: var(--muted);
+        font-size: 0.76rem;
+        line-height: 1.45;
+      }
+
+      .capture-status[data-tone="success"] {
+        color: var(--pass);
+      }
+
+      .capture-status[data-tone="error"] {
+        background: var(--fix-soft);
+        color: var(--fix);
+      }
+
+      .capture-status[data-tone="busy"] {
+        color: var(--accent);
+      }
+
+      .capture-log {
+        max-height: 180px;
+        margin: 0;
+        overflow: auto;
+        padding: 11px 17px;
+        border-bottom: 1px solid var(--line);
+        background: #080c11;
+        color: var(--quiet);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.68rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .capture-stage {
+        border-top: 1px solid var(--line);
+      }
+
+      .capture-stage-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .candidate-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 10px;
+      }
+
+      .candidate-grid.fine {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        max-height: 540px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      .candidate-card {
+        position: relative;
+        min-width: 0;
+        overflow: hidden;
+        padding: 0;
+        border: 2px solid var(--line);
+        border-radius: 9px;
+        background: var(--surface-2);
+        color: var(--text);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .candidate-card:hover {
+        border-color: var(--line-strong);
+      }
+
+      .candidate-card.selected {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(81, 215, 212, 0.16);
+      }
+
+      .candidate-card img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: #030507;
+      }
+
+      .candidate-card span {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 9px;
+        color: var(--muted);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.68rem;
+      }
+
+      .candidate-card strong {
+        color: var(--accent);
+        font-size: 0.9rem;
+      }
+
+      .capture-output {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.8fr) minmax(300px, 1.2fr);
+        gap: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .capture-output img {
+        display: block;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: #030507;
+      }
+
+      .replace-details {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+      }
+
+      .replacement-summary {
+        margin: 0;
+        color: var(--muted);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.72rem;
+        line-height: 1.55;
+        overflow-wrap: anywhere;
+      }
+
+      .warning-box {
+        padding: 10px 12px;
+        border: 1px solid rgba(242, 191, 98, 0.4);
+        border-radius: 8px;
+        background: rgba(242, 191, 98, 0.08);
+        color: var(--warning);
+        font-size: 0.74rem;
+        line-height: 1.5;
+      }
+
+      .consent-label {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+        color: var(--muted);
+        font-size: 0.74rem;
+        line-height: 1.45;
+      }
+
+      .consent-label input {
+        margin-top: 2px;
+      }
+
+      .button.danger {
+        border-color: rgba(255, 116, 116, 0.5);
+        background: var(--fix-soft);
+        color: var(--fix);
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .viewer-shell {
+        margin-top: 16px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .viewer-toolbar {
+        display: flex;
+        min-height: 52px;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      .segmented {
+        display: inline-flex;
+        padding: 3px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: var(--surface);
+      }
+
+      .segmented .button {
+        min-height: 30px;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+      }
+
+      .segmented .button.active {
+        background: var(--surface-3);
+        color: var(--text);
+      }
+
+      .zoom-range {
+        width: clamp(90px, 12vw, 180px);
+      }
+
+      .zoom-value {
+        min-width: 58px;
+        color: var(--muted);
+        font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.75rem;
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+      }
+
+      .wipe-control {
+        display: none;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.72rem;
+      }
+
+      .viewer-shell[data-mode="wipe"] .wipe-control {
+        display: flex;
+      }
+
+      .viewer-frame {
+        height: clamp(440px, 68vh, 860px);
+        min-height: 0;
+        background: #040609;
+      }
+
+      .split-view {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 1px;
+        width: 100%;
+        height: 100%;
+        background: var(--line);
+      }
+
+      .viewer-shell[data-mode="wipe"] .split-view {
+        display: none;
+      }
+
+      .image-panel {
+        display: grid;
+        min-width: 0;
+        min-height: 0;
+        grid-template-rows: 38px minmax(0, 1fr);
+        margin: 0;
+        background: var(--page);
+      }
+
+      .image-caption {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .image-caption a {
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .image-viewport,
+      .wipe-viewport {
+        position: relative;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        background-color: #080b10;
+        background-image:
+          linear-gradient(45deg, #0e141d 25%, transparent 25%),
+          linear-gradient(-45deg, #0e141d 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #0e141d 75%),
+          linear-gradient(-45deg, transparent 75%, #0e141d 75%);
+        background-position:
+          0 0,
+          0 10px,
+          10px -10px,
+          -10px 0;
+        background-size: 20px 20px;
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
+      }
+
+      .image-viewport.dragging,
+      .wipe-viewport.dragging {
+        cursor: grabbing;
+      }
+
+      .audit-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: none;
+        max-height: none;
+        transform-origin: 0 0;
+        pointer-events: none;
+        user-select: none;
+        will-change: transform;
+      }
+
+      .wipe-view {
+        display: none;
+        width: 100%;
+        height: 100%;
+        grid-template-rows: 38px minmax(0, 1fr);
+      }
+
+      .viewer-shell[data-mode="wipe"] .wipe-view {
+        display: grid;
+      }
+
+      .wipe-legend {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .wipe-redacted-layer {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 50%;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .wipe-divider {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: var(--accent);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 18px rgba(81, 215, 212, 0.5);
+        pointer-events: none;
+      }
+
+      .wipe-divider::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        padding: 5px 7px;
+        border: 1px solid rgba(81, 215, 212, 0.6);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--accent);
+        content: "↔";
+        font-size: 0.72rem;
+        transform: translate(-50%, -50%);
+      }
+
+      .viewer-footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 38px;
+        padding: 7px 12px;
+        border-top: 1px solid var(--line);
+        background: var(--surface-2);
+        color: var(--quiet);
+        font-size: 0.7rem;
+      }
+
+      .viewer-shell:fullscreen {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+        border: 0;
+        border-radius: 0;
+        background: var(--page);
+      }
+
+      .viewer-shell:fullscreen .viewer-frame {
+        height: auto;
+        min-height: 0;
+        flex: 1;
+      }
+
+      .review-panel {
+        display: grid;
+        grid-template-columns: auto minmax(280px, 1fr);
+        gap: 16px;
+        align-items: start;
+        margin-top: 16px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+
+      .review-label {
+        margin: 0 0 9px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .review-notes {
+        min-height: 82px;
+        resize: vertical;
+        padding: 10px 12px;
+        line-height: 1.45;
+      }
+
+      .review-help {
+        margin: 7px 0 0;
+        color: var(--quiet);
+        font-size: 0.7rem;
+      }
+
+      .review-help.warning {
+        color: var(--warning);
+      }
+
+      .toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 20;
+        max-width: 360px;
+        padding: 11px 14px;
+        border: 1px solid var(--line-strong);
+        border-radius: 9px;
+        background: var(--surface-3);
+        box-shadow: var(--shadow);
+        color: var(--text);
+        font-size: 0.78rem;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 150ms ease, transform 150ms ease;
+        pointer-events: none;
+      }
+
+      .toast.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 980px) {
+        html,
+        body {
+          overflow: hidden;
+        }
+
+        .app-shell {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: minmax(300px, 46dvh) minmax(0, 1fr);
+          height: 100dvh;
+        }
+
+        .sidebar {
+          height: auto;
+          min-height: 0;
+          overflow: hidden;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .question-list {
+          display: flex;
+          height: auto;
+          max-height: none;
+          flex: 1 1 0;
+          gap: 6px;
+          overflow-x: scroll;
+          overflow-y: hidden;
+          padding: 8px 14px;
+          scroll-snap-type: x proximity;
+          touch-action: pan-x;
+        }
+
+        .question-item {
+          flex: 0 0 245px;
+          min-width: 245px;
+          scroll-snap-align: start;
+        }
+
+        .workspace {
+          height: auto;
+          min-height: 0;
+          overflow-y: scroll;
+        }
+
+        .question-header,
+        .meta-card,
+        .review-panel,
+        .capture-output {
+          grid-template-columns: 1fr;
+        }
+
+        .capture-form {
+          grid-template-columns: 1fr 180px;
+        }
+
+        .capture-form .button {
+          grid-column: 1 / -1;
+        }
+
+        .question-header {
+          align-items: start;
+        }
+
+        .navigation-cluster {
+          order: 2;
+        }
+
+        .header-actions {
+          order: 3;
+        }
+
+        .source-links {
+          justify-content: flex-start;
+        }
+
+        .viewer-frame {
+          height: 70vh;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .sidebar-header {
+          padding: 12px 16px 10px;
+        }
+
+        .sidebar-subtitle {
+          display: none;
+        }
+
+        .progress-summary {
+          margin-top: 9px;
+        }
+
+        .filters {
+          gap: 8px;
+          padding: 10px 12px;
+        }
+
+        .filter-row {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .sidebar-footer {
+          display: none;
+        }
+
+        .split-view {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr 1fr;
+        }
+
+        .viewer-frame {
+          height: 920px;
+        }
+
+        .viewer-toolbar,
+        .viewer-controls {
+          justify-content: flex-start;
+        }
+
+        .zoom-range {
+          width: 110px;
+        }
+
+        .header-actions,
+        .navigation-cluster {
+          flex-wrap: wrap;
+        }
+
+        .capture-form {
+          grid-template-columns: 1fr;
+        }
+
+        .candidate-grid,
+        .candidate-grid.fine {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Question navigator">
+        <header class="sidebar-header">
+          <p class="eyebrow">Local authoring</p>
+          <h1>Question Admin</h1>
+          <p class="sidebar-subtitle">
+            Audit redactions and regenerate tracked source frames. This panel writes only through the loopback admin server.
+          </p>
+          <div class="progress-summary">
+            <span class="progress-label">Reviewed</span>
+            <strong id="progressCount" class="progress-count">0 / 0</strong>
+            <div class="progress-track" aria-hidden="true">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+          </div>
+        </header>
+
+        <section class="filters" aria-label="Question filters">
+          <label class="search-wrap">
+            <span hidden>Search questions</span>
+            <input id="searchInput" class="search-input" type="search" placeholder="Search team, stage, ID…" />
+          </label>
+          <div class="filter-row">
+            <label>
+              <span hidden>Event</span>
+              <select id="eventFilter" class="filter-select">
+                <option value="all">All events</option>
+              </select>
+            </label>
+            <label>
+              <span hidden>Pool</span>
+              <select id="poolFilter" class="filter-select">
+                <option value="all">All pools</option>
+                <option value="classic">Classic</option>
+                <option value="deep-cut">Deep cut</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            <span hidden>Review status</span>
+            <select id="reviewFilter" class="filter-select">
+              <option value="all">All review states</option>
+              <option value="unreviewed">Unreviewed</option>
+              <option value="pass">Passed</option>
+              <option value="fix">Needs correction</option>
+            </select>
+          </label>
+        </section>
+
+        <nav id="questionList" class="question-list" aria-label="Questions"></nav>
+
+        <footer class="sidebar-footer">
+          <button id="nextUnreviewed" class="button accent" type="button">Next unreviewed</button>
+          <button id="clearFilters" class="button subtle" type="button">Clear filters</button>
+        </footer>
+      </aside>
+
+      <main class="workspace">
+        <div class="content">
+          <header class="question-header">
+            <div class="navigation-cluster">
+              <button id="previousQuestion" class="button icon-button" type="button" aria-label="Previous question">←</button>
+              <button id="nextQuestion" class="button icon-button" type="button" aria-label="Next question">→</button>
+            </div>
+            <div class="question-heading">
+              <p id="questionPosition" class="question-position">Question</p>
+              <h2 id="questionTitle">Loading audit data…</h2>
+              <p id="answerLine" class="answer-line"></p>
+            </div>
+            <div class="header-actions">
+              <button id="markPassHeader" class="button pass" type="button">✓ Pass</button>
+              <button id="markFixHeader" class="button fix" type="button">! Needs correction</button>
+            </div>
+          </header>
+
+          <section class="meta-card" aria-label="Answer and manifest metadata">
+            <div>
+              <div class="badge-row">
+                <span id="poolBadge" class="badge"></span>
+                <span id="manifestStatusBadge" class="badge"></span>
+                <span id="rectangleBadge" class="badge"></span>
+                <span id="sourceHealthBadge" class="badge source-health"></span>
+              </div>
+              <p id="exactAnswer" class="exact-answer"></p>
+            </div>
+            <div class="source-links">
+              <a id="sourceLink" target="_blank" rel="noreferrer">Broadcast source ↗</a>
+              <a id="questionManifestLink" target="_blank">Question manifest ↗</a>
+              <a id="redactionManifestLink" target="_blank">Redaction manifest ↗</a>
+            </div>
+          </section>
+
+          <section class="capture-panel" aria-labelledby="captureHeading">
+            <header class="capture-header">
+              <div>
+                <h3 id="captureHeading">Regenerate original PNG</h3>
+                <p>Use a stable YouTube video URL and a rough timestamp, then choose a coarse moment and the exact decoded frame.</p>
+              </div>
+              <span id="adminConnectionBadge" class="badge connection-badge" data-state="offline">Offline snapshot</span>
+            </header>
+
+            <form id="captureForm" class="capture-form">
+              <label class="field-label" for="captureUrl">
+                Stable YouTube URL
+                <input id="captureUrl" class="admin-input" type="url" inputmode="url" autocomplete="off" placeholder="https://www.youtube.com/watch?v=…" required />
+              </label>
+              <label class="field-label" for="captureTimestamp">
+                Rough timestamp
+                <input id="captureTimestamp" class="admin-input" type="text" inputmode="decimal" autocomplete="off" placeholder="01:23:45" required />
+              </label>
+              <button id="startCapture" class="button accent" type="submit">Generate coarse frames</button>
+            </form>
+
+            <p id="captureStatus" class="capture-status" role="status" aria-live="polite">Start this panel with <code>npm run questions:admin</code> to enable local authoring.</p>
+            <pre id="captureLog" class="capture-log" hidden></pre>
+
+            <section id="coarseStage" class="capture-stage" aria-labelledby="coarseHeading" hidden>
+              <div class="capture-stage-header">
+                <div>
+                  <h4 id="coarseHeading">1. Choose the moment</h4>
+                  <p>Twenty frames sampled at 2 fps across the ten-second capture window.</p>
+                </div>
+                <button id="generateFine" class="button accent" type="button" disabled>Generate exact frames</button>
+              </div>
+              <div id="coarseCandidates" class="candidate-grid"></div>
+            </section>
+
+            <section id="fineStage" class="capture-stage" aria-labelledby="fineHeading" hidden>
+              <div class="capture-stage-header">
+                <div>
+                  <h4 id="fineHeading">2. Choose the exact frame</h4>
+                  <p>Every decoded frame within ±0.5 seconds of the coarse selection.</p>
+                </div>
+                <button id="prepareFrame" class="button accent" type="button" disabled>Prepare selected frame</button>
+              </div>
+              <div id="fineCandidates" class="candidate-grid fine"></div>
+            </section>
+
+            <section id="captureOutput" class="capture-output" aria-labelledby="captureOutputHeading" hidden>
+              <div>
+                <img id="captureOutputImage" alt="Selected unredacted source frame" />
+              </div>
+              <div class="replace-details">
+                <div>
+                  <h4 id="captureOutputHeading">3. Replace tracked original</h4>
+                  <p>The selected PNG and capture provenance are verified again before any repository file changes.</p>
+                </div>
+                <p id="replacementSummary" class="replacement-summary"></p>
+                <div id="redactionWarning" class="warning-box">Replacing <code>original.png</code> intentionally leaves the current redaction source hash unchanged. Review alignment and regenerate <code>redacted.webp</code> afterward.</div>
+                <label id="dimensionConsentLabel" class="consent-label" hidden>
+                  <input id="dimensionConsent" type="checkbox" />
+                  <span id="dimensionConsentText">Allow this dimension change.</span>
+                </label>
+                <button id="replaceOriginal" class="button danger" type="button">Replace original.png</button>
+              </div>
+            </section>
+          </section>
+
+          <section id="viewerShell" class="viewer-shell" data-mode="split" aria-label="Zoomable image comparison">
+            <div class="viewer-toolbar">
+              <div class="mode-switch segmented" aria-label="Comparison mode">
+                <button id="splitMode" class="button active" type="button" aria-pressed="true">Side by side</button>
+                <button id="wipeMode" class="button" type="button" aria-pressed="false">Wipe</button>
+              </div>
+
+              <div class="viewer-controls">
+                <button id="zoomOut" class="button icon-button" type="button" aria-label="Zoom out">−</button>
+                <input id="zoomRange" class="zoom-range" type="range" min="5" max="800" step="1" value="100" aria-label="Zoom percentage" />
+                <span id="zoomValue" class="zoom-value">100%</span>
+                <button id="zoomIn" class="button icon-button" type="button" aria-label="Zoom in">+</button>
+                <button id="fitImage" class="button" type="button">Fit</button>
+                <button id="actualSize" class="button" type="button">100%</button>
+                <label class="wipe-control">
+                  Wipe
+                  <input id="wipeRange" type="range" min="0" max="100" step="1" value="50" aria-label="Wipe position" />
+                </label>
+                <button id="fullscreenViewer" class="button" type="button">Fullscreen</button>
+              </div>
+            </div>
+
+            <div class="viewer-frame">
+              <div class="split-view">
+                <figure class="image-panel">
+                  <figcaption class="image-caption">
+                    <span>Original</span>
+                    <a id="openOriginal" target="_blank">Open full resolution ↗</a>
+                  </figcaption>
+                  <div id="originalViewport" class="image-viewport" tabindex="0" aria-label="Original image. Wheel to zoom and drag to pan.">
+                    <img id="originalImage" class="audit-image" alt="" draggable="false" />
+                  </div>
+                </figure>
+                <figure class="image-panel">
+                  <figcaption class="image-caption">
+                    <span>Redacted</span>
+                    <a id="openRedacted" target="_blank">Open full resolution ↗</a>
+                  </figcaption>
+                  <div id="redactedViewport" class="image-viewport" tabindex="0" aria-label="Redacted image. Wheel to zoom and drag to pan.">
+                    <img id="redactedImage" class="audit-image" alt="" draggable="false" />
+                  </div>
+                </figure>
+              </div>
+
+              <div class="wipe-view">
+                <div class="wipe-legend">
+                  <span>Redacted</span>
+                  <span>Original</span>
+                </div>
+                <div id="wipeViewport" class="wipe-viewport" tabindex="0" aria-label="Wipe comparison. Wheel to zoom and drag to pan.">
+                  <img id="wipeOriginalImage" class="audit-image" alt="" draggable="false" />
+                  <div id="wipeRedactedLayer" class="wipe-redacted-layer">
+                    <img id="wipeRedactedImage" class="audit-image" alt="" draggable="false" />
+                  </div>
+                  <div id="wipeDivider" class="wipe-divider" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="viewer-footer">
+              <span>Wheel: zoom at cursor · drag: pan · double-click: Fit/100% · 0: Fit · 1: 100%</span>
+              <span id="imageDimensions">—</span>
+            </footer>
+          </section>
+
+          <section class="review-panel" aria-label="Review decision">
+            <div>
+              <p class="review-label">Decision</p>
+              <div class="review-actions">
+                <button id="markUnreviewed" class="button" type="button">Unreviewed</button>
+                <button id="markPass" class="button pass" type="button">✓ Pass</button>
+                <button id="markFix" class="button fix" type="button">! Needs correction</button>
+              </div>
+            </div>
+            <div>
+              <label class="review-label" for="reviewNotes">Notes</label>
+              <textarea id="reviewNotes" class="review-notes" placeholder="Example: Patch 25.20 remains visible at bottom-left."></textarea>
+              <p id="storageHelp" class="review-help">Review state and notes save automatically in this browser.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script id="question-data" type="application/json">{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-11T15:20:11.402Z",
+  "questions": [
+    {
+      "id": "q-1a3ad3vz4whk",
+      "pool": "classic",
+      "editionId": "worlds-2017",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2017,
+      "stage": "Group Stage",
+      "blueTeam": {
+        "id": "edward-gaming",
+        "name": "EDward Gaming"
+      },
+      "redTeam": {
+        "id": "sk-telecom-t1",
+        "name": "SK Telecom T1"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast VOD",
+        "url": "https://www.youtube.com/watch?v=Kuszgwi1Eno"
+      },
+      "reviewStatus": "approved",
+      "rectangleCount": 21,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-1a3ad3vz4whk/original.png",
+      "redactedPath": "sources/questions/q-1a3ad3vz4whk/redacted.webp",
+      "questionManifestPath": "sources/questions/q-1a3ad3vz4whk/question.json",
+      "redactionManifestPath": "sources/questions/q-1a3ad3vz4whk/redaction.json"
+    },
+    {
+      "id": "q-dvcb6v0vmxsh",
+      "pool": "classic",
+      "editionId": "worlds-2022",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2022,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "drx",
+        "name": "DRX"
+      },
+      "gameNumber": 5,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=b56apBhNYkM"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 34,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-dvcb6v0vmxsh/original.png",
+      "redactedPath": "sources/questions/q-dvcb6v0vmxsh/redacted.webp",
+      "questionManifestPath": "sources/questions/q-dvcb6v0vmxsh/question.json",
+      "redactionManifestPath": "sources/questions/q-dvcb6v0vmxsh/redaction.json"
+    },
+    {
+      "id": "q-803e2xh5a25v",
+      "pool": "classic",
+      "editionId": "worlds-2022",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2022,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "drx",
+        "name": "DRX"
+      },
+      "redTeam": {
+        "id": "edward-gaming",
+        "name": "EDward Gaming"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ByzLCMkkMQ0"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 17,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-803e2xh5a25v/original.png",
+      "redactedPath": "sources/questions/q-803e2xh5a25v/redacted.webp",
+      "questionManifestPath": "sources/questions/q-803e2xh5a25v/question.json",
+      "redactionManifestPath": "sources/questions/q-803e2xh5a25v/redaction.json"
+    },
+    {
+      "id": "q-tfpsvtqjnem3",
+      "pool": "classic",
+      "editionId": "worlds-2022",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2022,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "redTeam": {
+        "id": "drx",
+        "name": "DRX"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "LoL Esports broadcast mirror on YouTube",
+        "url": "https://www.youtube.com/watch?v=c80bH5qb9Ww"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 22,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-tfpsvtqjnem3/original.png",
+      "redactedPath": "sources/questions/q-tfpsvtqjnem3/redacted.webp",
+      "questionManifestPath": "sources/questions/q-tfpsvtqjnem3/question.json",
+      "redactionManifestPath": "sources/questions/q-tfpsvtqjnem3/redaction.json"
+    },
+    {
+      "id": "q-a08d5g69276z",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "weibo-gaming",
+        "name": "Weibo Gaming"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=WONrMF2F17w"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 24,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-a08d5g69276z/original.png",
+      "redactedPath": "sources/questions/q-a08d5g69276z/redacted.webp",
+      "questionManifestPath": "sources/questions/q-a08d5g69276z/question.json",
+      "redactionManifestPath": "sources/questions/q-a08d5g69276z/redaction.json"
+    },
+    {
+      "id": "q-j3jk8p9rs99q",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "lng-esports",
+        "name": "LNG Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=d7DijllJr-s"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 25,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-j3jk8p9rs99q/original.png",
+      "redactedPath": "sources/questions/q-j3jk8p9rs99q/redacted.webp",
+      "questionManifestPath": "sources/questions/q-j3jk8p9rs99q/question.json",
+      "redactionManifestPath": "sources/questions/q-j3jk8p9rs99q/redaction.json"
+    },
+    {
+      "id": "q-cjxqmy1bgbkb",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "lng-esports",
+        "name": "LNG Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=d7DijllJr-s"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 18,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-cjxqmy1bgbkb/original.png",
+      "redactedPath": "sources/questions/q-cjxqmy1bgbkb/redacted.webp",
+      "questionManifestPath": "sources/questions/q-cjxqmy1bgbkb/question.json",
+      "redactionManifestPath": "sources/questions/q-cjxqmy1bgbkb/redaction.json"
+    },
+    {
+      "id": "q-0r4rxh4p5phz",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "jd-gaming",
+        "name": "JD Gaming"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=5fQDhgSfeqk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 29,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-0r4rxh4p5phz/original.png",
+      "redactedPath": "sources/questions/q-0r4rxh4p5phz/redacted.webp",
+      "questionManifestPath": "sources/questions/q-0r4rxh4p5phz/question.json",
+      "redactionManifestPath": "sources/questions/q-0r4rxh4p5phz/redaction.json"
+    },
+    {
+      "id": "q-rxx8zhz8e5xz",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "jd-gaming",
+        "name": "JD Gaming"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=5fQDhgSfeqk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 27,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-rxx8zhz8e5xz/original.png",
+      "redactedPath": "sources/questions/q-rxx8zhz8e5xz/redacted.webp",
+      "questionManifestPath": "sources/questions/q-rxx8zhz8e5xz/question.json",
+      "redactionManifestPath": "sources/questions/q-rxx8zhz8e5xz/redaction.json"
+    },
+    {
+      "id": "q-9nmmp40pgdx5",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "jd-gaming",
+        "name": "JD Gaming"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=5fQDhgSfeqk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 22,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-9nmmp40pgdx5/original.png",
+      "redactedPath": "sources/questions/q-9nmmp40pgdx5/redacted.webp",
+      "questionManifestPath": "sources/questions/q-9nmmp40pgdx5/question.json",
+      "redactionManifestPath": "sources/questions/q-9nmmp40pgdx5/redaction.json"
+    },
+    {
+      "id": "q-t5h12699fxgp",
+      "pool": "classic",
+      "editionId": "worlds-2023",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2023,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "jd-gaming",
+        "name": "JD Gaming"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=5fQDhgSfeqk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 27,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-t5h12699fxgp/original.png",
+      "redactedPath": "sources/questions/q-t5h12699fxgp/redacted.webp",
+      "questionManifestPath": "sources/questions/q-t5h12699fxgp/question.json",
+      "redactionManifestPath": "sources/questions/q-t5h12699fxgp/redaction.json"
+    },
+    {
+      "id": "q-80fa9kcd9ybt",
+      "pool": "classic",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=0TMreK9k1KI"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 21,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-80fa9kcd9ybt/original.png",
+      "redactedPath": "sources/questions/q-80fa9kcd9ybt/redacted.webp",
+      "questionManifestPath": "sources/questions/q-80fa9kcd9ybt/question.json",
+      "redactionManifestPath": "sources/questions/q-80fa9kcd9ybt/redaction.json"
+    },
+    {
+      "id": "q-jp9stvkag85k",
+      "pool": "classic",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=0TMreK9k1KI"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 21,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-jp9stvkag85k/original.png",
+      "redactedPath": "sources/questions/q-jp9stvkag85k/redacted.webp",
+      "questionManifestPath": "sources/questions/q-jp9stvkag85k/question.json",
+      "redactionManifestPath": "sources/questions/q-jp9stvkag85k/redaction.json"
+    },
+    {
+      "id": "q-b2dhgh1g8tr4",
+      "pool": "classic",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=0TMreK9k1KI"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 22,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-b2dhgh1g8tr4/original.png",
+      "redactedPath": "sources/questions/q-b2dhgh1g8tr4/redacted.webp",
+      "questionManifestPath": "sources/questions/q-b2dhgh1g8tr4/question.json",
+      "redactionManifestPath": "sources/questions/q-b2dhgh1g8tr4/redaction.json"
+    },
+    {
+      "id": "q-pvdn2de95rpk",
+      "pool": "deep-cut",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "hanwha-life-esports",
+        "name": "Hanwha Life Esports"
+      },
+      "redTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast VOD",
+        "url": "https://www.youtube.com/watch?v=Ja8iv1e0aLQ"
+      },
+      "reviewStatus": "approved",
+      "rectangleCount": 29,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-pvdn2de95rpk/original.png",
+      "redactedPath": "sources/questions/q-pvdn2de95rpk/redacted.webp",
+      "questionManifestPath": "sources/questions/q-pvdn2de95rpk/question.json",
+      "redactionManifestPath": "sources/questions/q-pvdn2de95rpk/redaction.json"
+    },
+    {
+      "id": "q-33fr5w6c3n5v",
+      "pool": "classic",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=k0NKlyaQhzE"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 26,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-33fr5w6c3n5v/original.png",
+      "redactedPath": "sources/questions/q-33fr5w6c3n5v/redacted.webp",
+      "questionManifestPath": "sources/questions/q-33fr5w6c3n5v/question.json",
+      "redactionManifestPath": "sources/questions/q-33fr5w6c3n5v/redaction.json"
+    },
+    {
+      "id": "q-efd3q8g07jxb",
+      "pool": "classic",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ihBJc901FLk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 22,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-efd3q8g07jxb/original.png",
+      "redactedPath": "sources/questions/q-efd3q8g07jxb/redacted.webp",
+      "questionManifestPath": "sources/questions/q-efd3q8g07jxb/question.json",
+      "redactionManifestPath": "sources/questions/q-efd3q8g07jxb/redaction.json"
+    },
+    {
+      "id": "q-snfj6vhdx5r7",
+      "pool": "classic",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ihBJc901FLk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 21,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-snfj6vhdx5r7/original.png",
+      "redactedPath": "sources/questions/q-snfj6vhdx5r7/redacted.webp",
+      "questionManifestPath": "sources/questions/q-snfj6vhdx5r7/question.json",
+      "redactionManifestPath": "sources/questions/q-snfj6vhdx5r7/redaction.json"
+    },
+    {
+      "id": "q-2ptdjdea04jv",
+      "pool": "deep-cut",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "weibo-gaming",
+        "name": "Weibo Gaming"
+      },
+      "redTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=CzsIGLfgUVE"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 25,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-2ptdjdea04jv/original.png",
+      "redactedPath": "sources/questions/q-2ptdjdea04jv/redacted.webp",
+      "questionManifestPath": "sources/questions/q-2ptdjdea04jv/question.json",
+      "redactionManifestPath": "sources/questions/q-2ptdjdea04jv/redaction.json"
+    },
+    {
+      "id": "q-5418n2bprxpr",
+      "pool": "deep-cut",
+      "editionId": "worlds-2024",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2024,
+      "stage": "Swiss Stage",
+      "blueTeam": {
+        "id": "hanwha-life-esports",
+        "name": "Hanwha Life Esports"
+      },
+      "redTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=HRUh2ceh8VM"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 20,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-5418n2bprxpr/original.png",
+      "redactedPath": "sources/questions/q-5418n2bprxpr/redacted.webp",
+      "questionManifestPath": "sources/questions/q-5418n2bprxpr/question.json",
+      "redactionManifestPath": "sources/questions/q-5418n2bprxpr/redaction.json"
+    },
+    {
+      "id": "q-9qn1xn018wp6",
+      "pool": "deep-cut",
+      "editionId": "first-stand-2025",
+      "seriesId": "first-stand",
+      "tournament": "First Stand",
+      "year": 2025,
+      "stage": "Round Robin Stage",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "ctbc-flying-oyster",
+        "name": "CTBC Flying Oyster"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "LoL Esports broadcast mirror on YouTube",
+        "url": "https://www.youtube.com/watch?v=ZJZhShFcV2I"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 17,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-9qn1xn018wp6/original.png",
+      "redactedPath": "sources/questions/q-9qn1xn018wp6/redacted.webp",
+      "questionManifestPath": "sources/questions/q-9qn1xn018wp6/question.json",
+      "redactionManifestPath": "sources/questions/q-9qn1xn018wp6/redaction.json"
+    },
+    {
+      "id": "q-29j05z7kqkk7",
+      "pool": "deep-cut",
+      "editionId": "first-stand-2025",
+      "seriesId": "first-stand",
+      "tournament": "First Stand",
+      "year": 2025,
+      "stage": "Round Robin Stage",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "hanwha-life-esports",
+        "name": "Hanwha Life Esports"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=_6iL73sE-uI"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 18,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-29j05z7kqkk7/original.png",
+      "redactedPath": "sources/questions/q-29j05z7kqkk7/redacted.webp",
+      "questionManifestPath": "sources/questions/q-29j05z7kqkk7/question.json",
+      "redactionManifestPath": "sources/questions/q-29j05z7kqkk7/redaction.json"
+    },
+    {
+      "id": "q-qmfry14qxt4w",
+      "pool": "deep-cut",
+      "editionId": "first-stand-2025",
+      "seriesId": "first-stand",
+      "tournament": "First Stand",
+      "year": 2025,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "hanwha-life-esports",
+        "name": "Hanwha Life Esports"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "LoL Esports broadcast mirror on YouTube",
+        "url": "https://www.youtube.com/watch?v=2Iu7gO2HBPc"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 16,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-qmfry14qxt4w/original.png",
+      "redactedPath": "sources/questions/q-qmfry14qxt4w/redacted.webp",
+      "questionManifestPath": "sources/questions/q-qmfry14qxt4w/question.json",
+      "redactionManifestPath": "sources/questions/q-qmfry14qxt4w/redaction.json"
+    },
+    {
+      "id": "q-5dmfnkdn4a93",
+      "pool": "classic",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Bracket Stage",
+      "blueTeam": {
+        "id": "anyones-legend",
+        "name": "Anyone's Legend"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 5,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=wTJRKJfn2Ts"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 13,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-5dmfnkdn4a93/original.png",
+      "redactedPath": "sources/questions/q-5dmfnkdn4a93/redacted.webp",
+      "questionManifestPath": "sources/questions/q-5dmfnkdn4a93/question.json",
+      "redactionManifestPath": "sources/questions/q-5dmfnkdn4a93/redaction.json"
+    },
+    {
+      "id": "q-h9sdy0crms1j",
+      "pool": "classic",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Bracket Stage",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "anyones-legend",
+        "name": "Anyone's Legend"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=wTJRKJfn2Ts"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 15,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-h9sdy0crms1j/original.png",
+      "redactedPath": "sources/questions/q-h9sdy0crms1j/redacted.webp",
+      "questionManifestPath": "sources/questions/q-h9sdy0crms1j/question.json",
+      "redactionManifestPath": "sources/questions/q-h9sdy0crms1j/redaction.json"
+    },
+    {
+      "id": "q-1vrb4kxd61ez",
+      "pool": "deep-cut",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Bracket Stage",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "ctbc-flying-oyster",
+        "name": "CTBC Flying Oyster"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=EnoWXLL5IHs"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 8,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-1vrb4kxd61ez/original.png",
+      "redactedPath": "sources/questions/q-1vrb4kxd61ez/redacted.webp",
+      "questionManifestPath": "sources/questions/q-1vrb4kxd61ez/question.json",
+      "redactionManifestPath": "sources/questions/q-1vrb4kxd61ez/redaction.json"
+    },
+    {
+      "id": "q-vzte4wmyqs8e",
+      "pool": "deep-cut",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Bracket Stage",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=3sqtxg38EEg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 18,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-vzte4wmyqs8e/original.png",
+      "redactedPath": "sources/questions/q-vzte4wmyqs8e/redacted.webp",
+      "questionManifestPath": "sources/questions/q-vzte4wmyqs8e/question.json",
+      "redactionManifestPath": "sources/questions/q-vzte4wmyqs8e/redaction.json"
+    },
+    {
+      "id": "q-6hdstdr838ga",
+      "pool": "deep-cut",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Bracket Stage",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "gameNumber": 5,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=3sqtxg38EEg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 11,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-6hdstdr838ga/original.png",
+      "redactedPath": "sources/questions/q-6hdstdr838ga/redacted.webp",
+      "questionManifestPath": "sources/questions/q-6hdstdr838ga/question.json",
+      "redactionManifestPath": "sources/questions/q-6hdstdr838ga/redaction.json"
+    },
+    {
+      "id": "q-8eqr26qdmpxy",
+      "pool": "classic",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=NJRNuPoMdUA"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 12,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-8eqr26qdmpxy/original.png",
+      "redactedPath": "sources/questions/q-8eqr26qdmpxy/redacted.webp",
+      "questionManifestPath": "sources/questions/q-8eqr26qdmpxy/question.json",
+      "redactionManifestPath": "sources/questions/q-8eqr26qdmpxy/redaction.json"
+    },
+    {
+      "id": "q-qarxkzvjn2s9",
+      "pool": "classic",
+      "editionId": "msi-2025",
+      "seriesId": "msi",
+      "tournament": "MSI",
+      "year": 2025,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "gameNumber": 5,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=NJRNuPoMdUA"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 12,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-qarxkzvjn2s9/original.png",
+      "redactedPath": "sources/questions/q-qarxkzvjn2s9/redacted.webp",
+      "questionManifestPath": "sources/questions/q-qarxkzvjn2s9/question.json",
+      "redactionManifestPath": "sources/questions/q-qarxkzvjn2s9/redaction.json"
+    },
+    {
+      "id": "q-ws5a9pwp6d72",
+      "pool": "classic",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "kt-rolster",
+        "name": "KT Rolster"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 5,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ADaZLxI3uWg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 20,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-ws5a9pwp6d72/original.png",
+      "redactedPath": "sources/questions/q-ws5a9pwp6d72/redacted.webp",
+      "questionManifestPath": "sources/questions/q-ws5a9pwp6d72/question.json",
+      "redactionManifestPath": "sources/questions/q-ws5a9pwp6d72/redaction.json"
+    },
+    {
+      "id": "q-n1pdaf42q6qa",
+      "pool": "classic",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Final",
+      "blueTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "redTeam": {
+        "id": "kt-rolster",
+        "name": "KT Rolster"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ADaZLxI3uWg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 12,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-n1pdaf42q6qa/original.png",
+      "redactedPath": "sources/questions/q-n1pdaf42q6qa/redacted.webp",
+      "questionManifestPath": "sources/questions/q-n1pdaf42q6qa/question.json",
+      "redactionManifestPath": "sources/questions/q-n1pdaf42q6qa/redaction.json"
+    },
+    {
+      "id": "q-73cjdm0bxama",
+      "pool": "classic",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "anyones-legend",
+        "name": "Anyone's Legend"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 5,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=dVw8MykeXuk"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 32,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-73cjdm0bxama/original.png",
+      "redactedPath": "sources/questions/q-73cjdm0bxama/redacted.webp",
+      "questionManifestPath": "sources/questions/q-73cjdm0bxama/question.json",
+      "redactionManifestPath": "sources/questions/q-73cjdm0bxama/redaction.json"
+    },
+    {
+      "id": "q-e9q1r17j0x24",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Quarterfinal",
+      "blueTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "redTeam": {
+        "id": "hanwha-life-esports",
+        "name": "Hanwha Life Esports"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=zFNKtfzkZVA"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 27,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-e9q1r17j0x24/original.png",
+      "redactedPath": "sources/questions/q-e9q1r17j0x24/redacted.webp",
+      "questionManifestPath": "sources/questions/q-e9q1r17j0x24/question.json",
+      "redactionManifestPath": "sources/questions/q-e9q1r17j0x24/redaction.json"
+    },
+    {
+      "id": "q-js2nf07ef2nm",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "redTeam": {
+        "id": "kt-rolster",
+        "name": "KT Rolster"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ulwJuev03qA"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 13,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-js2nf07ef2nm/original.png",
+      "redactedPath": "sources/questions/q-js2nf07ef2nm/redacted.webp",
+      "questionManifestPath": "sources/questions/q-js2nf07ef2nm/question.json",
+      "redactionManifestPath": "sources/questions/q-js2nf07ef2nm/redaction.json"
+    },
+    {
+      "id": "q-htrkaye30qzf",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "redTeam": {
+        "id": "kt-rolster",
+        "name": "KT Rolster"
+      },
+      "gameNumber": 4,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=ulwJuev03qA"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 16,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-htrkaye30qzf/original.png",
+      "redactedPath": "sources/questions/q-htrkaye30qzf/redacted.webp",
+      "questionManifestPath": "sources/questions/q-htrkaye30qzf/question.json",
+      "redactionManifestPath": "sources/questions/q-htrkaye30qzf/redaction.json"
+    },
+    {
+      "id": "q-fxadef9qhpd4",
+      "pool": "classic",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 2,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=1Z_bBZsLhyg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 13,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-fxadef9qhpd4/original.png",
+      "redactedPath": "sources/questions/q-fxadef9qhpd4/redacted.webp",
+      "questionManifestPath": "sources/questions/q-fxadef9qhpd4/question.json",
+      "redactionManifestPath": "sources/questions/q-fxadef9qhpd4/redaction.json"
+    },
+    {
+      "id": "q-mbw1d9xcasa8",
+      "pool": "classic",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=1Z_bBZsLhyg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 10,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-mbw1d9xcasa8/original.png",
+      "redactedPath": "sources/questions/q-mbw1d9xcasa8/redacted.webp",
+      "questionManifestPath": "sources/questions/q-mbw1d9xcasa8/question.json",
+      "redactionManifestPath": "sources/questions/q-mbw1d9xcasa8/redaction.json"
+    },
+    {
+      "id": "q-rzprjk41hk84",
+      "pool": "classic",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Semifinal",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=1Z_bBZsLhyg"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 9,
+      "width": 2560,
+      "height": 1440,
+      "originalPath": "sources/questions/q-rzprjk41hk84/original.png",
+      "redactedPath": "sources/questions/q-rzprjk41hk84/redacted.webp",
+      "questionManifestPath": "sources/questions/q-rzprjk41hk84/question.json",
+      "redactionManifestPath": "sources/questions/q-rzprjk41hk84/redaction.json"
+    },
+    {
+      "id": "q-9jj2sbh1yzpr",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Swiss Stage",
+      "blueTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "redTeam": {
+        "id": "100-thieves",
+        "name": "100 Thieves"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=Row83yX7Ae0"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 9,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-9jj2sbh1yzpr/original.png",
+      "redactedPath": "sources/questions/q-9jj2sbh1yzpr/redacted.webp",
+      "questionManifestPath": "sources/questions/q-9jj2sbh1yzpr/question.json",
+      "redactionManifestPath": "sources/questions/q-9jj2sbh1yzpr/redaction.json"
+    },
+    {
+      "id": "q-mb12v84m5gdt",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Swiss Stage",
+      "blueTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "redTeam": {
+        "id": "g2-esports",
+        "name": "G2 Esports"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=4cnUcX2JA6A"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 24,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-mb12v84m5gdt/original.png",
+      "redactedPath": "sources/questions/q-mb12v84m5gdt/redacted.webp",
+      "questionManifestPath": "sources/questions/q-mb12v84m5gdt/question.json",
+      "redactionManifestPath": "sources/questions/q-mb12v84m5gdt/redaction.json"
+    },
+    {
+      "id": "q-85h9cr84xyyb",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Swiss Stage",
+      "blueTeam": {
+        "id": "ctbc-flying-oyster",
+        "name": "CTBC Flying Oyster"
+      },
+      "redTeam": {
+        "id": "t1",
+        "name": "T1"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "LoL Esports broadcast mirror on YouTube",
+        "url": "https://www.youtube.com/watch?v=cD6PMBbzE9g"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 19,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-85h9cr84xyyb/original.png",
+      "redactedPath": "sources/questions/q-85h9cr84xyyb/redacted.webp",
+      "questionManifestPath": "sources/questions/q-85h9cr84xyyb/question.json",
+      "redactionManifestPath": "sources/questions/q-85h9cr84xyyb/redaction.json"
+    },
+    {
+      "id": "q-kjvc92vqbcma",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Swiss Stage",
+      "blueTeam": {
+        "id": "gen-g-esports",
+        "name": "Gen.G Esports"
+      },
+      "redTeam": {
+        "id": "anyones-legend",
+        "name": "Anyone's Legend"
+      },
+      "gameNumber": 1,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=QxvoFCWC0u8"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 18,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-kjvc92vqbcma/original.png",
+      "redactedPath": "sources/questions/q-kjvc92vqbcma/redacted.webp",
+      "questionManifestPath": "sources/questions/q-kjvc92vqbcma/question.json",
+      "redactionManifestPath": "sources/questions/q-kjvc92vqbcma/redaction.json"
+    },
+    {
+      "id": "q-dza1ed9emd6a",
+      "pool": "deep-cut",
+      "editionId": "worlds-2025",
+      "seriesId": "worlds",
+      "tournament": "Worlds",
+      "year": 2025,
+      "stage": "Swiss Stage",
+      "blueTeam": {
+        "id": "top-esports",
+        "name": "Top Esports"
+      },
+      "redTeam": {
+        "id": "bilibili-gaming",
+        "name": "Bilibili Gaming"
+      },
+      "gameNumber": 3,
+      "source": {
+        "label": "Official LoL Esports broadcast video",
+        "url": "https://www.youtube.com/watch?v=V9AgrsUzMHY"
+      },
+      "reviewStatus": "auto-applied",
+      "rectangleCount": 16,
+      "width": 1920,
+      "height": 1080,
+      "originalPath": "sources/questions/q-dza1ed9emd6a/original.png",
+      "redactedPath": "sources/questions/q-dza1ed9emd6a/redacted.webp",
+      "questionManifestPath": "sources/questions/q-dza1ed9emd6a/question.json",
+      "redactionManifestPath": "sources/questions/q-dza1ed9emd6a/redaction.json"
+    }
+  ]
+}</script>
+    <script>
+      (() => {
+        "use strict"
+
+        const auditData = JSON.parse(document.getElementById("question-data").textContent)
+        let questions = auditData.questions
+        const storageKey = "proscene-guesser-redaction-audit-v1"
+        const maximumZoom = 8
+        const minimumZoom = 0.05
+
+        const elements = Object.fromEntries(
+          [
+            "progressCount",
+            "progressFill",
+            "searchInput",
+            "eventFilter",
+            "poolFilter",
+            "reviewFilter",
+            "questionList",
+            "nextUnreviewed",
+            "clearFilters",
+            "previousQuestion",
+            "nextQuestion",
+            "questionPosition",
+            "questionTitle",
+            "answerLine",
+            "markPassHeader",
+            "markFixHeader",
+            "poolBadge",
+            "manifestStatusBadge",
+            "rectangleBadge",
+            "sourceHealthBadge",
+            "exactAnswer",
+            "sourceLink",
+            "questionManifestLink",
+            "redactionManifestLink",
+            "viewerShell",
+            "splitMode",
+            "wipeMode",
+            "zoomOut",
+            "zoomRange",
+            "zoomValue",
+            "zoomIn",
+            "fitImage",
+            "actualSize",
+            "wipeRange",
+            "fullscreenViewer",
+            "originalViewport",
+            "redactedViewport",
+            "wipeViewport",
+            "originalImage",
+            "redactedImage",
+            "wipeOriginalImage",
+            "wipeRedactedImage",
+            "wipeRedactedLayer",
+            "wipeDivider",
+            "openOriginal",
+            "openRedacted",
+            "imageDimensions",
+            "markUnreviewed",
+            "markPass",
+            "markFix",
+            "reviewNotes",
+            "storageHelp",
+            "adminConnectionBadge",
+            "captureForm",
+            "captureUrl",
+            "captureTimestamp",
+            "startCapture",
+            "captureStatus",
+            "captureLog",
+            "coarseStage",
+            "coarseCandidates",
+            "generateFine",
+            "fineStage",
+            "fineCandidates",
+            "prepareFrame",
+            "captureOutput",
+            "captureOutputImage",
+            "replacementSummary",
+            "dimensionConsentLabel",
+            "dimensionConsent",
+            "dimensionConsentText",
+            "replaceOriginal",
+            "toast",
+          ].map((id) => [id, document.getElementById(id)]),
+        )
+
+        let storageAvailable = true
+        let reviews = loadReviews()
+        let filteredQuestions = [...questions]
+        let currentQuestionId = questions[0]?.id ?? null
+        let imageWidth = questions[0]?.width ?? 1920
+        let imageHeight = questions[0]?.height ?? 1080
+        let zoom = 1
+        let centerX = imageWidth / 2
+        let centerY = imageHeight / 2
+        let fitted = false
+        let dragState = null
+        let toastTimer = null
+        let adminAvailable = false
+        let captureBusy = false
+        let captureState = null
+        let captureQuestionId = null
+        let selectedCoarseCandidate = null
+        let selectedFineCandidate = null
+
+        async function apiRequest(path, options = {}) {
+          const method = options.method ?? "GET"
+          const headers = { Accept: "application/json", ...(options.headers ?? {}) }
+          const request = { method, headers }
+
+          if (options.body !== undefined) {
+            headers["Content-Type"] = "application/json"
+            headers["X-Question-Admin-Request"] = "1"
+            request.body = JSON.stringify(options.body)
+          }
+
+          const response = await fetch(path, request)
+          const payload = await response.json().catch(() => ({}))
+
+          if (!response.ok) {
+            throw new Error(payload.error || `Admin request failed with HTTP ${response.status}`)
+          }
+
+          return payload
+        }
+
+        function setCaptureStatus(message, tone = "neutral", log = "") {
+          elements.captureStatus.textContent = message
+          elements.captureStatus.dataset.tone = tone
+          elements.captureLog.textContent = log
+          elements.captureLog.hidden = log.trim().length === 0
+        }
+
+        function updateCaptureButtons() {
+          const disabled = captureBusy || !adminAvailable
+          const dimensionChangeBlocked =
+            !elements.dimensionConsentLabel.hidden && !elements.dimensionConsent.checked
+          elements.captureUrl.disabled = disabled
+          elements.captureTimestamp.disabled = disabled
+          elements.startCapture.disabled = disabled
+          elements.generateFine.disabled = disabled || selectedCoarseCandidate === null
+          elements.prepareFrame.disabled = disabled || selectedFineCandidate === null
+          elements.replaceOriginal.disabled =
+            disabled || captureState?.output == null || dimensionChangeBlocked
+        }
+
+        function setCaptureBusy(busy) {
+          captureBusy = busy
+          updateCaptureButtons()
+        }
+
+        async function loadLiveQuestions(preferredQuestionId = null) {
+          const isLoopback =
+            location.protocol === "http:" &&
+            (location.hostname === "127.0.0.1" || location.hostname === "localhost")
+
+          if (!isLoopback) {
+            adminAvailable = false
+            elements.adminConnectionBadge.textContent = "Offline snapshot"
+            elements.adminConnectionBadge.dataset.state = "offline"
+            updateCaptureButtons()
+            return false
+          }
+
+          const payload = await apiRequest("/api/questions")
+
+          if (!Array.isArray(payload.questions)) {
+            throw new Error("Admin server returned an invalid question index")
+          }
+
+          questions = payload.questions
+          filteredQuestions = [...questions]
+          currentQuestionId =
+            questions.find((question) => question.id === preferredQuestionId)?.id ??
+            questions[0]?.id ??
+            null
+          imageWidth = questions[0]?.width ?? 1920
+          imageHeight = questions[0]?.height ?? 1080
+          adminAvailable = true
+          elements.adminConnectionBadge.textContent = "Loopback connected"
+          elements.adminConnectionBadge.dataset.state = "connected"
+          updateCaptureButtons()
+
+          if (Array.isArray(payload.issues) && payload.issues.length > 0) {
+            setCaptureStatus(
+              `${payload.issues.length} question source issue${payload.issues.length === 1 ? "" : "s"} found. Open the server console for details.`,
+              "error",
+              payload.issues.join("\n"),
+            )
+          }
+
+          return true
+        }
+
+        function loadReviews() {
+          try {
+            const value = localStorage.getItem(storageKey)
+            return value ? JSON.parse(value) : {}
+          } catch (error) {
+            storageAvailable = false
+            return {}
+          }
+        }
+
+        function saveReviews() {
+          if (!storageAvailable) return
+          try {
+            localStorage.setItem(storageKey, JSON.stringify(reviews))
+          } catch (error) {
+            storageAvailable = false
+            updateStorageHelp()
+          }
+        }
+
+        function updateStorageHelp() {
+          if (storageAvailable) {
+            elements.storageHelp.textContent = "Review state and notes save automatically in this browser."
+            elements.storageHelp.classList.remove("warning")
+          } else {
+            elements.storageHelp.textContent = "Browser storage is unavailable; notes will last only until this page closes."
+            elements.storageHelp.classList.add("warning")
+          }
+        }
+
+        function getReview(questionId) {
+          const review = reviews[questionId]
+          return {
+            status: review?.status === "pass" || review?.status === "fix" ? review.status : "unreviewed",
+            notes: typeof review?.notes === "string" ? review.notes : "",
+          }
+        }
+
+        function currentQuestion() {
+          return questions.find((question) => question.id === currentQuestionId) ?? null
+        }
+
+        function resetCapturePanel(question) {
+          captureQuestionId = question.id
+          captureState = null
+          selectedCoarseCandidate = null
+          selectedFineCandidate = null
+          elements.captureUrl.value = question.source.url || ""
+          elements.captureTimestamp.value = ""
+          elements.coarseStage.hidden = true
+          elements.fineStage.hidden = true
+          elements.captureOutput.hidden = true
+          elements.coarseCandidates.replaceChildren()
+          elements.fineCandidates.replaceChildren()
+          elements.captureOutputImage.removeAttribute("src")
+          elements.dimensionConsent.checked = false
+          elements.dimensionConsentLabel.hidden = true
+
+          if (adminAvailable) {
+            setCaptureStatus(
+              question.captureId
+                ? `Ready to regenerate ${question.id}. Existing provenance: ${question.captureId}.`
+                : `Ready to regenerate ${question.id}.`,
+            )
+          } else {
+            setCaptureStatus(
+              "Start this panel with npm run questions:admin to enable local authoring.",
+            )
+          }
+
+          updateCaptureButtons()
+        }
+
+        function renderCandidateGrid(container, candidates, selectedNumber, onSelect) {
+          const fragment = document.createDocumentFragment()
+
+          for (const candidate of candidates) {
+            const button = document.createElement("button")
+            button.type = "button"
+            button.className = "candidate-card"
+            button.dataset.candidateNumber = String(candidate.number)
+            button.classList.toggle("selected", candidate.number === selectedNumber)
+            button.setAttribute("aria-pressed", String(candidate.number === selectedNumber))
+            button.title = `Source frame ${candidate.sourceFrameIndex}`
+
+            const image = document.createElement("img")
+            image.src = candidate.imageUrl
+            image.alt = `Candidate ${candidate.number} at ${candidate.videoTimestamp}`
+            image.loading = "lazy"
+            image.decoding = "async"
+
+            const caption = document.createElement("span")
+            const number = document.createElement("strong")
+            number.textContent = `#${candidate.number}`
+            const timestamp = document.createElement("span")
+            timestamp.textContent = candidate.videoTimestamp
+            caption.append(number, timestamp)
+            button.append(image, caption)
+            button.addEventListener("click", () => onSelect(candidate.number))
+            fragment.append(button)
+          }
+
+          container.replaceChildren(fragment)
+        }
+
+        function updateCandidateSelection(container, selectedNumber) {
+          for (const button of container.querySelectorAll("[data-candidate-number]")) {
+            const selected = Number(button.dataset.candidateNumber) === selectedNumber
+            button.classList.toggle("selected", selected)
+            button.setAttribute("aria-pressed", String(selected))
+          }
+        }
+
+        function renderCaptureState() {
+          const capture = captureState
+          const question = currentQuestion()
+
+          if (!capture || !question) {
+            elements.coarseStage.hidden = true
+            elements.fineStage.hidden = true
+            elements.captureOutput.hidden = true
+            updateCaptureButtons()
+            return
+          }
+
+          elements.coarseStage.hidden = capture.coarse == null
+
+          if (capture.coarse) {
+            renderCandidateGrid(
+              elements.coarseCandidates,
+              capture.coarse.candidates,
+              selectedCoarseCandidate,
+              (candidateNumber) => {
+                selectedCoarseCandidate = candidateNumber
+                updateCandidateSelection(elements.coarseCandidates, candidateNumber)
+                updateCaptureButtons()
+              },
+            )
+          }
+
+          elements.fineStage.hidden = capture.fine == null
+
+          if (capture.fine) {
+            renderCandidateGrid(
+              elements.fineCandidates,
+              capture.fine.candidates,
+              selectedFineCandidate,
+              (candidateNumber) => {
+                selectedFineCandidate = candidateNumber
+                updateCandidateSelection(elements.fineCandidates, candidateNumber)
+                updateCaptureButtons()
+              },
+            )
+          }
+
+          elements.captureOutput.hidden = capture.output == null
+
+          if (capture.output) {
+            const selectedFrame = capture.fine?.candidates.find(
+              (candidate) => candidate.number === capture.fine.selectedCandidateNumber,
+            )
+            const dimensionChange =
+              capture.output.width !== question.width || capture.output.height !== question.height
+            elements.captureOutputImage.src = capture.output.imageUrl
+            elements.replacementSummary.textContent = [
+              `${capture.captureId}`,
+              `${capture.output.width} × ${capture.output.height}`,
+              selectedFrame ? `frame #${selectedFrame.number} at ${selectedFrame.videoTimestamp}` : "selected frame",
+              `sha256 ${capture.output.sha256}`,
+            ].join(" · ")
+            elements.dimensionConsentLabel.hidden = !dimensionChange
+            elements.dimensionConsentText.textContent = dimensionChange
+              ? `Allow the original dimensions to change from ${question.width} × ${question.height} to ${capture.output.width} × ${capture.output.height}. Redaction coordinates will require a fresh review.`
+              : "Allow this dimension change."
+
+            if (!dimensionChange) {
+              elements.dimensionConsent.checked = false
+            }
+          }
+
+          updateCaptureButtons()
+        }
+
+        function applyCaptureState(capture) {
+          const isSameCapture = captureState?.captureId === capture.captureId
+          captureState = capture
+          selectedCoarseCandidate =
+            capture.coarse?.selectedCandidateNumber ??
+            (isSameCapture ? selectedCoarseCandidate : null)
+          selectedFineCandidate =
+            capture.fine?.selectedCandidateNumber ??
+            (isSameCapture ? selectedFineCandidate : null)
+          renderCaptureState()
+        }
+
+        async function performCaptureAction(message, action, successMessage) {
+          const operationQuestionId = captureQuestionId
+          setCaptureBusy(true)
+          setCaptureStatus(message, "busy")
+
+          try {
+            const payload = await action()
+
+            if (
+              operationQuestionId !== currentQuestionId ||
+              operationQuestionId !== captureQuestionId
+            ) {
+              showToast(`Capture step finished for ${operationQuestionId}; reselect it to resume.`)
+              return payload
+            }
+
+            applyCaptureState(payload.capture)
+            setCaptureStatus(successMessage, "success", payload.log || "")
+            return payload
+          } catch (error) {
+            if (
+              operationQuestionId === currentQuestionId &&
+              operationQuestionId === captureQuestionId
+            ) {
+              setCaptureStatus(error instanceof Error ? error.message : String(error), "error")
+            }
+            return null
+          } finally {
+            setCaptureBusy(false)
+            renderCaptureState()
+          }
+        }
+
+        function eventLabel(question) {
+          return `${question.tournament} ${question.year}`
+        }
+
+        function questionSearchText(question) {
+          return [
+            question.id,
+            question.editionId,
+            question.tournament,
+            question.year,
+            question.stage,
+            question.blueTeam.name,
+            question.redTeam.name,
+            question.gameNumber,
+          ]
+            .join(" ")
+            .toLocaleLowerCase("en-US")
+        }
+
+        function populateEventFilter() {
+          elements.eventFilter.replaceChildren(new Option("All events", "all"))
+          const seen = new Set()
+          for (const question of questions) {
+            if (seen.has(question.editionId)) continue
+            seen.add(question.editionId)
+            const option = document.createElement("option")
+            option.value = question.editionId
+            option.textContent = eventLabel(question)
+            elements.eventFilter.append(option)
+          }
+        }
+
+        function applyFilters({ keepCurrent = true } = {}) {
+          const search = elements.searchInput.value.trim().toLocaleLowerCase("en-US")
+          const event = elements.eventFilter.value
+          const pool = elements.poolFilter.value
+          const review = elements.reviewFilter.value
+
+          filteredQuestions = questions.filter((question) => {
+            if (search && !questionSearchText(question).includes(search)) return false
+            if (event !== "all" && question.editionId !== event) return false
+            if (pool !== "all" && question.pool !== pool) return false
+            if (review !== "all" && getReview(question.id).status !== review) return false
+            return true
+          })
+
+          renderQuestionList()
+
+          if (filteredQuestions.length === 0) {
+            updateNavigation()
+            return
+          }
+
+          if (!keepCurrent || !filteredQuestions.some((question) => question.id === currentQuestionId)) {
+            selectQuestion(filteredQuestions[0].id)
+          } else {
+            updateNavigation()
+          }
+        }
+
+        function renderQuestionList() {
+          elements.questionList.replaceChildren()
+          if (filteredQuestions.length === 0) {
+            const empty = document.createElement("p")
+            empty.className = "empty-list"
+            empty.textContent = "No questions match these filters."
+            elements.questionList.append(empty)
+            return
+          }
+
+          const fragment = document.createDocumentFragment()
+          for (const question of filteredQuestions) {
+            const fullIndex = questions.findIndex((candidate) => candidate.id === question.id) + 1
+            const review = getReview(question.id)
+            const button = document.createElement("button")
+            button.type = "button"
+            button.className = "question-item"
+            button.dataset.questionId = question.id
+            button.setAttribute("aria-current", String(question.id === currentQuestionId))
+
+            const dot = document.createElement("span")
+            dot.className = `status-dot ${review.status}`
+            dot.setAttribute("aria-hidden", "true")
+
+            const copy = document.createElement("span")
+            copy.className = "question-copy"
+            const event = document.createElement("span")
+            event.className = "question-event"
+            event.textContent = `${eventLabel(question)} · ${question.stage}`
+            const matchup = document.createElement("span")
+            matchup.className = "question-matchup"
+            matchup.textContent = `${question.blueTeam.name} vs ${question.redTeam.name} · Game ${question.gameNumber}`
+            copy.append(event, matchup)
+
+            const number = document.createElement("span")
+            number.className = "question-number"
+            number.textContent = String(fullIndex).padStart(2, "0")
+
+            button.append(dot, copy, number)
+            fragment.append(button)
+          }
+          elements.questionList.append(fragment)
+        }
+
+        function selectQuestion(questionId) {
+          const question = questions.find((candidate) => candidate.id === questionId)
+          if (!question) return
+
+          currentQuestionId = questionId
+          imageWidth = question.width
+          imageHeight = question.height
+          centerX = imageWidth / 2
+          centerY = imageHeight / 2
+
+          const fullIndex = questions.findIndex((candidate) => candidate.id === question.id) + 1
+          elements.questionPosition.textContent = `Question ${fullIndex} of ${questions.length} · ${question.id}`
+          elements.questionTitle.textContent = `${eventLabel(question)} — ${question.stage}`
+          elements.answerLine.replaceChildren()
+          const blue = document.createElement("strong")
+          blue.textContent = question.blueTeam.name
+          const middle = document.createTextNode(" (blue) vs ")
+          const red = document.createElement("strong")
+          red.textContent = question.redTeam.name
+          const game = document.createTextNode(` (red) · Game ${question.gameNumber}`)
+          elements.answerLine.append(blue, middle, red, game)
+
+          elements.poolBadge.textContent = `Pool: ${question.pool}`
+          elements.manifestStatusBadge.textContent = `Manifest: ${question.reviewStatus}`
+          elements.rectangleBadge.textContent = `${question.rectangleCount} redaction rectangles`
+          elements.sourceHealthBadge.textContent =
+            question.reviewStatus === "missing"
+              ? "Redaction manifest: missing"
+              : question.redactionMatchesOriginal
+                ? "Redaction source: current"
+                : "Redaction source: stale"
+          elements.sourceHealthBadge.dataset.state = question.redactionMatchesOriginal ? "current" : "stale"
+          elements.exactAnswer.textContent = `edition=${question.editionId} · stage=${question.stage} · blue=${question.blueTeam.id} · red=${question.redTeam.id} · game=${question.gameNumber}`
+
+          elements.sourceLink.hidden = !question.source.url
+          elements.sourceLink.href = question.source.url || "#"
+          elements.sourceLink.textContent = `${question.source.label || "Broadcast source"} ↗`
+          elements.questionManifestLink.href = question.questionManifestPath
+          elements.redactionManifestLink.hidden = !question.redactionManifestPath
+          elements.redactionManifestLink.href = question.redactionManifestPath || "#"
+          elements.openOriginal.href = question.originalPath
+          elements.openRedacted.hidden = !question.redactedPath
+          elements.openRedacted.href = question.redactedPath || "#"
+
+          const originalAlt = `Original image for ${question.id}`
+          const redactedAlt = `Redacted image for ${question.id}`
+          elements.originalImage.alt = originalAlt
+          elements.wipeOriginalImage.alt = originalAlt
+          elements.redactedImage.alt = redactedAlt
+          elements.wipeRedactedImage.alt = redactedAlt
+          elements.originalImage.src = question.originalPath
+          elements.wipeOriginalImage.src = question.originalPath
+
+          for (const image of [elements.redactedImage, elements.wipeRedactedImage]) {
+            if (question.redactedPath) {
+              image.src = question.redactedPath
+            } else {
+              image.removeAttribute("src")
+            }
+          }
+          elements.imageDimensions.textContent = `${question.width} × ${question.height} · synchronized view`
+
+          if (captureQuestionId !== question.id) {
+            resetCapturePanel(question)
+          }
+
+          updateReviewControls()
+          renderQuestionList()
+          updateNavigation()
+          requestAnimationFrame(fitToView)
+        }
+
+        function updateNavigation() {
+          const index = filteredQuestions.findIndex((question) => question.id === currentQuestionId)
+          const hasCurrent = index >= 0
+          elements.previousQuestion.disabled = !hasCurrent || filteredQuestions.length < 2
+          elements.nextQuestion.disabled = !hasCurrent || filteredQuestions.length < 2
+        }
+
+        function navigate(offset) {
+          if (filteredQuestions.length === 0) return
+          const index = filteredQuestions.findIndex((question) => question.id === currentQuestionId)
+          const start = index >= 0 ? index : 0
+          const next = (start + offset + filteredQuestions.length) % filteredQuestions.length
+          selectQuestion(filteredQuestions[next].id)
+        }
+
+        function goToNextUnreviewed() {
+          const currentIndex = questions.findIndex((question) => question.id === currentQuestionId)
+          for (let offset = 1; offset <= questions.length; offset += 1) {
+            const question = questions[(currentIndex + offset + questions.length) % questions.length]
+            if (getReview(question.id).status === "unreviewed") {
+              selectQuestion(question.id)
+              return
+            }
+          }
+          showToast("Every question has a review decision.")
+        }
+
+        function setReviewStatus(status) {
+          const question = currentQuestion()
+          if (!question) return
+          const existing = getReview(question.id)
+          reviews[question.id] = { status, notes: existing.notes }
+          saveReviews()
+          updateProgress()
+
+          if (elements.reviewFilter.value !== "all" && elements.reviewFilter.value !== status) {
+            applyFilters({ keepCurrent: false })
+          } else {
+            renderQuestionList()
+            updateReviewControls()
+          }
+        }
+
+        function updateReviewControls() {
+          const question = currentQuestion()
+          if (!question) return
+          const review = getReview(question.id)
+          const buttons = [
+            [elements.markUnreviewed, "unreviewed"],
+            [elements.markPass, "pass"],
+            [elements.markFix, "fix"],
+            [elements.markPassHeader, "pass"],
+            [elements.markFixHeader, "fix"],
+          ]
+          for (const [button, status] of buttons) {
+            const active = review.status === status
+            button.classList.toggle("active", active)
+            button.setAttribute("aria-pressed", String(active))
+          }
+          elements.reviewNotes.value = review.notes
+        }
+
+        function updateProgress() {
+          const reviewed = questions.filter((question) => getReview(question.id).status !== "unreviewed").length
+          elements.progressCount.textContent = `${reviewed} / ${questions.length}`
+          elements.progressFill.style.width = `${questions.length ? (reviewed / questions.length) * 100 : 0}%`
+        }
+
+        function visibleViewports() {
+          return [elements.originalViewport, elements.redactedViewport, elements.wipeViewport].filter(
+            (viewport) => viewport.offsetParent !== null && viewport.clientWidth > 0 && viewport.clientHeight > 0,
+          )
+        }
+
+        function transformTargets() {
+          return [
+            [elements.originalViewport, elements.originalImage],
+            [elements.redactedViewport, elements.redactedImage],
+            [elements.wipeViewport, elements.wipeOriginalImage],
+            [elements.wipeViewport, elements.wipeRedactedImage],
+          ]
+        }
+
+        function fitToView() {
+          const viewports = visibleViewports()
+          if (viewports.length === 0 || imageWidth <= 0 || imageHeight <= 0) return
+          const width = Math.min(...viewports.map((viewport) => viewport.clientWidth))
+          const height = Math.min(...viewports.map((viewport) => viewport.clientHeight))
+          zoom = Math.min((width - 16) / imageWidth, (height - 16) / imageHeight)
+          zoom = Math.max(minimumZoom, Math.min(maximumZoom, zoom))
+          centerX = imageWidth / 2
+          centerY = imageHeight / 2
+          fitted = true
+          renderTransform()
+        }
+
+        function clampCenter() {
+          const viewports = visibleViewports()
+          if (viewports.length === 0) return
+          const viewportWidth = Math.min(...viewports.map((viewport) => viewport.clientWidth))
+          const viewportHeight = Math.min(...viewports.map((viewport) => viewport.clientHeight))
+          const halfVisibleWidth = viewportWidth / (2 * zoom)
+          const halfVisibleHeight = viewportHeight / (2 * zoom)
+
+          if (imageWidth * zoom <= viewportWidth) {
+            centerX = imageWidth / 2
+          } else {
+            centerX = Math.max(halfVisibleWidth, Math.min(imageWidth - halfVisibleWidth, centerX))
+          }
+          if (imageHeight * zoom <= viewportHeight) {
+            centerY = imageHeight / 2
+          } else {
+            centerY = Math.max(halfVisibleHeight, Math.min(imageHeight - halfVisibleHeight, centerY))
+          }
+        }
+
+        function renderTransform() {
+          clampCenter()
+          for (const [viewport, image] of transformTargets()) {
+            const translateX = viewport.clientWidth / 2 - centerX * zoom
+            const translateY = viewport.clientHeight / 2 - centerY * zoom
+            image.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoom})`
+          }
+          const percent = Math.round(zoom * 100)
+          elements.zoomRange.value = String(Math.max(5, Math.min(800, percent)))
+          elements.zoomValue.textContent = fitted ? `${percent}% · Fit` : `${percent}%`
+        }
+
+        function setZoom(nextZoom, viewport, clientX, clientY) {
+          const bounded = Math.max(minimumZoom, Math.min(maximumZoom, nextZoom))
+          if (!viewport || bounded === zoom) return
+          const rect = viewport.getBoundingClientRect()
+          const localX = clientX - rect.left
+          const localY = clientY - rect.top
+          const imageX = centerX + (localX - viewport.clientWidth / 2) / zoom
+          const imageY = centerY + (localY - viewport.clientHeight / 2) / zoom
+          centerX = imageX - (localX - viewport.clientWidth / 2) / bounded
+          centerY = imageY - (localY - viewport.clientHeight / 2) / bounded
+          zoom = bounded
+          fitted = false
+          renderTransform()
+        }
+
+        function setZoomAtCenter(nextZoom) {
+          const viewport = visibleViewports()[0]
+          if (!viewport) return
+          const rect = viewport.getBoundingClientRect()
+          setZoom(nextZoom, viewport, rect.left + viewport.clientWidth / 2, rect.top + viewport.clientHeight / 2)
+        }
+
+        function setComparisonMode(mode) {
+          elements.viewerShell.dataset.mode = mode
+          const split = mode === "split"
+          elements.splitMode.classList.toggle("active", split)
+          elements.wipeMode.classList.toggle("active", !split)
+          elements.splitMode.setAttribute("aria-pressed", String(split))
+          elements.wipeMode.setAttribute("aria-pressed", String(!split))
+          requestAnimationFrame(fitToView)
+        }
+
+        function setWipePosition(value) {
+          const percentage = Math.max(0, Math.min(100, Number(value)))
+          elements.wipeRedactedLayer.style.width = `${percentage}%`
+          elements.wipeDivider.style.left = `${percentage}%`
+        }
+
+        function startDrag(event) {
+          if (event.button !== 0) return
+          const viewport = event.currentTarget
+          viewport.setPointerCapture(event.pointerId)
+          viewport.classList.add("dragging")
+          dragState = { viewport, pointerId: event.pointerId, x: event.clientX, y: event.clientY }
+        }
+
+        function moveDrag(event) {
+          if (!dragState || dragState.pointerId !== event.pointerId) return
+          const deltaX = event.clientX - dragState.x
+          const deltaY = event.clientY - dragState.y
+          dragState.x = event.clientX
+          dragState.y = event.clientY
+          centerX -= deltaX / zoom
+          centerY -= deltaY / zoom
+          fitted = false
+          renderTransform()
+        }
+
+        function endDrag(event) {
+          if (!dragState || dragState.pointerId !== event.pointerId) return
+          dragState.viewport.classList.remove("dragging")
+          dragState = null
+        }
+
+        function toggleFitActual(viewport) {
+          if (fitted || Math.abs(zoom - 1) > 0.01) {
+            const rect = viewport.getBoundingClientRect()
+            setZoom(1, viewport, rect.left + viewport.clientWidth / 2, rect.top + viewport.clientHeight / 2)
+          } else {
+            fitToView()
+          }
+        }
+
+        async function toggleFullscreen() {
+          try {
+            if (document.fullscreenElement === elements.viewerShell) {
+              await document.exitFullscreen()
+            } else {
+              await elements.viewerShell.requestFullscreen()
+            }
+          } catch (error) {
+            showToast("Fullscreen is not available in this browser.")
+          }
+        }
+
+        function showToast(message) {
+          elements.toast.textContent = message
+          elements.toast.classList.add("visible")
+          clearTimeout(toastTimer)
+          toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2200)
+        }
+
+        function isTypingTarget(target) {
+          return target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement
+        }
+
+        function bindEvents() {
+          for (const input of [elements.searchInput, elements.eventFilter, elements.poolFilter, elements.reviewFilter]) {
+            input.addEventListener("input", () => applyFilters())
+            input.addEventListener("change", () => applyFilters())
+          }
+
+          elements.questionList.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-question-id]")
+            if (button) selectQuestion(button.dataset.questionId)
+          })
+          elements.questionList.addEventListener(
+            "wheel",
+            (event) => {
+              const delta = event.deltaY || event.deltaX
+              if (elements.questionList.scrollHeight > elements.questionList.clientHeight + 1) {
+                event.preventDefault()
+                elements.questionList.scrollTop += delta
+              } else if (elements.questionList.scrollWidth > elements.questionList.clientWidth + 1) {
+                event.preventDefault()
+                elements.questionList.scrollLeft += delta
+              }
+            },
+            { passive: false },
+          )
+          elements.previousQuestion.addEventListener("click", () => navigate(-1))
+          elements.nextQuestion.addEventListener("click", () => navigate(1))
+          elements.nextUnreviewed.addEventListener("click", goToNextUnreviewed)
+          elements.clearFilters.addEventListener("click", () => {
+            elements.searchInput.value = ""
+            elements.eventFilter.value = "all"
+            elements.poolFilter.value = "all"
+            elements.reviewFilter.value = "all"
+            applyFilters()
+          })
+
+          elements.markUnreviewed.addEventListener("click", () => setReviewStatus("unreviewed"))
+          elements.markPass.addEventListener("click", () => setReviewStatus("pass"))
+          elements.markFix.addEventListener("click", () => setReviewStatus("fix"))
+          elements.markPassHeader.addEventListener("click", () => setReviewStatus("pass"))
+          elements.markFixHeader.addEventListener("click", () => setReviewStatus("fix"))
+          elements.reviewNotes.addEventListener("input", () => {
+            const question = currentQuestion()
+            if (!question) return
+            const existing = getReview(question.id)
+            reviews[question.id] = { status: existing.status, notes: elements.reviewNotes.value }
+            saveReviews()
+          })
+
+          elements.captureForm.addEventListener("submit", async (event) => {
+            event.preventDefault()
+            const question = currentQuestion()
+            if (!question || !adminAvailable) return
+            captureQuestionId = question.id
+            captureState = null
+            selectedCoarseCandidate = null
+            selectedFineCandidate = null
+            renderCaptureState()
+
+            await performCaptureAction(
+              "Downloading the ten-second source interval and generating coarse candidates…",
+              () =>
+                apiRequest("/api/captures", {
+                  method: "POST",
+                  body: {
+                    timestamp: elements.captureTimestamp.value,
+                    url: elements.captureUrl.value,
+                  },
+                }),
+              "Coarse candidates are ready. Choose the frame closest to the desired moment.",
+            )
+          })
+
+          elements.generateFine.addEventListener("click", async () => {
+            if (!captureState || selectedCoarseCandidate === null) return
+
+            await performCaptureAction(
+              `Generating every decoded frame around coarse candidate #${selectedCoarseCandidate}…`,
+              () =>
+                apiRequest(`/api/captures/${captureState.captureId}/coarse`, {
+                  method: "POST",
+                  body: { candidateNumber: selectedCoarseCandidate },
+                }),
+              "Exact-frame candidates are ready. Choose the final source frame.",
+            )
+          })
+
+          elements.prepareFrame.addEventListener("click", async () => {
+            if (!captureState || selectedFineCandidate === null) return
+
+            await performCaptureAction(
+              `Verifying and extracting exact frame #${selectedFineCandidate}…`,
+              () =>
+                apiRequest(`/api/captures/${captureState.captureId}/final`, {
+                  method: "POST",
+                  body: { candidateNumber: selectedFineCandidate },
+                }),
+              "The selected lossless PNG is verified and ready to replace this question's original.",
+            )
+          })
+
+          elements.dimensionConsent.addEventListener("change", updateCaptureButtons)
+
+          elements.replaceOriginal.addEventListener("click", async () => {
+            const question = currentQuestion()
+            const capture = captureState
+            if (!question || !capture?.output) return
+
+            setCaptureBusy(true)
+            setCaptureStatus(
+              `Replacing ${question.id}/original.png and recording capture provenance…`,
+              "busy",
+            )
+
+            try {
+              const payload = await apiRequest(`/api/questions/${question.id}/original`, {
+                method: "POST",
+                body: {
+                  allowDimensionChange: elements.dimensionConsent.checked,
+                  captureId: capture.captureId,
+                  confirmation: question.id,
+                  expectedOriginalSha256: question.originalSha256,
+                },
+              })
+              questions = questions.map((candidate) =>
+                candidate.id === question.id ? payload.question : candidate,
+              )
+              filteredQuestions = filteredQuestions.map((candidate) =>
+                candidate.id === question.id ? payload.question : candidate,
+              )
+              const existing = getReview(question.id)
+              const replacementNote =
+                "Original regenerated from capture; review redaction alignment and regenerate redacted.webp."
+              reviews[question.id] = {
+                status: "fix",
+                notes: existing.notes.includes(replacementNote)
+                  ? existing.notes
+                  : [existing.notes.trim(), replacementNote].filter(Boolean).join("\n"),
+              }
+              saveReviews()
+              selectQuestion(question.id)
+              updateProgress()
+              setCaptureStatus(
+                "original.png, capture.json, and the canonical source URL were updated. The redaction is now marked stale for review.",
+                "success",
+              )
+              showToast(`Replaced ${question.id}/original.png`)
+            } catch (error) {
+              setCaptureStatus(error instanceof Error ? error.message : String(error), "error")
+            } finally {
+              setCaptureBusy(false)
+              renderCaptureState()
+            }
+          })
+
+          elements.splitMode.addEventListener("click", () => setComparisonMode("split"))
+          elements.wipeMode.addEventListener("click", () => setComparisonMode("wipe"))
+          elements.wipeRange.addEventListener("input", () => setWipePosition(elements.wipeRange.value))
+          elements.zoomOut.addEventListener("click", () => setZoomAtCenter(zoom / 1.25))
+          elements.zoomIn.addEventListener("click", () => setZoomAtCenter(zoom * 1.25))
+          elements.fitImage.addEventListener("click", fitToView)
+          elements.actualSize.addEventListener("click", () => setZoomAtCenter(1))
+          elements.zoomRange.addEventListener("input", () => setZoomAtCenter(Number(elements.zoomRange.value) / 100))
+          elements.fullscreenViewer.addEventListener("click", toggleFullscreen)
+
+          for (const viewport of [elements.originalViewport, elements.redactedViewport, elements.wipeViewport]) {
+            viewport.addEventListener(
+              "wheel",
+              (event) => {
+                event.preventDefault()
+                const factor = Math.exp(-event.deltaY * 0.0015)
+                setZoom(zoom * factor, viewport, event.clientX, event.clientY)
+              },
+              { passive: false },
+            )
+            viewport.addEventListener("pointerdown", startDrag)
+            viewport.addEventListener("pointermove", moveDrag)
+            viewport.addEventListener("pointerup", endDrag)
+            viewport.addEventListener("pointercancel", endDrag)
+            viewport.addEventListener("dblclick", () => toggleFitActual(viewport))
+          }
+
+          window.addEventListener("resize", () => requestAnimationFrame(fitted ? fitToView : renderTransform))
+          document.addEventListener("fullscreenchange", () => {
+            elements.fullscreenViewer.textContent = document.fullscreenElement ? "Exit fullscreen" : "Fullscreen"
+            requestAnimationFrame(fitted ? fitToView : renderTransform)
+          })
+          document.addEventListener("keydown", (event) => {
+            if (isTypingTarget(event.target)) return
+            if (event.key === "ArrowLeft") navigate(-1)
+            if (event.key === "ArrowRight") navigate(1)
+            if (event.key === "+" || event.key === "=") setZoomAtCenter(zoom * 1.25)
+            if (event.key === "-") setZoomAtCenter(zoom / 1.25)
+            if (event.key === "0") fitToView()
+            if (event.key === "1") setZoomAtCenter(1)
+            if (event.key.toLocaleLowerCase("en-US") === "f") toggleFullscreen()
+          })
+        }
+
+        async function initialize() {
+          try {
+            await loadLiveQuestions(currentQuestionId)
+          } catch (error) {
+            adminAvailable = false
+            elements.adminConnectionBadge.textContent = "Server unavailable"
+            elements.adminConnectionBadge.dataset.state = "offline"
+            setCaptureStatus(
+              error instanceof Error ? error.message : String(error),
+              "error",
+            )
+            updateCaptureButtons()
+          }
+
+          if (!Array.isArray(questions) || questions.length === 0) {
+            elements.questionTitle.textContent = "No audit questions were generated."
+            return
+          }
+          populateEventFilter()
+          updateStorageHelp()
+          updateProgress()
+          bindEvents()
+          setWipePosition(50)
+          applyFilters()
+          selectQuestion(currentQuestionId)
+        }
+
+        initialize().catch((error) => {
+          elements.questionTitle.textContent = "Question admin failed to initialize."
+          setCaptureStatus(error instanceof Error ? error.message : String(error), "error")
+        })
+      })()
+    </script>
+  </body>
+</html>

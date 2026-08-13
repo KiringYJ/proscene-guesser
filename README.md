@@ -96,6 +96,24 @@ uv run yt-dlp "<source-url>"
 
 During question migration, move the selected PNG to `sources/questions/<question-directory>/original.png` and its sidecar to `sources/questions/<question-directory>/capture.json`. The capture record is provenance only; source attribution and rights-review evidence are still required before the question becomes playable.
 
+### Existing-question admin panel
+
+For an existing question, start the local authoring panel instead of moving an intake file by hand:
+
+```powershell
+npm run questions:admin
+```
+
+The command binds an authenticated server to `127.0.0.1` and opens the local `QUESTION_REDACTION_AUDIT.html` interface. Select a question, enter a stable YouTube video URL and rough timestamp, choose one of the twenty coarse frames, then choose the exact decoded frame. The capture remains resumable through the same `.media/frame-selections/` and `incoming/` records used by `media:pick-frame`.
+
+The final **Replace original.png** action verifies the capture manifest, PNG dimensions and SHA-256, and the currently loaded original hash before it updates these files together:
+
+- `sources/questions/<question-directory>/original.png`
+- `sources/questions/<question-directory>/capture.json`
+- the `source.url` field in `sources/questions/<question-directory>/question.json`
+
+Changing dimensions requires a separate checkbox. The panel deliberately does not rewrite `redaction.json` or regenerate `redacted.webp`; after any source replacement, compare the new original with the existing derivative, correct the recorded rectangles if necessary, run `scripts/apply-image-redactions.ps1`, and then run `npm run questions:sync`.
+
 ## Project layout
 
 ```text
@@ -108,8 +126,10 @@ src/
   plugins/          Vuetify configuration
   types/            Question and score contracts
 docs/               Architecture and content-workflow decisions
+scripts/            Catalog, media capture, redaction, and local admin tooling
 sources/
   questions/        Canonical manifests, originals, and flattened redactions
+QUESTION_REDACTION_AUDIT.html  Local-only question admin UI; never deployed
 pyproject.toml       uv-managed media-authoring dependencies
 yt-dlp.conf          Repository-local download defaults
 .github/workflows/  GitHub Pages deployment

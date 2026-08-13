@@ -6,10 +6,12 @@ const scriptDirectory = dirname(fileURLToPath(import.meta.url))
 const repositoryRoot = resolve(scriptDirectory, '..')
 const distRoot = resolve(repositoryRoot, 'dist')
 const productionEntry = resolve(distRoot, 'index.html')
-const fixtureMarkers = [
+const forbiddenMarkers = [
   'round-fixture',
   'q-7y4t2r8m6w3k',
   'UI_FIXTURE_SOLUTION_MARKER',
+  'Regenerate original PNG',
+  'X-Question-Admin-Request',
 ] as const
 const textExtensions = new Set([
   '.css',
@@ -49,7 +51,7 @@ async function main(): Promise<void> {
   for (const path of await findTextFiles(distRoot)) {
     const contents = await readFile(path, 'utf8')
 
-    for (const marker of fixtureMarkers) {
+    for (const marker of forbiddenMarkers) {
       if (contents.includes(marker)) {
         leaks.push(`${relative(repositoryRoot, path)} contains ${marker}`)
       }
@@ -57,10 +59,10 @@ async function main(): Promise<void> {
   }
 
   if (leaks.length > 0) {
-    throw new Error(`Development fixture leaked into the production build:\n- ${leaks.join('\n- ')}`)
+    throw new Error(`Local-only tooling leaked into the production build:\n- ${leaks.join('\n- ')}`)
   }
 
-  console.log('Verified that the development round fixture is absent from dist/.')
+  console.log('Verified that the development fixture and question admin are absent from dist/.')
 }
 
 main().catch((error: unknown) => {

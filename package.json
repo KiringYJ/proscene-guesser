@@ -16,6 +16,7 @@
     "test:watch": "vitest",
     "data:sync": "node scripts/sync-liquipedia-catalog.ts",
     "media:pick-frame": "node scripts/select-video-frame.ts",
+    "questions:admin": "node scripts/question-admin-server.ts",
     "questions:sync": "node scripts/sync-question-catalog.ts",
     "questions:check": "node scripts/sync-question-catalog.ts --check",
     "fixture:check": "node scripts/check-dev-fixture-excluded.ts",
@@ -23,7 +24,8 @@
     "lint:oxlint": "oxlint .",
     "lint:eslint": "eslint . --cache",
     "lint:fix": "oxlint . --fix && eslint . --fix --cache",
-    "check": "run-s questions:check type-check lint test build-only fixture:check"
+    "questions:admin:check": "node scripts/question-admin-server.ts --help",
+    "check": "run-s questions:check questions:admin:check type-check lint test build-only fixture:check"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
