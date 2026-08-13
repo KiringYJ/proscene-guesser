@@ -69,25 +69,32 @@ ffprobe -version
 
 FFmpeg and FFprobe must be real executables on `PATH`; do not install the unrelated Python package named `ffmpeg`. yt-dlp discovers the executables automatically. The checked-in `yt-dlp.conf` enables the repository's Node runtime for YouTube support, refuses playlist expansion, and writes downloads plus metadata under the ignored `.media/` directory.
 
-Download one source video with the project defaults:
+Start a resumable frame-selection capture with a YouTube video URL and a rough timestamp:
+
+```powershell
+npm run -- media:pick-frame -- --url "<youtube-url>" --timestamp "01:23:45"
+```
+
+Use a stable URL containing the video ID, such as a watch URL, `youtu.be` URL, or `/live/<video-id>` URL. A channel-level `/@channel/live` link is intentionally rejected because it can identify a different stream later.
+
+The command downloads the ten-second interval centered on the rough timestamp, using yt-dlp's from-start mode when the URL is still live, generates twenty coarse candidates at 2 fps, and opens a numbered local gallery. After the coarse choice, it generates every decoded frame within plus or minus 0.5 seconds and opens a second gallery for the final choice. The resulting lossless PNG and its capture sidecar are written to `incoming/`.
+
+Each choice is written atomically to the sidecar immediately. Running the same canonical video URL and rough timestamp resumes the unfinished stage; interrupted galleries are regenerated deterministically from the recorded source clip. After completion, the command verifies and returns the recorded final PNG without asking again. A per-capture lock prevents two invocations from racing. A non-interactive caller can provide either choice explicitly:
+
+```powershell
+npm run -- media:pick-frame -- --url "<youtube-url>" --timestamp "01:23:45" --coarse 8
+npm run -- media:pick-frame -- --url "<youtube-url>" --timestamp "01:23:45" --final 27
+```
+
+The capture manifest records the canonical URL, clip boundaries and SHA-256, selected decoded-frame indexes and timestamps, exact yt-dlp/FFmpeg commands, tool versions and binary hashes, the selected gallery PNG hash, and the final PNG SHA-256. The picker verifies that the selected gallery image and deterministic final extraction have identical hashes. Temporary clips and galleries remain under ignored `.media/frame-selections/`; do not delete an unfinished capture if it still needs either choice.
+
+The underlying yt-dlp command remains available for exceptional manual acquisition:
 
 ```powershell
 uv run yt-dlp "<source-url>"
 ```
 
-For frame selection, downloading only a short section is usually faster. The following example fetches ten seconds and asks FFmpeg to make the section boundaries exact:
-
-```powershell
-uv run yt-dlp --download-sections "*01:23:40-01:23:50" --force-keyframes-at-cuts "<source-url>"
-```
-
-Extract a lossless candidate frame from the path reported by yt-dlp. Here `00:00:05.000` is relative to the start of that section:
-
-```powershell
-ffmpeg -i ".media\downloads\<downloaded-file>" -ss 00:00:05.000 -frames:v 1 ".media\candidate.png"
-```
-
-Keep downloaded media and candidate frames in `.media/`. Copy a selected frame to `sources/questions/<question-id>/original.png` only after completing the source-attribution and rights-review requirements below.
+During question migration, move the selected PNG to `sources/questions/<question-id>/original.png` and its sidecar to `sources/questions/<question-id>/capture.json`. The capture record is provenance only; source attribution and rights-review evidence are still required before the question becomes playable.
 
 ## Project layout
 
