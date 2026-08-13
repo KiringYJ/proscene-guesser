@@ -7,7 +7,7 @@ Question redaction is deterministic and auditable. Visual reasoning identifies c
 Each production question may contain:
 
 ```text
-sources/questions/<question-id>/
+sources/questions/<question-directory>/
   original.png
   question.json
   redaction.json
@@ -33,9 +33,9 @@ Both `auto-applied` and `approved` may produce final output. The renderer blocks
 
    ```powershell
    & scripts/apply-image-redactions.ps1 `
-     -InputPath sources/questions/<question-id>/original.png `
-     -ManifestPath sources/questions/<question-id>/redaction.json `
-     -OutputPath sources/questions/<question-id>/redacted.webp `
+     -InputPath sources/questions/<question-directory>/original.png `
+     -ManifestPath sources/questions/<question-directory>/redaction.json `
+     -OutputPath sources/questions/<question-directory>/redacted.webp `
      -Force
    ```
 
@@ -43,8 +43,8 @@ Both `auto-applied` and `approved` may produce final output. The renderer blocks
 
    ```powershell
    & scripts/apply-image-redactions.ps1 `
-     -InputPath sources/questions/<question-id>/original.png `
-     -ManifestPath sources/questions/<question-id>/redaction.json `
+     -InputPath sources/questions/<question-directory>/original.png `
+     -ManifestPath sources/questions/<question-directory>/redaction.json `
      -OutputPath <audit-preview.png> `
      -Preview
    ```

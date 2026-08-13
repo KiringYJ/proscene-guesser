@@ -2,18 +2,20 @@
 
 This directory is the canonical home of each question's answer metadata, Git-tracked unredacted PNG, and flattened redacted derivative. The application imports only `redacted.webp`; the Vite build must never copy `original.png` into `dist/`.
 
-Use one directory per opaque question ID:
+Use one semantic directory per question:
 
 ```text
-sources/questions/q-7m4k2d9xrp6v/
+sources/questions/worlds-2024--quarterfinal--hanwha-life-esports--bilibili-gaming--g4--pvdn2de95rpk/
   original.png
   question.json
   redacted.webp
 ```
 
-Question IDs use `q-` followed by 12 random lowercase Crockford Base32 characters. They must not encode or be derived from the match, date, event, teams, answer, source filename, image hash, timestamp, or insertion order. Generate an ID once, confirm that it is unique, and never rename it.
+Directory names follow `<event>--<stage>--<blue-team>--<red-team>--g<game>--<id-token>`. Catalog-backed event fields come from `catalogEditionId`; non-catalog event fields use the slug of `<tournament>-<year>`. Stage and team fields are lowercase kebab-case slugs of canonical manifest values. Blue side precedes red side.
 
-`question.json` owns the exact answer without repeating facts owned by the repository layout. The directory name is the question ID. A question becomes playable when `redacted.webp` exists beside the manifest. There is no lifecycle field or duplicate public copy. A ready question must have a valid manifest with source attribution and structured rights-review evidence; invalid ready questions fail synchronization. Do not store secrets or private legal documents in this public, tracked manifest.
+Runtime question IDs still use `q-` followed by 12 random lowercase Crockford Base32 characters. The directory stores the 12-character token without `q-` as its final field. IDs must not encode or be derived from the match, date, event, teams, answer, source filename, image hash, timestamp, or insertion order. Generate an ID once, confirm that it is unique, and never change it. Rename only the semantic prefix when answer metadata changes.
+
+`question.json` owns the exact answer without repeating the runtime ID. The directory locator must match the answer metadata, and its final token determines the runtime ID. A question becomes playable when `redacted.webp` exists beside the manifest. There is no lifecycle field or duplicate public copy. A ready question must have a valid manifest with source attribution and structured rights-review evidence; invalid ready questions fail synchronization. Do not store secrets or private legal documents in this public, tracked manifest.
 
 Every manifest must set `pool` to `classic` or `deep-cut`. Use `classic` for an iconic match that belongs in the game's core historical canon. Use `deep-cut` for a less-famous question that rewards more specialized knowledge. Pool membership is authored because it is an editorial judgment rather than a fact that can be derived safely from the match metadata.
 

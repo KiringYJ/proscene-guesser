@@ -3,12 +3,15 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  QUESTION_ID_PATTERN,
   validateQuestionManifest,
   type GeneratedLocalQuestionBundle,
   type PlayableQuestionManifest,
   type QuestionManifest,
 } from '../src/data/question-manifest.ts'
+import {
+  createQuestionDirectoryName,
+  parseQuestionDirectoryName,
+} from '../src/data/question-directory.ts'
 import { createGeneratedLocalQuestionBundle } from '../src/data/question-client.ts'
 import { materializePlayableQuestionManifest } from '../src/data/playable-question.ts'
 import type { InternationalCatalog } from '../src/data/catalog/types.ts'
@@ -89,14 +92,18 @@ async function loadQuestionManifests(
     .sort((left, right) => left.name.localeCompare(right.name))
   const manifests: LoadedQuestionManifest[] = []
   const issues: string[] = []
+  const directoryById = new Map<string, string>()
 
   for (const entry of entries) {
     const manifestPath = resolve(sourceRoot, entry.name, 'question.json')
     const originalPath = resolve(sourceRoot, entry.name, 'original.png')
     const redactedPath = resolve(sourceRoot, entry.name, 'redacted.webp')
+    const parsedDirectory = parseQuestionDirectoryName(entry.name)
 
-    if (!QUESTION_ID_PATTERN.test(entry.name)) {
-      issues.push(`${entry.name}: directory name is not an opaque question ID`)
+    if (parsedDirectory === null) {
+      issues.push(
+        `${entry.name}: directory name must be <event>--<stage>--<blue>--<red>--g<game>--<12-character-id>`,
+      )
     }
 
     if (!(await fileExists(manifestPath))) {
@@ -125,6 +132,31 @@ async function loadQuestionManifests(
       continue
     }
 
+    if (parsedDirectory === null) {
+      continue
+    }
+
+    const existingDirectory = directoryById.get(parsedDirectory.id)
+
+    if (existingDirectory !== undefined) {
+      issues.push(
+        `${entry.name}: question ID ${parsedDirectory.id} is already used by ${existingDirectory}`,
+      )
+    } else {
+      directoryById.set(parsedDirectory.id, entry.name)
+    }
+
+    const expectedDirectory = createQuestionDirectoryName(
+      parsedDirectory.id,
+      value as QuestionManifest,
+    )
+
+    if (entry.name !== expectedDirectory) {
+      issues.push(
+        `${entry.name}: directory name does not match question.json; expected ${expectedDirectory}`,
+      )
+    }
+
     if (!(await fileExists(originalPath))) {
       issues.push(`${entry.name}: question is missing original.png`)
     }
@@ -134,7 +166,7 @@ async function loadQuestionManifests(
     if (await fileExists(redactedPath)) {
       try {
         playableManifest = materializePlayableQuestionManifest(
-          entry.name,
+          parsedDirectory.id,
           value as QuestionManifest,
           catalog,
         )
@@ -151,7 +183,7 @@ async function loadQuestionManifests(
       issues.push(...playableIssues.map((issue) => `${entry.name}: ${issue}`))
     }
 
-    manifests.push({ id: entry.name, playableManifest })
+    manifests.push({ id: parsedDirectory.id, playableManifest })
   }
 
   if (issues.length > 0) {

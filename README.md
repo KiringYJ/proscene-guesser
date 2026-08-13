@@ -94,7 +94,7 @@ The underlying yt-dlp command remains available for exceptional manual acquisiti
 uv run yt-dlp "<source-url>"
 ```
 
-During question migration, move the selected PNG to `sources/questions/<question-id>/original.png` and its sidecar to `sources/questions/<question-id>/capture.json`. The capture record is provenance only; source attribution and rights-review evidence are still required before the question becomes playable.
+During question migration, move the selected PNG to `sources/questions/<question-directory>/original.png` and its sidecar to `sources/questions/<question-directory>/capture.json`. The capture record is provenance only; source attribution and rights-review evidence are still required before the question becomes playable.
 
 ## Project layout
 
@@ -119,9 +119,9 @@ Question answers are bundled into the browser. That is acceptable for a casual M
 
 The solo experience remains a static browser game. Question answers are therefore inspectable in the built assets, and local scoring is appropriate only for casual play. A future synchronized room mode requires an authoritative backend; see [Future multiplayer design](docs/multiplayer-architecture.md). That document describes a proposed design only. Multiplayer is not implemented.
 
-## Question IDs
+## Question directories and IDs
 
-Question IDs are intentionally opaque. Use `q-` followed by 12 random lowercase Crockford Base32 characters, matching `^q-[0-9a-hj-km-np-tv-z]{12}$`.
+Runtime question IDs remain intentionally opaque. Use `q-` followed by 12 random lowercase Crockford Base32 characters, matching `^q-[0-9a-hj-km-np-tv-z]{12}$`.
 
 Generate an ID with Node.js:
 
@@ -129,11 +129,27 @@ Generate an ID with Node.js:
 node -e "const {randomBytes}=require('node:crypto'); const a='0123456789abcdefghjkmnpqrstvwxyz'; console.log('q-'+[...randomBytes(12)].map(b=>a[b&31]).join(''))"
 ```
 
-Generate each ID once, confirm that it is unused, and keep it unchanged. Do not derive IDs from dates, events, teams, answers, source filenames, image hashes, timestamps, or insertion order.
+Generate each ID once, confirm that it is unused, and keep it unchanged. Do not derive the opaque ID from dates, events, teams, answers, source filenames, image hashes, timestamps, or insertion order.
+
+Question directories add a readable locator before the opaque token:
+
+```text
+<event>--<stage>--<blue-team>--<red-team>--g<game>--<id-token>
+```
+
+For example, runtime ID `q-efd3q8g07jxb` lives at:
+
+```text
+sources/questions/worlds-2024--semifinal--gen-g-esports--t1--g4--efd3q8g07jxb/
+```
+
+For catalog-backed questions, the event field comes from `catalogEditionId`. For a non-catalog question, it is the slug of `<tournament>-<year>`. The stage and team fields are lowercase kebab-case slugs of their canonical manifest values; blue side always precedes red side. The final directory field is the runtime ID with its `q-` prefix omitted.
+
+The semantic locator is derived and may be renamed when answer metadata is corrected. The opaque runtime ID is the stable identity and must not change. Two screenshots with otherwise identical match metadata remain distinct through their final ID tokens. `npm run questions:sync` rejects a directory whose locator does not match its `question.json`.
 
 ## Question data
 
-Each question's canonical answer and authoring metadata live beside its source image in `sources/questions/<question-id>/question.json`. The directory name owns the question ID. The presence of `redacted.webp` is the only readiness signal: there is no lifecycle field and no second public-image copy. `npm run questions:sync` validates every manifest, materializes safe presentation and catalog-backed choice defaults, and generates `src/data/questions.generated.ts` from questions that have a redacted derivative; do not edit that generated module by hand. An invalid ready question fails synchronization instead of silently becoming another status. Rights-review evidence is deliberately omitted from the client catalog. Stable edition and team IDs are retained for cascading choices and scoring, while historical display names come from the catalog.
+Each question's canonical answer and authoring metadata live beside its source image in `sources/questions/<question-directory>/question.json`. The directory's final token owns the stable runtime ID; the manifest does not repeat it. The presence of `redacted.webp` is the only readiness signal: there is no lifecycle field and no second public-image copy. `npm run questions:sync` validates every manifest and semantic directory name, materializes safe presentation and catalog-backed choice defaults, and generates `src/data/questions.generated.ts` from questions that have a redacted derivative; do not edit that generated module by hand. An invalid ready question fails synchronization instead of silently becoming another status. Rights-review evidence is deliberately omitted from the client catalog. Stable edition and team IDs are retained for cascading choices and scoring, while historical display names come from the catalog.
 
 Internal curation metadata is validated during authoring and omitted from the generated browser catalog.
 
@@ -143,13 +159,14 @@ The runtime adapter in `src/data/questions.ts` turns generated prompt/disclosure
 
 ## Adding a question
 
-1. Generate a new opaque question ID.
-2. Create `sources/questions/<question-id>/question.json`, complete its internal curation metadata, and record the exact answer. Do not repeat the ID or lifecycle state inside the manifest.
-3. Add the original PNG beside it as `original.png` so it is tracked by Git without entering the Vite build.
-4. Complete source attribution and structured rights-review evidence in `question.json`. Presentation and choice scopes may be supplied explicitly; safe defaults are derived for catalog-backed questions when omitted.
-5. Redact the source image offline and write the flattened derivative to `sources/questions/<question-id>/redacted.webp`. Its presence makes the question playable.
-6. Run `npm run questions:sync` to validate every ready question and regenerate the client catalog.
-7. Run `npm run check` and manually play the round at narrow and wide viewport sizes.
+1. Generate a new opaque runtime question ID.
+2. Build the semantic directory name from the answer fields and append the ID token without `q-`.
+3. Create `sources/questions/<question-directory>/question.json`, complete its internal curation metadata, and record the exact answer. Do not repeat the ID or lifecycle state inside the manifest.
+4. Add the original PNG beside it as `original.png` so it is tracked by Git without entering the Vite build.
+5. Complete source attribution and structured rights-review evidence in `question.json`. Presentation and choice scopes may be supplied explicitly; safe defaults are derived for catalog-backed questions when omitted.
+6. Redact the source image offline and write the flattened derivative to `sources/questions/<question-directory>/redacted.webp`. Its presence makes the question playable.
+7. Run `npm run questions:sync` to validate every ready question and regenerate the client catalog.
+8. Run `npm run check` and manually play the round at narrow and wide viewport sizes.
 
 Vite includes only referenced `redacted.webp` derivatives in `dist/`; it does not copy `original.png` or `redaction.json`. The complete `sources/` tree is still part of Git history, so originals are downloadable from the Git host whenever the repository is public. Confirm source rights and publication permission before adding an original.
 

@@ -3,6 +3,7 @@ import type {
   LocalQuestionBundle,
 } from '@/game/authority/question-bundle'
 
+import { parseQuestionDirectoryName } from './question-directory'
 import { playableQuestionBundles } from './questions.generated'
 
 const redactedQuestionImages = import.meta.glob<string>(
@@ -14,8 +15,27 @@ const redactedQuestionImages = import.meta.glob<string>(
   },
 )
 
+const redactedQuestionImagesById = new Map<string, string>()
+
+for (const [path, image] of Object.entries(redactedQuestionImages)) {
+  const directoryName = path.match(/\/([^/]+)\/redacted\.webp$/)?.[1]
+  const parsedDirectory = directoryName
+    ? parseQuestionDirectoryName(directoryName)
+    : null
+
+  if (parsedDirectory === null) {
+    throw new Error(`Invalid redacted question image path: ${path}`)
+  }
+
+  if (redactedQuestionImagesById.has(parsedDirectory.id)) {
+    throw new Error(`Duplicate redacted question image for ${parsedDirectory.id}`)
+  }
+
+  redactedQuestionImagesById.set(parsedDirectory.id, image)
+}
+
 function getRedactedQuestionImage(id: string): string {
-  const image = redactedQuestionImages[`../../sources/questions/${id}/redacted.webp`]
+  const image = redactedQuestionImagesById.get(id)
 
   if (!image) {
     throw new Error(`${id}: generated question is missing redacted.webp`)
