@@ -18,7 +18,7 @@ sources/questions/<question-directory>/
 
 ## Replacing an existing original
 
-Run `npm run questions:admin`, choose the existing question, provide a stable YouTube video URL and rough timestamp, and complete the coarse and exact-frame selections. The final replacement updates `original.png`, stores the verified capture sidecar as `capture.json`, and updates only `question.json`'s canonical source URL. A dimension change requires an additional explicit checkbox.
+Run `npm run questions:admin`, choose each existing question, provide a stable YouTube video URL and rough timestamp, and use **Save for batch**. This only records an ignored local request keyed by the opaque question ID. When the capture queue is ready, **Prepare saved clips** downloads and generates coarse candidates for every pending request in one batch, with up to three captures processed concurrently. Return to questions marked **Frames ready** to complete the coarse and exact-frame selections. Unfinished requests remain pending for the next batch. The final replacement updates `original.png`, stores the verified capture sidecar as `capture.json`, and updates only `question.json`'s canonical source URL. A dimension change requires an additional explicit checkbox.
 
 Source replacement never updates `redaction.json`'s SHA-256 or regenerates `redacted.webp` automatically. The resulting source mismatch is intentional: compare the new original with the existing derivative, adjust or confirm the rectangles in the panel's redaction editor, then use **Save & regenerate**.
 

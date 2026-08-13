@@ -7,10 +7,12 @@ import { afterEach, describe, expect, it } from 'vitest'
 
 import {
   QuestionAdminConflictError,
+  listQuestionCaptureRequests,
   loadAdminQuestionIndex,
   readCaptureSummary,
   replaceQuestionOriginal,
   resolveCaptureCandidatePath,
+  saveQuestionCaptureRequest,
   saveQuestionRedactions,
   updateQuestionAnswer,
 } from './question-admin.ts'
@@ -40,6 +42,44 @@ function sha256(value: Buffer): string {
 
 async function writeJson(path: string, value: unknown): Promise<void> {
   await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, 'utf8')
+}
+
+async function writePreparedCapture(
+  repositoryRoot: string,
+  request: ReturnType<typeof createCaptureRequest>,
+): Promise<void> {
+  const coarsePath = resolve(
+    repositoryRoot,
+    '.media/frame-selections',
+    request.captureId,
+    'coarse',
+  )
+  const incomingPath = resolve(repositoryRoot, 'incoming')
+  await Promise.all([
+    mkdir(coarsePath, { recursive: true }),
+    mkdir(incomingPath, { recursive: true }),
+  ])
+  const candidate = {
+    file: 'frame-01.png',
+    number: 1,
+    sampleSeconds: 0,
+    sourceFrameIndex: 0,
+    sourcePts: '0',
+    sourcePtsTimeSeconds: 0,
+    sourceRelativeSeconds: 0,
+  }
+  await writeFile(resolve(coarsePath, candidate.file), png(1920, 1080, 0x33))
+  await writeJson(resolve(incomingPath, `${request.captureId}.capture.json`), {
+    artifacts: {
+      coarseDirectory: `.media/frame-selections/${request.captureId}/coarse`,
+      fineDirectory: `.media/frame-selections/${request.captureId}/fine`,
+      selectedWorkspacePng: `.media/frame-selections/${request.captureId}/selected.png`,
+    },
+    captureId: request.captureId,
+    coarse: { candidates: [candidate] },
+    request,
+    schemaVersion: 1,
+  })
 }
 
 async function createFixture(options: { nextHeight?: number; nextWidth?: number } = {}): Promise<{
@@ -186,11 +226,18 @@ afterEach(async () => {
 describe('question admin source replacement', () => {
   it('replaces the original and records capture provenance without blessing stale redactions', async () => {
     const fixture = await createFixture()
+    await saveQuestionCaptureRequest({
+      questionId,
+      repositoryRoot: fixture.repositoryRoot,
+      timestamp: '75',
+      url: captureRequest.canonicalUrl,
+    })
     const before = await loadAdminQuestionIndex(fixture.repositoryRoot)
 
     expect(before.issues).toEqual([])
     expect(before.questions[0]).toMatchObject({
       captureId: null,
+      captureRequest: { captureId, status: 'ready' },
       id: questionId,
       redactionMatchesOriginal: true,
     })
@@ -227,6 +274,7 @@ describe('question admin source replacement', () => {
     const after = await loadAdminQuestionIndex(fixture.repositoryRoot)
     expect(after.questions[0]).toMatchObject({
       captureId,
+      captureRequest: { captureId, status: 'installed' },
       originalSha256: sha256(fixture.nextOriginal),
       redactionMatchesOriginal: false,
     })
@@ -270,6 +318,12 @@ describe('question admin source replacement', () => {
 describe('question admin answer updates', () => {
   it('updates catalog-backed answer fields and renames the directory without changing the ID or sibling assets', async () => {
     const fixture = await createFixture()
+    const captureRequestBeforeRename = await saveQuestionCaptureRequest({
+      questionId,
+      repositoryRoot: fixture.repositoryRoot,
+      timestamp: '42',
+      url: 'https://youtu.be/renamequeue123',
+    })
     const before = await loadAdminQuestionIndex(fixture.repositoryRoot)
     const question = before.questions[0]
     expect(question).toBeDefined()
@@ -304,7 +358,11 @@ describe('question admin answer updates', () => {
       },
     })
     const after = await loadAdminQuestionIndex(fixture.repositoryRoot)
-    expect(after.questions[0]).toMatchObject({ id: questionId, directoryName: result.directoryName })
+    expect(after.questions[0]).toMatchObject({
+      captureRequest: captureRequestBeforeRename,
+      directoryName: result.directoryName,
+      id: questionId,
+    })
   })
 
   it('rejects stale hashes, target collisions, and catalog-invalid answers before changing files', async () => {
@@ -462,6 +520,45 @@ describe('question admin capture reads', () => {
       ),
     ).rejects.toThrow(/invalid candidate file name/i)
   })
+
+  it('saves one persistent request per question without starting a capture', async () => {
+    const fixture = await createFixture()
+    const saved = await saveQuestionCaptureRequest({
+      questionId,
+      repositoryRoot: fixture.repositoryRoot,
+      timestamp: '01:31.5',
+      url: 'https://youtu.be/queuedvideo123?t=10',
+    })
+
+    expect(saved).toMatchObject({
+      questionId,
+      status: 'saved',
+      timestamp: '00:01:31.500',
+      url: 'https://www.youtube.com/watch?v=queuedvideo123',
+    })
+    const requests = await listQuestionCaptureRequests(fixture.repositoryRoot)
+    expect(requests).toEqual([saved])
+    await expect(
+      readFile(resolve(fixture.repositoryRoot, 'incoming', `${saved.captureId}.capture.json`)),
+    ).rejects.toMatchObject({ code: 'ENOENT' })
+
+    const index = await loadAdminQuestionIndex(fixture.repositoryRoot)
+    expect(index.questions[0]?.captureRequest).toEqual(saved)
+  })
+
+  it('marks a saved request ready when its coarse capture already exists', async () => {
+    const fixture = await createFixture()
+    const saved = await saveQuestionCaptureRequest({
+      questionId,
+      repositoryRoot: fixture.repositoryRoot,
+      timestamp: '75',
+      url: captureRequest.canonicalUrl,
+    })
+
+    expect(saved.status).toBe('ready')
+    expect((await loadAdminQuestionIndex(fixture.repositoryRoot)).questions[0]?.captureRequest)
+      .toMatchObject({ captureId, status: 'ready' })
+  })
 })
 
 describe('question admin loopback authentication', () => {
@@ -601,6 +698,93 @@ describe('question admin loopback authentication', () => {
     }
   })
 
+  it('saves capture requests instantly and prepares every pending request in one batch', async () => {
+    const fixture = await createFixture()
+    const framePickerCalls: string[][] = []
+    const { ready, server } = createQuestionAdminServer({
+      framePicker: async (arguments_) => {
+        framePickerCalls.push([...arguments_])
+        const urlIndex = arguments_.indexOf('--url')
+        const timestampIndex = arguments_.indexOf('--timestamp')
+        const request = createCaptureRequest(
+          arguments_[urlIndex + 1] ?? '',
+          arguments_[timestampIndex + 1] ?? '',
+        )
+        await writePreparedCapture(fixture.repositoryRoot, request)
+        return { stderr: '', stdout: `prepared ${request.captureId}` }
+      },
+      openBrowser: false,
+      port: 0,
+      repositoryRoot: fixture.repositoryRoot,
+    })
+
+    try {
+      const addresses = await ready
+      const login = await fetch(addresses.authenticatedUrl, { redirect: 'manual' })
+      const cookie = login.headers.get('set-cookie')?.split(';')[0] ?? ''
+      const headers = {
+        'Content-Type': 'application/json',
+        Cookie: cookie,
+        Origin: addresses.baseUrl,
+        'X-Question-Admin-Request': '1',
+      }
+      const saveResponse = await fetch(
+        `${addresses.baseUrl}/api/questions/${questionId}/capture-request`,
+        {
+          body: JSON.stringify({
+            confirmation: questionId,
+            timestamp: '90',
+            url: 'https://youtu.be/batchvideo123?t=3',
+          }),
+          headers,
+          method: 'POST',
+        },
+      )
+      expect(saveResponse.status).toBe(200)
+      expect(framePickerCalls).toHaveLength(0)
+      expect(await saveResponse.json()).toMatchObject({
+        captureRequest: { questionId, status: 'saved' },
+        question: { captureRequest: { questionId, status: 'saved' } },
+      })
+
+      const batchResponse = await fetch(`${addresses.baseUrl}/api/capture-requests/prepare`, {
+        body: JSON.stringify({ confirmation: 'prepare-all' }),
+        headers,
+        method: 'POST',
+      })
+      expect(batchResponse.status).toBe(200)
+      const batchPayload = await batchResponse.json() as {
+        prepared: Array<{ ok: boolean; questionId: string }>
+        questions: Array<{ captureRequest: { status: string } | null; id: string }>
+      }
+      expect(framePickerCalls).toHaveLength(1)
+      expect(framePickerCalls[0]).toEqual([
+        '--url',
+        'https://www.youtube.com/watch?v=batchvideo123',
+        '--timestamp',
+        '00:01:30.000',
+        '--no-open',
+      ])
+      expect(batchPayload.prepared).toEqual([
+        expect.objectContaining({ ok: true, questionId }),
+      ])
+      expect(batchPayload.questions.find((question) => question.id === questionId)?.captureRequest)
+        .toMatchObject({ status: 'ready' })
+
+      const resumedBatch = await fetch(`${addresses.baseUrl}/api/capture-requests/prepare`, {
+        body: JSON.stringify({ confirmation: 'prepare-all' }),
+        headers,
+        method: 'POST',
+      })
+      expect((await resumedBatch.json() as { prepared: unknown[] }).prepared).toEqual([])
+      expect(framePickerCalls).toHaveLength(1)
+    } finally {
+      await new Promise<void>((resolvePromise, reject) => {
+        server.close((error) => (error === undefined ? resolvePromise() : reject(error)))
+      })
+    }
+  })
+
   it('ships the local admin interface required by the server command', async () => {
     const html = await readFile(resolve('QUESTION_REDACTION_AUDIT.html'), 'utf8')
 
@@ -609,6 +793,8 @@ describe('question admin loopback authentication', () => {
     expect(html).toContain('id="answerYear"')
     expect(html).toContain('id="answerTournament"')
     expect(html).toContain('id="captureForm"')
+    expect(html).toContain('id="prepareCaptureBatch"')
+    expect(html).toContain('Save for batch')
     expect(html).toContain('id="redactionLayer"')
     expect(html).toContain('id="saveRedactions"')
     expect(html).toContain('X-Question-Admin-Request')

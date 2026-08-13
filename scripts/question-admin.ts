@@ -4,6 +4,7 @@ import { constants, createReadStream } from 'node:fs'
 import {
   copyFile,
   lstat,
+  mkdir,
   open,
   readFile,
   readdir,
@@ -103,6 +104,7 @@ interface CaptureManifestRecord {
 export interface AdminQuestion {
   blueTeam: { id: string; name: string }
   captureId: string | null
+  captureRequest: QuestionCaptureRequestSummary | null
   directoryName: string
   editionId: string
   gameNumber: number
@@ -200,6 +202,31 @@ export interface CaptureSummary {
     width: number
   } | null
   request: CaptureRequest
+}
+
+export type QuestionCaptureRequestStatus = 'installed' | 'ready' | 'saved'
+
+export interface QuestionCaptureRequestSummary {
+  captureId: string
+  questionId: string
+  savedAt: string
+  status: QuestionCaptureRequestStatus
+  timestamp: string
+  url: string
+}
+
+interface QuestionCaptureRequestRecord {
+  questionId: string
+  request: CaptureRequest
+  savedAt: string
+  schemaVersion: 1
+}
+
+export interface SaveQuestionCaptureRequestOptions {
+  questionId: string
+  repositoryRoot: string
+  timestamp: string
+  url: string
 }
 
 export interface ReplaceQuestionOriginalOptions {
@@ -541,6 +568,70 @@ async function captureIdBesideQuestion(directory: string): Promise<string | null
     : null
 }
 
+function captureRequestDirectory(repositoryRoot: string): string {
+  return resolve(repositoryRoot, '.media/question-capture-requests')
+}
+
+function captureRequestPath(repositoryRoot: string, questionId: string): string {
+  if (!QUESTION_ID_PATTERN.test(questionId)) {
+    throw new QuestionAdminValidationError(`Invalid question ID: ${questionId}`)
+  }
+
+  return resolve(captureRequestDirectory(repositoryRoot), `${questionId}.json`)
+}
+
+function validateQuestionCaptureRequestRecord(
+  value: unknown,
+  expectedQuestionId: string,
+): QuestionCaptureRequestRecord {
+  if (
+    !isRecord(value) ||
+    value.schemaVersion !== 1 ||
+    value.questionId !== expectedQuestionId ||
+    typeof value.savedAt !== 'string' ||
+    !Number.isFinite(Date.parse(value.savedAt)) ||
+    !isRecord(value.request) ||
+    typeof value.request.canonicalUrl !== 'string' ||
+    typeof value.request.roughTimestampSeconds !== 'number'
+  ) {
+    throw new Error(`Invalid capture request for ${expectedQuestionId}`)
+  }
+
+  const canonicalRequest = createCaptureRequest(
+    value.request.canonicalUrl,
+    value.request.roughTimestampSeconds.toString(),
+  )
+  const storedRequest = value.request as UnknownRecord
+  const requestKeys = Object.keys(storedRequest).sort()
+  const canonicalKeys = Object.keys(canonicalRequest).sort()
+
+  if (
+    JSON.stringify(requestKeys) !== JSON.stringify(canonicalKeys) ||
+    canonicalKeys.some(
+      (key) => storedRequest[key] !== canonicalRequest[key as keyof CaptureRequest],
+    )
+  ) {
+    throw new Error(`Capture request for ${expectedQuestionId} is inconsistent`)
+  }
+
+  return value as unknown as QuestionCaptureRequestRecord
+}
+
+async function readQuestionCaptureRequestRecord(
+  repositoryRoot: string,
+  questionId: string,
+): Promise<QuestionCaptureRequestRecord | null> {
+  const path = captureRequestPath(repositoryRoot, questionId)
+
+  if (!(await fileExists(path))) {
+    return null
+  }
+
+  await assertRegularFile(path)
+  await assertExistingPathWithinRepository(repositoryRoot, path)
+  return validateQuestionCaptureRequestRecord(await readJson(path), questionId)
+}
+
 async function loadAdminQuestion(
   repositoryRoot: string,
   directoryName: string,
@@ -620,13 +711,20 @@ async function loadAdminQuestion(
   }
 
   const answer = manifest.answer
+  const installedCaptureId = await captureIdBesideQuestion(directory)
+  const captureRequest = await readQuestionCaptureRequest(
+    repositoryRoot,
+    parsedDirectory.id,
+    installedCaptureId,
+  )
 
   return {
     blueTeam: {
       id: answer.blueTeamId,
       name: teamName(catalog, manifest, editionId, answer.blueTeamId),
     },
-    captureId: await captureIdBesideQuestion(directory),
+    captureId: installedCaptureId,
+    captureRequest,
     directoryName,
     editionId,
     gameNumber: answer.gameNumber,
@@ -911,10 +1009,10 @@ function validateCaptureManifest(value: unknown, expectedCaptureId: string): Cap
   return value as unknown as CaptureManifestRecord
 }
 
-async function findCaptureManifestPath(
+async function tryFindCaptureManifestPath(
   repositoryRoot: string,
   captureId: string,
-): Promise<string> {
+): Promise<string | null> {
   if (!CAPTURE_ID_PATTERN.test(captureId)) {
     throw new Error(`Invalid capture ID: ${captureId}`)
   }
@@ -949,14 +1047,19 @@ async function findCaptureManifestPath(
     }
   }
 
-  throw new Error(`Capture ${captureId} was not found`)
+  return null
 }
 
 async function readCaptureManifest(
   repositoryRoot: string,
   captureId: string,
 ): Promise<{ manifest: CaptureManifestRecord; path: string; raw: string }> {
-  const path = await findCaptureManifestPath(repositoryRoot, captureId)
+  const path = await tryFindCaptureManifestPath(repositoryRoot, captureId)
+
+  if (path === null) {
+    throw new Error(`Capture ${captureId} was not found`)
+  }
+
   const raw = await readFile(path, 'utf8')
   const manifest = validateCaptureManifest(JSON.parse(raw) as unknown, captureId)
   return { manifest, path, raw }
@@ -999,6 +1102,149 @@ export async function readCaptureSummary(
           },
     request: manifest.request,
   }
+}
+
+function summarizeQuestionCaptureRequest(
+  record: QuestionCaptureRequestRecord,
+  status: QuestionCaptureRequestStatus,
+): QuestionCaptureRequestSummary {
+  return {
+    captureId: record.request.captureId,
+    questionId: record.questionId,
+    savedAt: record.savedAt,
+    status,
+    timestamp: formatTimestamp(record.request.roughTimestampSeconds),
+    url: record.request.canonicalUrl,
+  }
+}
+
+export async function readQuestionCaptureRequest(
+  repositoryRoot: string,
+  questionId: string,
+  installedCaptureId: string | null = null,
+): Promise<QuestionCaptureRequestSummary | null> {
+  const record = await readQuestionCaptureRequestRecord(repositoryRoot, questionId)
+
+  if (record === null) {
+    return null
+  }
+
+  if (installedCaptureId === record.request.captureId) {
+    return summarizeQuestionCaptureRequest(record, 'installed')
+  }
+
+  const manifestPath = await tryFindCaptureManifestPath(
+    repositoryRoot,
+    record.request.captureId,
+  )
+
+  if (manifestPath === null) {
+    return summarizeQuestionCaptureRequest(record, 'saved')
+  }
+
+  const capture = validateCaptureManifest(await readJson(manifestPath), record.request.captureId)
+  return summarizeQuestionCaptureRequest(record, capture.coarse === undefined ? 'saved' : 'ready')
+}
+
+export async function listQuestionCaptureRequests(
+  repositoryRoot: string,
+): Promise<readonly QuestionCaptureRequestSummary[]> {
+  const directory = captureRequestDirectory(repositoryRoot)
+
+  if (!(await fileExists(directory))) {
+    return []
+  }
+
+  await assertDirectory(directory)
+  await assertExistingPathWithinRepository(repositoryRoot, directory)
+  const requests: QuestionCaptureRequestSummary[] = []
+
+  for (const entry of (await readdir(directory, { withFileTypes: true })).sort((left, right) =>
+    left.name.localeCompare(right.name),
+  )) {
+    if (!entry.isFile() || !/^q-[0-9a-hj-km-np-tv-z]{12}\.json$/.test(entry.name)) {
+      continue
+    }
+
+    const questionId = entry.name.slice(0, -'.json'.length)
+    const questionDirectory = await resolveQuestionDirectory(repositoryRoot, questionId)
+    const installedCaptureId = await captureIdBesideQuestion(questionDirectory)
+    const request = await readQuestionCaptureRequest(
+      repositoryRoot,
+      questionId,
+      installedCaptureId,
+    )
+
+    if (request !== null) requests.push(request)
+  }
+
+  return requests
+}
+
+async function ensureQuestionCaptureRequestDirectory(repositoryRoot: string): Promise<void> {
+  const mediaDirectory = resolve(repositoryRoot, '.media')
+  const requestDirectory = captureRequestDirectory(repositoryRoot)
+  const createDirectory = async (path: string) => {
+    try {
+      await mkdir(path)
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
+    }
+  }
+
+  await createDirectory(mediaDirectory)
+  await assertDirectory(mediaDirectory)
+  await assertExistingPathWithinRepository(repositoryRoot, mediaDirectory)
+
+  await createDirectory(requestDirectory)
+  await assertDirectory(requestDirectory)
+  await assertExistingPathWithinRepository(repositoryRoot, requestDirectory)
+}
+
+export async function saveQuestionCaptureRequest(
+  options: SaveQuestionCaptureRequestOptions,
+): Promise<QuestionCaptureRequestSummary> {
+  await resolveQuestionDirectory(options.repositoryRoot, options.questionId)
+
+  let request: CaptureRequest
+
+  try {
+    request = createCaptureRequest(options.url, options.timestamp)
+  } catch (error) {
+    throw new QuestionAdminValidationError(
+      error instanceof Error ? error.message : String(error),
+    )
+  }
+
+  await ensureQuestionCaptureRequestDirectory(options.repositoryRoot)
+
+  const record: QuestionCaptureRequestRecord = {
+    questionId: options.questionId,
+    request,
+    savedAt: new Date().toISOString(),
+    schemaVersion: 1,
+  }
+  const targetPath = captureRequestPath(options.repositoryRoot, options.questionId)
+  await installFileBundle([
+    { targetPath, text: `${JSON.stringify(record, null, 2)}\n` },
+  ])
+
+  const questionDirectory = await resolveQuestionDirectory(
+    options.repositoryRoot,
+    options.questionId,
+  )
+  const installedCaptureId = await captureIdBesideQuestion(questionDirectory)
+  const saved = await readQuestionCaptureRequest(
+    options.repositoryRoot,
+    options.questionId,
+    installedCaptureId,
+  )
+
+  if (saved === null) {
+    throw new Error(`Saved capture request for ${options.questionId} could not be reloaded`)
+  }
+
+  return saved
 }
 
 function validateCandidateFileName(fileName: string): void {

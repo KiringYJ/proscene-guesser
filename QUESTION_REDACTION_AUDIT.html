@@ -843,6 +843,15 @@
         background: linear-gradient(90deg, rgba(81, 215, 212, 0.08), transparent 45%);
       }
 
+      .capture-header-actions {
+        display: flex;
+        flex: 0 0 auto;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
       .capture-header h3,
       .capture-stage h4,
       .capture-output h4 {
@@ -870,6 +879,34 @@
         border-color: rgba(242, 191, 98, 0.45);
         background: rgba(242, 191, 98, 0.1);
         color: var(--warning);
+      }
+
+      .capture-queue-badge[data-state="pending"] {
+        border-color: rgba(242, 191, 98, 0.45);
+        background: rgba(242, 191, 98, 0.1);
+        color: var(--warning);
+      }
+
+      .capture-question-state {
+        width: fit-content;
+        margin-top: 4px;
+        color: var(--quiet);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .capture-question-state[data-state="saved"] {
+        color: var(--warning);
+      }
+
+      .capture-question-state[data-state="ready"] {
+        color: var(--accent);
+      }
+
+      .capture-question-state[data-state="installed"] {
+        color: var(--pass);
       }
 
       .source-health[data-state="current"] {
@@ -1724,9 +1761,13 @@
             <header class="capture-header">
               <div>
                 <h3 id="captureHeading">Regenerate original PNG</h3>
-                <p>Use a stable YouTube video URL and a rough timestamp, then choose a coarse moment and the exact decoded frame.</p>
+                <p>Save a video URL and rough timestamp on each question first. One batch action prepares the clips; frame selection stays per question.</p>
               </div>
-              <span id="adminConnectionBadge" class="badge connection-badge" data-state="offline">Offline snapshot</span>
+              <div class="capture-header-actions">
+                <span id="captureQueueBadge" class="badge capture-queue-badge" data-state="empty">Queue empty</span>
+                <button id="prepareCaptureBatch" class="button accent" type="button" disabled>Prepare saved clips</button>
+                <span id="adminConnectionBadge" class="badge connection-badge" data-state="offline">Offline snapshot</span>
+              </div>
             </header>
 
             <form id="captureForm" class="capture-form">
@@ -1738,7 +1779,7 @@
                 Rough timestamp
                 <input id="captureTimestamp" class="admin-input" type="text" inputmode="decimal" autocomplete="off" placeholder="01:23:45" required />
               </label>
-              <button id="startCapture" class="button accent" type="submit">Generate coarse frames</button>
+              <button id="startCapture" class="button accent" type="submit">Save for batch</button>
             </form>
 
             <p id="captureStatus" class="capture-status" role="status" aria-live="polite">Start this panel with <code>npm run questions:admin</code> to enable local authoring.</p>
@@ -3331,6 +3372,8 @@
             "reviewNotes",
             "storageHelp",
             "adminConnectionBadge",
+            "captureQueueBadge",
+            "prepareCaptureBatch",
             "captureForm",
             "captureUrl",
             "captureTimestamp",
@@ -4115,13 +4158,41 @@
           elements.captureLog.hidden = log.trim().length === 0
         }
 
+        function captureRequestCounts() {
+          return questions.reduce(
+            (counts, question) => {
+              const status = question.captureRequest?.status
+              if (status === "saved") counts.saved += 1
+              if (status === "ready") counts.ready += 1
+              return counts
+            },
+            { ready: 0, saved: 0 },
+          )
+        }
+
+        function updateCaptureQueueSummary() {
+          const counts = captureRequestCounts()
+          elements.captureQueueBadge.dataset.state = counts.saved > 0 ? "pending" : "empty"
+          elements.captureQueueBadge.textContent = counts.saved > 0
+            ? `${counts.saved} pending${counts.ready > 0 ? ` · ${counts.ready} ready` : ""}`
+            : counts.ready > 0
+              ? `${counts.ready} ready`
+              : "Queue empty"
+          elements.prepareCaptureBatch.textContent = counts.saved > 0
+            ? `Prepare saved clips (${counts.saved})`
+            : "Prepare saved clips"
+          return counts
+        }
+
         function updateCaptureButtons() {
           const disabled = captureBusy || !adminAvailable
+          const counts = updateCaptureQueueSummary()
           const dimensionChangeBlocked =
             !elements.dimensionConsentLabel.hidden && !elements.dimensionConsent.checked
           elements.captureUrl.disabled = disabled
           elements.captureTimestamp.disabled = disabled
           elements.startCapture.disabled = disabled
+          elements.prepareCaptureBatch.disabled = disabled || counts.saved === 0
           elements.generateFine.disabled = disabled || selectedCoarseCandidate === null
           elements.prepareFrame.disabled = disabled || selectedFineCandidate === null
           elements.replaceOriginal.disabled =
@@ -4223,13 +4294,14 @@
           return questions.find((question) => question.id === currentQuestionId) ?? null
         }
 
-        function resetCapturePanel(question) {
+        function resetCapturePanel(question, { loadCapture = true } = {}) {
+          const savedRequest = question.captureRequest
           captureQuestionId = question.id
           captureState = null
           selectedCoarseCandidate = null
           selectedFineCandidate = null
-          elements.captureUrl.value = question.source.url || ""
-          elements.captureTimestamp.value = ""
+          elements.captureUrl.value = savedRequest?.url || question.source.url || ""
+          elements.captureTimestamp.value = savedRequest?.timestamp || ""
           elements.coarseStage.hidden = true
           elements.fineStage.hidden = true
           elements.captureOutput.hidden = true
@@ -4240,11 +4312,21 @@
           elements.dimensionConsentLabel.hidden = true
 
           if (adminAvailable) {
-            setCaptureStatus(
-              question.captureId
-                ? `Ready to regenerate ${question.id}. Existing provenance: ${question.captureId}.`
-                : `Ready to regenerate ${question.id}.`,
-            )
+            if (savedRequest?.status === "saved") {
+              setCaptureStatus(
+                `Saved ${savedRequest.url} at ${savedRequest.timestamp} for ${question.id}. Use “Prepare saved clips” when the queue is ready.`,
+                "success",
+              )
+            } else if (savedRequest) {
+              setCaptureStatus(`Loading saved capture ${savedRequest.captureId}…`, "busy")
+              if (loadCapture) void loadSavedCapture(question)
+            } else {
+              setCaptureStatus(
+                question.captureId
+                  ? `Add a URL and rough timestamp for ${question.id}. Existing provenance: ${question.captureId}.`
+                  : `Add a URL and rough timestamp for ${question.id}, then save it for the batch.`,
+              )
+            }
           } else {
             setCaptureStatus(
               "Start this panel with npm run questions:admin to enable local authoring.",
@@ -4252,6 +4334,37 @@
           }
 
           updateCaptureButtons()
+        }
+
+        async function loadSavedCapture(question) {
+          const savedRequest = question.captureRequest
+          if (!savedRequest || savedRequest.status === "saved") return
+
+          try {
+            const payload = await apiRequest(`/api/captures/${savedRequest.captureId}`)
+
+            if (
+              currentQuestionId !== question.id ||
+              captureQuestionId !== question.id ||
+              currentQuestion()?.captureRequest?.captureId !== savedRequest.captureId
+            ) {
+              return
+            }
+
+            applyCaptureState(payload.capture)
+            const message = savedRequest.status === "installed"
+              ? `Capture ${savedRequest.captureId} produced the current original.png. You can still inspect or repeat its selections.`
+              : payload.capture.output
+                ? "The saved capture has a verified PNG ready to replace original.png."
+                : payload.capture.fine
+                  ? "Exact-frame candidates are ready. Choose the final source frame."
+                  : "Coarse candidates are ready. Choose the frame closest to the desired moment."
+            setCaptureStatus(message, "success")
+          } catch (error) {
+            if (currentQuestionId === question.id && captureQuestionId === question.id) {
+              setCaptureStatus(error instanceof Error ? error.message : String(error), "error")
+            }
+          }
         }
 
         function renderCandidateGrid(container, candidates, selectedNumber, onSelect) {
@@ -4502,6 +4615,18 @@
             matchup.className = "question-matchup"
             matchup.textContent = `${question.blueTeam.name} vs ${question.redTeam.name} · Game ${question.gameNumber}`
             copy.append(event, matchup)
+
+            if (question.captureRequest) {
+              const captureStatus = document.createElement("span")
+              captureStatus.className = "capture-question-state"
+              captureStatus.dataset.state = question.captureRequest.status
+              captureStatus.textContent = {
+                installed: "Capture installed",
+                ready: "Frames ready",
+                saved: "Capture saved",
+              }[question.captureRequest.status] ?? "Capture saved"
+              copy.append(captureStatus)
+            }
 
             const number = document.createElement("span")
             number.className = "question-number"
@@ -5013,24 +5138,88 @@
             event.preventDefault()
             const question = currentQuestion()
             if (!question || !adminAvailable) return
-            captureQuestionId = question.id
-            captureState = null
-            selectedCoarseCandidate = null
-            selectedFineCandidate = null
-            renderCaptureState()
+            setCaptureBusy(true)
+            setCaptureStatus(`Saving a capture request for ${question.id}…`, "busy")
 
-            await performCaptureAction(
-              "Downloading the ten-second source interval and generating coarse candidates…",
-              () =>
-                apiRequest("/api/captures", {
-                  method: "POST",
-                  body: {
-                    timestamp: elements.captureTimestamp.value,
-                    url: elements.captureUrl.value,
-                  },
-                }),
-              "Coarse candidates are ready. Choose the frame closest to the desired moment.",
+            try {
+              const payload = await apiRequest(`/api/questions/${question.id}/capture-request`, {
+                method: "POST",
+                body: {
+                  confirmation: question.id,
+                  timestamp: elements.captureTimestamp.value,
+                  url: elements.captureUrl.value,
+                },
+              })
+              replaceQuestionRecord(payload.question)
+              renderQuestionList()
+              resetCapturePanel(payload.question)
+              showToast(`Saved ${question.id} for batch capture`)
+            } catch (error) {
+              setCaptureStatus(error instanceof Error ? error.message : String(error), "error")
+            } finally {
+              setCaptureBusy(false)
+            }
+          })
+
+          elements.prepareCaptureBatch.addEventListener("click", async () => {
+            const pending = captureRequestCounts().saved
+            if (!adminAvailable || pending === 0) return
+
+            setCaptureBusy(true)
+            setCaptureStatus(
+              `Preparing ${pending} saved clip${pending === 1 ? "" : "s"} with up to three downloads at once…`,
+              "busy",
             )
+
+            try {
+              const payload = await apiRequest("/api/capture-requests/prepare", {
+                method: "POST",
+                body: { confirmation: "prepare-all" },
+              })
+
+              if (!Array.isArray(payload.questions) || !Array.isArray(payload.prepared)) {
+                throw new Error("Admin server returned an invalid capture batch result")
+              }
+
+              questions = payload.questions
+              applyFilters({ keepCurrent: true })
+              const question = currentQuestion()
+              if (question) {
+                resetCapturePanel(question, { loadCapture: false })
+                if (question.captureRequest && question.captureRequest.status !== "saved") {
+                  await loadSavedCapture(question)
+                }
+              }
+
+              const succeeded = payload.prepared.filter((result) => result.ok)
+              const failed = payload.prepared.filter((result) => !result.ok)
+              const log = payload.prepared
+                .map((result) =>
+                  `${result.ok ? "READY" : "FAILED"} ${result.questionId} (${result.captureId})${result.log ? `\n${result.log}` : ""}`,
+                )
+                .join("\n\n")
+
+              if (payload.prepared.length === 0) {
+                setCaptureStatus("There are no pending capture requests to prepare.")
+              } else if (failed.length > 0) {
+                setCaptureStatus(
+                  `Prepared ${succeeded.length} request${succeeded.length === 1 ? "" : "s"}; ${failed.length} failed. Unfinished requests remain saved for retry.`,
+                  "error",
+                  log,
+                )
+              } else {
+                setCaptureStatus(
+                  `Prepared ${succeeded.length} request${succeeded.length === 1 ? "" : "s"}. Select a question marked “Frames ready” to continue.`,
+                  "success",
+                  log,
+                )
+              }
+              showToast(`Capture batch finished: ${succeeded.length} ready, ${failed.length} failed`)
+            } catch (error) {
+              setCaptureStatus(error instanceof Error ? error.message : String(error), "error")
+            } finally {
+              setCaptureBusy(false)
+            }
           })
 
           elements.generateFine.addEventListener("click", async () => {

@@ -14,9 +14,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import {
   QuestionAdminConflictError,
   QuestionAdminValidationError,
+  listQuestionCaptureRequests,
   loadAdminQuestionIndex,
   readCaptureSummary,
   replaceQuestionOriginal,
+  saveQuestionCaptureRequest,
   saveQuestionRedactions,
   resolveCaptureCandidatePath,
   resolveCaptureOutputPath,
@@ -24,6 +26,7 @@ import {
   updateQuestionAnswer,
   type AdminQuestion,
   type CaptureSummary,
+  type QuestionCaptureRequestSummary,
   type QuestionRedactionRenderer,
 } from './question-admin.ts'
 import {
@@ -43,6 +46,7 @@ const sessionCookieName = 'proscene_question_admin_session'
 
 export interface ServerOptions {
   catalogSync?: (repositoryRoot: string) => Promise<CommandResult>
+  framePicker?: (arguments_: readonly string[]) => Promise<CommandResult>
   openBrowser: boolean
   port: number
   redactionRenderer?: QuestionRedactionRenderer
@@ -250,10 +254,20 @@ function displayLog(result: CommandResult): string {
   return [result.stderr.trim(), result.stdout.trim()].filter(Boolean).join('\n')
 }
 
-async function runFramePicker(arguments_: readonly string[]): Promise<CommandResult> {
+function batchLog(value: string): string {
+  const maximumLength = 16 * 1024
+  return value.length <= maximumLength
+    ? value
+    : `${value.slice(0, maximumLength)}\n… batch log truncated`
+}
+
+async function runFramePicker(
+  arguments_: readonly string[],
+  workingDirectory = repositoryRoot,
+): Promise<CommandResult> {
   return await new Promise<CommandResult>((resolvePromise, reject) => {
     const child = spawn(process.execPath, [framePickerPath, ...arguments_], {
-      cwd: repositoryRoot,
+      cwd: workingDirectory,
       stdio: ['ignore', 'pipe', 'pipe'],
       windowsHide: true,
     })
@@ -387,6 +401,11 @@ export function createQuestionAdminServer(options: ServerOptions): {
   const activeCaptures = new Set<string>()
   const activeQuestions = new Set<string>()
   const serverRepositoryRoot = options.repositoryRoot ?? repositoryRoot
+  const framePicker =
+    options.framePicker ??
+    (async (arguments_: readonly string[]) =>
+      await runFramePicker(arguments_, serverRepositoryRoot))
+  let captureBatchActive = false
   let baseUrl = ''
   let expectedHost = ''
 
@@ -571,7 +590,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
         }
 
         const command = await withCaptureLock(captureRequest.captureId, async () =>
-          await runFramePicker([
+          await framePicker([
             '--url',
             captureRequest.canonicalUrl,
             '--timestamp',
@@ -613,7 +632,7 @@ export function createQuestionAdminServer(options: ServerOptions): {
         }
 
         const command = await withCaptureLock(captureId, async () =>
-          await runFramePicker([
+          await framePicker([
             '--url',
             captureBefore.request.canonicalUrl,
             '--timestamp',
@@ -625,6 +644,122 @@ export function createQuestionAdminServer(options: ServerOptions): {
         )
         const capture = await readCaptureSummary(serverRepositoryRoot, captureId)
         sendJson(response, 200, { capture: browserCapture(capture), log: displayLog(command) })
+        return
+      }
+
+      const captureRequestMatch = requestUrl.pathname.match(
+        /^\/api\/questions\/(q-[0-9a-hj-km-np-tv-z]{12})\/capture-request$/,
+      )
+
+      if (request.method === 'POST' && captureRequestMatch !== null) {
+        const questionId = captureRequestMatch[1] ?? ''
+        const body = await readJsonBody(request)
+
+        if (body.confirmation !== questionId) {
+          throw new HttpError(400, `confirmation must equal ${questionId}`)
+        }
+
+        const payload = await withQuestionLock(questionId, async () => {
+          const captureRequest = await saveQuestionCaptureRequest({
+            questionId,
+            repositoryRoot: serverRepositoryRoot,
+            timestamp: requiredString(body, 'timestamp'),
+            url: requiredString(body, 'url'),
+          })
+          const index = await loadAdminQuestionIndex(serverRepositoryRoot)
+          const question = index.questions.find((candidate) => candidate.id === questionId)
+
+          if (question === undefined) {
+            throw new Error(`Question ${questionId} could not be reloaded`)
+          }
+
+          return { captureRequest, question: browserQuestion(question) }
+        })
+
+        sendJson(response, 200, payload)
+        return
+      }
+
+      if (request.method === 'POST' && requestUrl.pathname === '/api/capture-requests/prepare') {
+        const body = await readJsonBody(request)
+
+        if (body.confirmation !== 'prepare-all') {
+          throw new HttpError(400, 'confirmation must equal prepare-all')
+        }
+
+        if (captureBatchActive) {
+          throw new HttpError(409, 'Capture request batch preparation is already running')
+        }
+
+        captureBatchActive = true
+
+        try {
+          const pending = (await listQuestionCaptureRequests(serverRepositoryRoot)).filter(
+            (request_) => request_.status === 'saved',
+          )
+          const unique = [
+            ...new Map(pending.map((request_) => [request_.captureId, request_])).values(),
+          ]
+          const results = new Map<
+            string,
+            { captureId: string; log: string; ok: boolean }
+          >()
+          let nextIndex = 0
+          const prepareOne = async (captureRequest: QuestionCaptureRequestSummary) => {
+            try {
+              const command = await withCaptureLock(captureRequest.captureId, async () =>
+                await framePicker([
+                  '--url',
+                  captureRequest.url,
+                  '--timestamp',
+                  captureRequest.timestamp,
+                  '--no-open',
+                ]),
+              )
+              const capture = await readCaptureSummary(
+                serverRepositoryRoot,
+                captureRequest.captureId,
+              )
+
+              if (capture.coarse === null) {
+                throw new Error(`Capture ${captureRequest.captureId} has no coarse candidates`)
+              }
+              results.set(captureRequest.captureId, {
+                captureId: captureRequest.captureId,
+                log: batchLog(displayLog(command)),
+                ok: true,
+              })
+            } catch (error) {
+              results.set(captureRequest.captureId, {
+                captureId: captureRequest.captureId,
+                log: batchLog(error instanceof Error ? error.message : String(error)),
+                ok: false,
+              })
+            }
+          }
+          const workerCount = Math.min(3, unique.length)
+          await Promise.all(
+            Array.from({ length: workerCount }, async () => {
+              while (nextIndex < unique.length) {
+                const captureRequest = unique[nextIndex]
+                nextIndex += 1
+                if (captureRequest !== undefined) await prepareOne(captureRequest)
+              }
+            }),
+          )
+          const prepared = pending.map((request_) => ({
+            ...results.get(request_.captureId),
+            questionId: request_.questionId,
+          }))
+          const index = await loadAdminQuestionIndex(serverRepositoryRoot)
+          sendJson(response, 200, {
+            issues: index.issues,
+            prepared,
+            questions: index.questions.map(browserQuestion),
+          })
+        } finally {
+          captureBatchActive = false
+        }
         return
       }
 

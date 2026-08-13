@@ -107,7 +107,7 @@ npm run questions:admin
 The command binds an authenticated server to `127.0.0.1` and opens the local `QUESTION_REDACTION_AUDIT.html` interface. It supports three existing-question workflows:
 
 - **Edit answer** uses separate year and tournament selectors, validates the resulting catalog edition, stage, teams, and game number, keeps the opaque question ID, renames the semantic source directory when necessary, and refreshes the generated question catalog.
-- **Regenerate original PNG** accepts a stable YouTube video URL and rough timestamp, then presents the twenty coarse frames and every decoded frame near the selected moment. The capture remains resumable through the same `.media/frame-selections/` and `incoming/` records used by `media:pick-frame`.
+- **Regenerate original PNG** first saves a stable YouTube video URL and rough timestamp for each question without downloading anything. **Prepare saved clips** later processes every pending request as one batch, with up to three downloads running concurrently, then each question presents its twenty coarse frames and exact decoded frames. Requests persist by opaque question ID under ignored `.media/question-capture-requests/`; captures remain resumable through the same `.media/frame-selections/` and `incoming/` records used by `media:pick-frame`.
 - **Edit redactions** provides a small canvas editor for drawing, selecting, moving, resizing, duplicating, and removing opaque rectangles over the original. **Save & regenerate** validates optimistic source/manifest hashes, records the manually reviewed rectangles as approved, renders the flattened lossless `redacted.webp`, and refreshes the catalog.
 
 The final **Replace original.png** action verifies the capture manifest, PNG dimensions and SHA-256, and the currently loaded original hash before it updates these files together:
@@ -117,6 +117,8 @@ The final **Replace original.png** action verifies the capture manifest, PNG dim
 - the `source.url` field in `sources/questions/<question-directory>/question.json`
 
 Changing dimensions requires a separate checkbox. Source replacement deliberately leaves `redaction.json` and `redacted.webp` stale. Afterward, compare the new original with the existing derivative in the same panel, correct the rectangles in **Edit redactions**, and use **Save & regenerate**. The editor preserves valid geometry metadata and reports any obsolete group or exception records it removes after a rectangle is deleted or a constraint is broken.
+
+The intended capture pass is: visit questions and use **Save for batch** on each one, press **Prepare saved clips** once, then return to questions marked **Frames ready** for coarse and exact-frame selection. An unfinished request stays pending and can be retried by running the batch again; completed requests are skipped.
 
 ## Project layout
 
