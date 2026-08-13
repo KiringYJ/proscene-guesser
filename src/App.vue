@@ -475,8 +475,21 @@ async function shareGameResult(): Promise<void> {
       {{ accessibilityAnnouncement }}
     </p>
 
-    <v-main class="app-shell" :class="{ 'app-shell--gameplay': currentQuestion }">
-      <v-container class="page" :class="{ 'page--gameplay': currentQuestion }" max-width="1440">
+    <v-main
+      class="app-shell"
+      :class="{
+        'app-shell--gameplay': currentQuestion,
+        'app-shell--setup': snapshot.phase === 'setup',
+      }"
+    >
+      <v-container
+        class="page"
+        :class="{
+          'page--gameplay': currentQuestion,
+          'page--setup': snapshot.phase === 'setup',
+        }"
+        max-width="1440"
+      >
         <header v-if="!currentQuestion" class="topbar">
           <a class="brand" href="#top" aria-label="ProScene Guesser home">
             <span class="brand__mark" aria-hidden="true">PG</span>
@@ -485,31 +498,9 @@ async function shareGameResult(): Promise<void> {
               <small>Guesser</small>
             </span>
           </a>
-
-          <div class="game-modes" role="group" aria-label="Game modes">
-            <div class="game-mode game-mode--active" aria-label="Solo mode, active">
-              <span class="game-mode__dot" aria-hidden="true"></span>
-              <span>Solo</span>
-            </div>
-            <div class="game-mode game-mode--planned" aria-label="Multiplayer mode, planned">
-              <span>Multiplayer</span>
-              <span class="game-mode__badge">Planned</span>
-            </div>
-          </div>
         </header>
 
         <div id="top">
-          <section v-if="snapshot.phase === 'setup'" class="hero">
-            <div class="hero__copy">
-              <p class="eyebrow">Competitive League · Broadcast archaeology</p>
-              <h1>One frame.<br /><em>Four answers.</em></h1>
-              <p class="hero__lede">
-                Rebuild the year, event, teams, and game from a broadcast frame stripped of direct
-                identifiers.
-              </p>
-            </div>
-          </section>
-
           <GameSetup
             v-if="snapshot.phase === 'setup'"
             :availability="snapshot.availability"
@@ -526,15 +517,6 @@ async function shareGameResult(): Promise<void> {
             <GameScreenshot :question="currentQuestion" :revealed="snapshot.phase === 'revealed'" />
 
             <div class="game-hud">
-              <div class="game-brand" aria-label="ProScene Guesser">
-                <span class="game-brand__mark" aria-hidden="true">PG</span>
-                <span class="game-brand__wordmark">
-                  <strong>ProScene</strong>
-                  <small>Guesser</small>
-                </span>
-                <span class="game-brand__signal" aria-hidden="true">Archive live</span>
-              </div>
-
               <div class="round-clock" :class="{ 'round-clock--urgent': timerUrgent }">
                 <span>Round timer</span>
                 <strong role="timer" aria-label="Round time remaining" aria-live="off">

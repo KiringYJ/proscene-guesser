@@ -77,20 +77,14 @@ function startCustomGame(): void {
 
 <template>
   <section class="game-setup" aria-labelledby="game-setup-title">
-    <header class="game-setup__header">
-      <div>
-        <p class="panel-kicker">Choose your run</p>
-        <h2 id="game-setup-title" class="phase-heading" tabindex="-1">Enter the archive</h2>
-      </div>
-      <p>{{ availability.total }} playable {{ availability.total === 1 ? 'archive' : 'archives' }}</p>
-    </header>
+    <h1 id="game-setup-title" class="phase-heading sr-only" tabindex="-1">Choose a game mode</h1>
 
     <p v-if="startError" class="setup-error" role="alert">{{ startError }}</p>
 
     <div class="game-setup__grid">
       <v-card class="setup-card setup-card--quick" tag="article">
         <div class="setup-card__topline">
-          <span>Quick Play</span>
+          <span>Quick</span>
           <span class="setup-card__status">Recommended</span>
         </div>
         <h3>Start with one click.</h3>
@@ -123,7 +117,7 @@ function startCustomGame(): void {
 
       <v-card class="setup-card" tag="article">
         <div class="setup-card__topline">
-          <span>Custom Game</span>
+          <span>Custom</span>
           <span>Solo</span>
         </div>
         <h3>Build your own run.</h3>
@@ -164,15 +158,15 @@ function startCustomGame(): void {
         </v-form>
       </v-card>
 
-      <article class="setup-card setup-card--planned" aria-label="Multiplayer, planned">
+      <article class="setup-card setup-card--planned" aria-label="Party, planned">
         <div class="setup-card__topline">
-          <span>Multiplayer</span>
+          <span>Party</span>
           <span class="game-mode__badge">Planned</span>
         </div>
         <h3>Reconstruct together.</h3>
         <p>
-          Create rooms, invite friends, and compare synchronized round scores when multiplayer
-          support arrives.
+          Create rooms, invite friends, and compare synchronized round scores when party play
+          arrives.
         </p>
         <p class="setup-card__note">Room creation and joining are not available in this version.</p>
       </article>
